@@ -1,0 +1,583 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		21CABB2E180C443F000BB826 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB2D180C443F000BB826 /* Foundation.framework */; };
+		21CABB30180C443F000BB826 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB2F180C443F000BB826 /* CoreGraphics.framework */; };
+		21CABB32180C443F000BB826 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB31180C443F000BB826 /* UIKit.framework */; };
+		21CABB34180C443F000BB826 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB33180C443F000BB826 /* CoreData.framework */; };
+		21CABB3A180C443F000BB826 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21CABB38180C443F000BB826 /* InfoPlist.strings */; };
+		21CABB3C180C443F000BB826 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB3B180C443F000BB826 /* main.m */; };
+		21CABB40180C443F000BB826 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB3F180C443F000BB826 /* AppDelegate.m */; };
+		21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB41180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld */; };
+		21CABB45180C443F000BB826 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21CABB44180C443F000BB826 /* Images.xcassets */; };
+		21CABB4C180C4440000BB826 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB4B180C4440000BB826 /* XCTest.framework */; };
+		21CABB4D180C4440000BB826 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB2D180C443F000BB826 /* Foundation.framework */; };
+		21CABB4E180C4440000BB826 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB31180C443F000BB826 /* UIKit.framework */; };
+		21CABB4F180C4440000BB826 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB33180C443F000BB826 /* CoreData.framework */; };
+		21CABB57180C4440000BB826 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21CABB55180C4440000BB826 /* InfoPlist.strings */; };
+		21CABB59180C4440000BB826 /* SalesmanBuddyiOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */; };
+		21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB64180C46D6000BB826 /* LicenseListViewController.m */; };
+		21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB67180C4799000BB826 /* NewLicenseViewController.m */; };
+		21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB9E180F04AE000BB826 /* CallQueue.m */; };
+		21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */; };
+		21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA4180F0540000BB826 /* UploadFileManager.m */; };
+		21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */; };
+		21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B7180F0D4C00C9FB5B /* Security.framework */; };
+		21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */; };
+		21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */; };
+		21FDA90A180F107200C9FB5B /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA909180F107200C9FB5B /* UserManager.m */; };
+		21FDA90F180F153500C9FB5B /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */; };
+		21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9111810BB5A00C9FB5B /* DAOManager.m */; };
+		21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */; };
+		21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		21CABB50180C4440000BB826 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21CABB22180C443F000BB826 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 21CABB29180C443F000BB826;
+			remoteInfo = SalesmanBuddyiOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesmanBuddyiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CABB2D180C443F000BB826 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		21CABB2F180C443F000BB826 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		21CABB31180C443F000BB826 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		21CABB33180C443F000BB826 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		21CABB37180C443F000BB826 /* SalesmanBuddyiOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBuddyiOS-Info.plist"; sourceTree = "<group>"; };
+		21CABB39180C443F000BB826 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		21CABB3B180C443F000BB826 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		21CABB3D180C443F000BB826 /* SalesmanBuddyiOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SalesmanBuddyiOS-Prefix.pch"; sourceTree = "<group>"; };
+		21CABB3E180C443F000BB826 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		21CABB3F180C443F000BB826 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		21CABB42180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SalesmanBuddyiOS.xcdatamodel; sourceTree = "<group>"; };
+		21CABB44180C443F000BB826 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesmanBuddyiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CABB4B180C4440000BB826 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		21CABB54180C4440000BB826 /* SalesmanBuddyiOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBuddyiOSTests-Info.plist"; sourceTree = "<group>"; };
+		21CABB56180C4440000BB826 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SalesmanBuddyiOSTests.m; sourceTree = "<group>"; };
+		21CABB63180C46D6000BB826 /* LicenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseListViewController.h; sourceTree = "<group>"; };
+		21CABB64180C46D6000BB826 /* LicenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseListViewController.m; sourceTree = "<group>"; };
+		21CABB66180C4799000BB826 /* NewLicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLicenseViewController.h; sourceTree = "<group>"; };
+		21CABB67180C4799000BB826 /* NewLicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLicenseViewController.m; sourceTree = "<group>"; };
+		21CABB9D180F04AE000BB826 /* CallQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallQueue.h; sourceTree = "<group>"; };
+		21CABB9E180F04AE000BB826 /* CallQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallQueue.m; sourceTree = "<group>"; };
+		21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionWithTag.h; sourceTree = "<group>"; };
+		21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionWithTag.m; sourceTree = "<group>"; };
+		21CABBA3180F0540000BB826 /* UploadFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
+		21CABBA4180F0540000BB826 /* UploadFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
+		21CABBA6180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2ViewControllerTouch.h; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.h"; sourceTree = "<group>"; };
+		21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2ViewControllerTouch.m; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.m"; sourceTree = "<group>"; };
+		21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewTouch.xib"; sourceTree = "<group>"; };
+		21FDA8B7180F0D4C00C9FB5B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		21FDA905180F105800C9FB5B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
+		21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
+		21FDA908180F107200C9FB5B /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
+		21FDA909180F107200C9FB5B /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
+		21FDA90D180F153500C9FB5B /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
+		21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2Authentication.m; sourceTree = "<group>"; };
+		21FDA9101810BB5A00C9FB5B /* DAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAOManager.h; sourceTree = "<group>"; };
+		21FDA9111810BB5A00C9FB5B /* DAOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAOManager.m; sourceTree = "<group>"; };
+		21FDA9131810C19000C9FB5B /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2SignIn.h; sourceTree = "<group>"; };
+		21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2SignIn.m; sourceTree = "<group>"; };
+		21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
+		21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		21CABB27180C443F000BB826 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */,
+				21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */,
+				21CABB30180C443F000BB826 /* CoreGraphics.framework in Frameworks */,
+				21CABB34180C443F000BB826 /* CoreData.framework in Frameworks */,
+				21CABB32180C443F000BB826 /* UIKit.framework in Frameworks */,
+				21CABB2E180C443F000BB826 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CABB47180C4440000BB826 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21CABB4C180C4440000BB826 /* XCTest.framework in Frameworks */,
+				21CABB4F180C4440000BB826 /* CoreData.framework in Frameworks */,
+				21CABB4E180C4440000BB826 /* UIKit.framework in Frameworks */,
+				21CABB4D180C4440000BB826 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		21CABB21180C443F000BB826 = {
+			isa = PBXGroup;
+			children = (
+				21CABB35180C443F000BB826 /* SalesmanBuddyiOS */,
+				21CABB52180C4440000BB826 /* SalesmanBuddyiOSTests */,
+				21CABB2C180C443F000BB826 /* Frameworks */,
+				21CABB2B180C443F000BB826 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		21CABB2B180C443F000BB826 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */,
+				21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		21CABB2C180C443F000BB826 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */,
+				21FDA8B7180F0D4C00C9FB5B /* Security.framework */,
+				21CABB2D180C443F000BB826 /* Foundation.framework */,
+				21CABB2F180C443F000BB826 /* CoreGraphics.framework */,
+				21CABB31180C443F000BB826 /* UIKit.framework */,
+				21CABB33180C443F000BB826 /* CoreData.framework */,
+				21CABB4B180C4440000BB826 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		21CABB35180C443F000BB826 /* SalesmanBuddyiOS */ = {
+			isa = PBXGroup;
+			children = (
+				21FDA90B180F108100C9FB5B /* Managers */,
+				21FDA90C180F109100C9FB5B /* Utilities */,
+				21CABB9D180F04AE000BB826 /* CallQueue.h */,
+				21CABB9E180F04AE000BB826 /* CallQueue.m */,
+				21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */,
+				21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */,
+				21CABB3E180C443F000BB826 /* AppDelegate.h */,
+				21CABB3F180C443F000BB826 /* AppDelegate.m */,
+				21CABB44180C443F000BB826 /* Images.xcassets */,
+				21CABB41180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld */,
+				21CABB36180C443F000BB826 /* Supporting Files */,
+				21CABB63180C46D6000BB826 /* LicenseListViewController.h */,
+				21CABB64180C46D6000BB826 /* LicenseListViewController.m */,
+				21CABB66180C4799000BB826 /* NewLicenseViewController.h */,
+				21CABB67180C4799000BB826 /* NewLicenseViewController.m */,
+			);
+			path = SalesmanBuddyiOS;
+			sourceTree = "<group>";
+		};
+		21CABB36180C443F000BB826 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				21CABB37180C443F000BB826 /* SalesmanBuddyiOS-Info.plist */,
+				21CABB38180C443F000BB826 /* InfoPlist.strings */,
+				21CABB3B180C443F000BB826 /* main.m */,
+				21CABB3D180C443F000BB826 /* SalesmanBuddyiOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		21CABB52180C4440000BB826 /* SalesmanBuddyiOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */,
+				21CABB53180C4440000BB826 /* Supporting Files */,
+			);
+			path = SalesmanBuddyiOSTests;
+			sourceTree = "<group>";
+		};
+		21CABB53180C4440000BB826 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				21CABB54180C4440000BB826 /* SalesmanBuddyiOSTests-Info.plist */,
+				21CABB55180C4440000BB826 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		21FDA90B180F108100C9FB5B /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				21FDA908180F107200C9FB5B /* UserManager.h */,
+				21FDA909180F107200C9FB5B /* UserManager.m */,
+				21CABBA3180F0540000BB826 /* UploadFileManager.h */,
+				21CABBA4180F0540000BB826 /* UploadFileManager.m */,
+				21FDA9101810BB5A00C9FB5B /* DAOManager.h */,
+				21FDA9111810BB5A00C9FB5B /* DAOManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		21FDA90C180F109100C9FB5B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */,
+				21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */,
+				21FDA9131810C19000C9FB5B /* GTMOAuth2SignIn.h */,
+				21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */,
+				21FDA90D180F153500C9FB5B /* GTMOAuth2Authentication.h */,
+				21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */,
+				21FDA905180F105800C9FB5B /* SFHFKeychainUtils.h */,
+				21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */,
+				21CABBA6180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.h */,
+				21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */,
+				21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		21CABB29180C443F000BB826 /* SalesmanBuddyiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOS" */;
+			buildPhases = (
+				21CABB26180C443F000BB826 /* Sources */,
+				21CABB27180C443F000BB826 /* Frameworks */,
+				21CABB28180C443F000BB826 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SalesmanBuddyiOS;
+			productName = SalesmanBuddyiOS;
+			productReference = 21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		21CABB49180C4440000BB826 /* SalesmanBuddyiOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOSTests" */;
+			buildPhases = (
+				21CABB46180C4440000BB826 /* Sources */,
+				21CABB47180C4440000BB826 /* Frameworks */,
+				21CABB48180C4440000BB826 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21CABB51180C4440000BB826 /* PBXTargetDependency */,
+			);
+			name = SalesmanBuddyiOSTests;
+			productName = SalesmanBuddyiOSTests;
+			productReference = 21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		21CABB22180C443F000BB826 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "McCord Inc";
+				TargetAttributes = {
+					21CABB49180C4440000BB826 = {
+						TestTargetID = 21CABB29180C443F000BB826;
+					};
+				};
+			};
+			buildConfigurationList = 21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBuddyiOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 21CABB21180C443F000BB826;
+			productRefGroup = 21CABB2B180C443F000BB826 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				21CABB29180C443F000BB826 /* SalesmanBuddyiOS */,
+				21CABB49180C4440000BB826 /* SalesmanBuddyiOSTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		21CABB28180C443F000BB826 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */,
+				21CABB3A180C443F000BB826 /* InfoPlist.strings in Resources */,
+				21CABB45180C443F000BB826 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CABB48180C4440000BB826 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21CABB57180C4440000BB826 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21CABB26180C443F000BB826 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */,
+				21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */,
+				21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */,
+				21FDA90F180F153500C9FB5B /* GTMOAuth2Authentication.m in Sources */,
+				21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */,
+				21FDA90A180F107200C9FB5B /* UserManager.m in Sources */,
+				21CABB40180C443F000BB826 /* AppDelegate.m in Sources */,
+				21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */,
+				21CABB3C180C443F000BB826 /* main.m in Sources */,
+				21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */,
+				21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */,
+				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
+				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,
+				21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */,
+				21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CABB46180C4440000BB826 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21CABB59180C4440000BB826 /* SalesmanBuddyiOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		21CABB51180C4440000BB826 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 21CABB29180C443F000BB826 /* SalesmanBuddyiOS */;
+			targetProxy = 21CABB50180C4440000BB826 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		21CABB38180C443F000BB826 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21CABB39180C443F000BB826 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		21CABB55180C4440000BB826 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21CABB56180C4440000BB826 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		21CABB5A180C4440000BB826 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21CABB5B180C4440000BB826 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		21CABB5D180C4440000BB826 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
+				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		21CABB5E180C4440000BB826 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
+				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		21CABB60180C4440000BB826 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SalesmanBuddyiOS.app/SalesmanBuddyiOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBuddyiOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		21CABB61180C4440000BB826 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SalesmanBuddyiOS.app/SalesmanBuddyiOS";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
+				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBuddyiOSTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBuddyiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CABB5A180C4440000BB826 /* Debug */,
+				21CABB5B180C4440000BB826 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CABB5D180C4440000BB826 /* Debug */,
+				21CABB5E180C4440000BB826 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CABB60180C4440000BB826 /* Debug */,
+				21CABB61180C4440000BB826 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		21CABB41180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				21CABB42180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodel */,
+			);
+			currentVersion = 21CABB42180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodel */;
+			path = SalesmanBuddyiOS.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 21CABB22180C443F000BB826 /* Project object */;
+}
