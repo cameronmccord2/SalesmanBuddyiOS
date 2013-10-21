@@ -13,8 +13,11 @@
     NSMutableArray *licenses;
     NSMutableArray *callQueue;
     NSDecimalNumber *connectionNumber;
+    NSNumber *typeLicenses;
+    NSNumber *typeOther;
     NSMutableDictionary *dataFromConnectionByTag;
     NSMutableDictionary *connections;
+    BOOL tryingToAuthenticate;
 }
 
 @property(nonatomic, strong)GTMOAuth2Authentication* auth;
@@ -24,8 +27,8 @@
 @property(nonatomic, strong)NSString *scope;
 
 +(DAOManager *)sharedManager;
--(void)makeAuthViable;
 -(void)signOutOfGoogle;
+-(void)getLicensesForDelegate:(id)delegate;
 
 
 // google callbacks
@@ -35,6 +38,6 @@
 
 @protocol DAOManagerDelegateProtocal <NSObject>
 
--(void)authIsViable;
+-(void)licenses:(NSArray *)licenses;
 
 @end

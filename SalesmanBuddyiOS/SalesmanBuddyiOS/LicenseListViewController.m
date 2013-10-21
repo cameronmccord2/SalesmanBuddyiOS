@@ -7,6 +7,7 @@
 //
 
 #import "LicenseListViewController.h"
+#import "License.h"
 
 @interface LicenseListViewController ()
 
@@ -20,7 +21,8 @@
         self.context = managedObjectContext;
         self.title = NSLocalizedString(@"Licenses", @"Licenses");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
-        [[DAOManager sharedManager] makeAuthViable];
+        self.licenses = [[NSArray alloc] init];
+        [[DAOManager sharedManager] getLicensesForDelegate:self];
     }
     return self;
 }
@@ -43,10 +45,11 @@
 }
 
 
-#pragma mark - DAOManagerDelegateProtocal funcitons
+#pragma mark - DAOManagerDelegateProtocal functions
 
--(void)authIsViable{
-    
+-(void)licenses:(NSArray *)licenses{
+    self.licenses = licenses;
+    [self.tableView reloadData];
 }
 
 
@@ -75,21 +78,19 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    return [self.licenses count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"LicenseListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    int index = [indexPath row];
+    License *l = [self.licenses objectAtIndex:index];
+    cell.textLabel.text = l.contactInfo.lastName;
     // Configure the cell...
     
     return cell;

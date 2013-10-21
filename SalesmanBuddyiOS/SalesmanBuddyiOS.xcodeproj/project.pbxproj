@@ -37,6 +37,10 @@
 		21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9111810BB5A00C9FB5B /* DAOManager.m */; };
 		21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */; };
 		21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */; };
+		21FDA91A18118A8C00C9FB5B /* ClassAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA91918118A8C00C9FB5B /* ClassAdditions.m */; };
+		21FDA91E1811A53B00C9FB5B /* License.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA91D1811A53B00C9FB5B /* License.m */; };
+		21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9201811A71200C9FB5B /* ContactInfo.m */; };
+		21FDA9241811B7D200C9FB5B /* GoogleAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9231811B7D200C9FB5B /* GoogleAuthManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +99,13 @@
 		21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2SignIn.m; sourceTree = "<group>"; };
 		21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
 		21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
+		21FDA91918118A8C00C9FB5B /* ClassAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAdditions.m; sourceTree = "<group>"; };
+		21FDA91C1811A53B00C9FB5B /* License.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = License.h; sourceTree = "<group>"; };
+		21FDA91D1811A53B00C9FB5B /* License.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = License.m; sourceTree = "<group>"; };
+		21FDA91F1811A71200C9FB5B /* ContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfo.h; sourceTree = "<group>"; };
+		21FDA9201811A71200C9FB5B /* ContactInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfo.m; sourceTree = "<group>"; };
+		21FDA9221811B7D200C9FB5B /* GoogleAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleAuthManager.h; sourceTree = "<group>"; };
+		21FDA9231811B7D200C9FB5B /* GoogleAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleAuthManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +172,7 @@
 		21CABB35180C443F000BB826 /* SalesmanBuddyiOS */ = {
 			isa = PBXGroup;
 			children = (
+				21FDA91B1811A52700C9FB5B /* Model */,
 				21FDA90B180F108100C9FB5B /* Managers */,
 				21FDA90C180F109100C9FB5B /* Utilities */,
 				21CABB9D180F04AE000BB826 /* CallQueue.h */,
@@ -218,6 +230,8 @@
 				21CABBA4180F0540000BB826 /* UploadFileManager.m */,
 				21FDA9101810BB5A00C9FB5B /* DAOManager.h */,
 				21FDA9111810BB5A00C9FB5B /* DAOManager.m */,
+				21FDA9221811B7D200C9FB5B /* GoogleAuthManager.h */,
+				21FDA9231811B7D200C9FB5B /* GoogleAuthManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -225,6 +239,7 @@
 		21FDA90C180F109100C9FB5B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				21FDA91918118A8C00C9FB5B /* ClassAdditions.m */,
 				21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */,
 				21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */,
 				21FDA9131810C19000C9FB5B /* GTMOAuth2SignIn.h */,
@@ -238,6 +253,17 @@
 				21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		21FDA91B1811A52700C9FB5B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				21FDA91C1811A53B00C9FB5B /* License.h */,
+				21FDA91D1811A53B00C9FB5B /* License.m */,
+				21FDA91F1811A71200C9FB5B /* ContactInfo.h */,
+				21FDA9201811A71200C9FB5B /* ContactInfo.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,6 +362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21FDA91A18118A8C00C9FB5B /* ClassAdditions.m in Sources */,
 				21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */,
 				21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */,
 				21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */,
@@ -347,6 +374,9 @@
 				21CABB3C180C443F000BB826 /* main.m in Sources */,
 				21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */,
 				21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */,
+				21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */,
+				21FDA9241811B7D200C9FB5B /* GoogleAuthManager.m in Sources */,
+				21FDA91E1811A53B00C9FB5B /* License.m in Sources */,
 				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
 				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,
 				21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */,

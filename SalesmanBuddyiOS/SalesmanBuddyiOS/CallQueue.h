@@ -14,10 +14,12 @@
 
 @property(nonatomic)BOOL alreadySent;
 @property(nonatomic, strong)id delegate;
-@property(nonatomic, strong)NSURL *fullUrl;
+//@property(nonatomic, strong)NSURL *fullUrl;
+@property(nonatomic, strong)NSMutableURLRequest *request;
 @property(nonatomic, strong)NSDictionary *body;
 @property(nonatomic, strong)NSNumber *type;
 
--(id)initQueueItem:(NSURL *)url type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate;
+
+-(id)initQueueItem:(NSMutableURLRequest *)newRequest type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate;
 
 @end

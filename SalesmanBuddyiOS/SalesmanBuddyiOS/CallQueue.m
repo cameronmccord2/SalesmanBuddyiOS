@@ -9,20 +9,16 @@
 #import "CallQueue.h"
 
 @implementation CallQueue
-@synthesize alreadySent;
-@synthesize fullUrl;
-@synthesize delegate;
-@synthesize type;
-@synthesize body;
 
--(id)initQueueItem:(NSURL *)url type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate{
+
+-(id)initQueueItem:(NSMutableURLRequest *)newRequest type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate{
     self = [super init];
     if (self) {
-        fullUrl = url;
-        delegate = newDelegate;
-        alreadySent = NO;
-        type = newType;
-        body = newBody;
+        self.request = newRequest;
+        self.delegate = newDelegate;
+        self.alreadySent = NO;
+        self.type = newType;
+        self.body = newBody;
     }
     return self;
 }
