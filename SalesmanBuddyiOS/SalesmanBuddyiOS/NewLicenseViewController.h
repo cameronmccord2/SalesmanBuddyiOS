@@ -7,10 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DAOManager.h"
 
-@interface NewLicenseViewController : UIViewController
+@interface NewLicenseViewController : UIViewController<DAOManagerDelegateProtocal, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>{
+    BOOL viewHasLoaded;
+    UITextField *activeField;
+}
 
 @property(nonatomic, strong)NSManagedObjectContext *context;
+@property(nonatomic, strong)NSArray *stateQuestions;
+@property(nonatomic, strong)UIImageView *imageView;
+@property(nonatomic, strong)UIImagePickerController *imagePickerController;
+@property(nonatomic, strong)UIAlertView *alert;
+@property(nonatomic, strong)UIScrollView *scrollView;
+@property(nonatomic, strong)NSMutableArray *textFields;
+@property(nonatomic, strong)UIImage *licenseImage;
+
 
 - (id)initWithContext:(NSManagedObjectContext *)managedObjectContext;
 

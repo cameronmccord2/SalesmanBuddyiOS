@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "GTMOAuth2ViewControllerTouch.h"
+#import "ContactInfo.h"
+#import "User.h"
+#import "License.h"
 
 @interface DAOManager : NSObject{
     NSMutableArray *licenses;
@@ -15,9 +18,22 @@
     NSDecimalNumber *connectionNumber;
     NSNumber *typeLicenses;
     NSNumber *typeOther;
+    NSNumber *typeUserExists;
+    NSNumber *typeDealerships;
+    NSNumber *typeContactInfo;
+    NSNumber *typeLicenseImage;
+    NSNumber *typeStateQuestions;
+    NSNumber *typeStates;
+    NSNumber *typeSubmitNewUser;
+    NSNumber *typeSubmitLicense;
+    NSNumber *typeSubmitContactInfo;
+    NSNumber *typeSubmitImageData;
+    NSNumber *typeConfirmUser;
     NSMutableDictionary *dataFromConnectionByTag;
     NSMutableDictionary *connections;
     BOOL tryingToAuthenticate;
+    BOOL blockingRequestRunning;
+    NSInteger currentUniqueTag;
 }
 
 @property(nonatomic, strong)GTMOAuth2Authentication* auth;
@@ -28,7 +44,22 @@
 
 +(DAOManager *)sharedManager;
 -(void)signOutOfGoogle;
+-(void)confirmUser;
+-(void)putImage:(NSData *)bodyData forDelegate:(id)delegate;
+-(void)putLicense:(License *)license forDelegate:(id)delegate;
+-(void)putContactInfo:(ContactInfo *)contactInfo forDelegate:(id)delegate;
+-(void)deleteLicenseById:(NSInteger)licenseId forDelegate:(id)delegate;
+-(void)genericGetFunctionForDelegate:(id)delegate forSpecificUrlString:(NSString *)urlPiece forType:(NSNumber *)type;
 -(void)getLicensesForDelegate:(id)delegate;
+-(void)getStates:(id)delegate;
+-(void)getDealerships:(id)delegate;
+-(void)getUserExists:(id)delegate;
+-(void)getContactInfoByContactInfoId:(NSInteger)contactInfoId forDelegate:(id)delegate;
+-(void)getContactInfoByLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
+-(void)getLicenseImageForLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
+-(void)getStateQuestionsForStateId:(NSInteger)stateId forDelegate:(id)delegate;
+
+-(NSInteger)getAUniqueTag;
 
 
 // google callbacks
@@ -38,6 +69,15 @@
 
 @protocol DAOManagerDelegateProtocal <NSObject>
 
+-(void)showThisModal:(UIViewController *)viewController;
+
+@optional
 -(void)licenses:(NSArray *)licenses;
+-(void)stateQuestions:(NSArray *)stateQuestions;
+-(void)contactInfo:(ContactInfo *)contactInfo;
+-(void)dealerships:(NSArray *)dealerships;
+-(void)states:(NSArray *)states;
+-(void)user:(User *)user;
+-(void)licenseImage:(NSData *)imageData;
 
 @end

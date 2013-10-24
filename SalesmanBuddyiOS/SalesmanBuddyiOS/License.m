@@ -20,7 +20,7 @@
 //@property(nonatomic)NSInteger userId;
 //@property(nonatomic, strong)ContactInfo *contactInfo;
 
-+(NSArray *)parseJson:(NSArray *)json{
++(NSArray *)parseJsonArray:(NSArray *)json{
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSDictionary *dictionary in json) {
         [array addObject:[[License alloc] initWithDictionary:dictionary]];
@@ -37,6 +37,14 @@
         self.contactInfo = [[ContactInfo alloc] initWithDictionary:dictionary[@"contactInfo"]];
     }
     return self;
+}
+
++(NSDictionary *)dictionaryFromLicense:(License *)license{
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
+    [d setValue:license.photo forKey:@"photo"];
+    [d setObject:[ContactInfo dictionaryFromContactInfo:license.contactInfo] forKey:@"contactInfo"];
+    return d;
 }
 
 @end

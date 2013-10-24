@@ -22,7 +22,6 @@
         self.title = NSLocalizedString(@"Licenses", @"Licenses");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
         self.licenses = [[NSArray alloc] init];
-        [[DAOManager sharedManager] getLicensesForDelegate:self];
     }
     return self;
 }
@@ -30,12 +29,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [[DAOManager sharedManager] getLicensesForDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,8 +50,13 @@
 #pragma mark - DAOManagerDelegateProtocal functions
 
 -(void)licenses:(NSArray *)licenses{
+    NSLog(@"recieved licenses");
     self.licenses = licenses;
     [self.tableView reloadData];
+}
+
+-(void)showThisModal:(UIViewController *)viewController{
+    [self presentViewController:viewController animated:YES completion:nil];
 }
 
 
@@ -86,8 +93,12 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *CellIdentifier = @"LicenseListCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    NSLog(@"setting up cell");
+    static NSString *CellIdentifier = @"UITableViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
     int index = [indexPath row];
     License *l = [self.licenses objectAtIndex:index];
     cell.textLabel.text = l.contactInfo.lastName;

@@ -41,4 +41,19 @@
     return self;
 }
 
++(NSDictionary *)dictionaryFromContactInfo:(ContactInfo *)contactInfo{
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setValue:[NSNumber numberWithInt:contactInfo.licenseId] forKey:@"licenseId"];
+    [d setValue:[NSNumber numberWithInt:contactInfo.stateId] forKey:@"stateId"];
+//    [d setValue:user.created forKey:@"created"];
+    [d setValue:contactInfo.firstName forKey:@"firstName"];
+    [d setValue:contactInfo.lastName forKey:@"lastName"];
+    [d setValue:contactInfo.email forKey:@"email"];
+    [d setValue:contactInfo.phoneNumber forKey:@"phoneNumber"];
+    [d setValue:contactInfo.streetAddress forKey:@"streetAddress"];
+    [d setValue:contactInfo.city forKey:@"city"];
+    [d setValue:contactInfo.notes forKey:@"notes"];
+    return d;
+}
+
 @end

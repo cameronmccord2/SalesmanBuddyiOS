@@ -14,14 +14,15 @@
 @property(nonatomic)NSInteger id;
 //@property(nonatomic)NSInteger showInUserList;
 @property(nonatomic, strong)NSString *photo;
-//@property(nonatomic)NSInteger bucketId;
+@property(nonatomic)NSInteger stateId;
 @property(nonatomic, strong)NSDate *created;
-//@property(nonatomic)float longitude;
-//@property(nonatomic)float latitude;
-//@property(nonatomic)NSInteger userId;
+@property(nonatomic)float longitude;
+@property(nonatomic)float latitude;
+@property(nonatomic)NSInteger userId;
 @property(nonatomic, strong)ContactInfo *contactInfo;
 
 +(NSArray *)parseJsonArray:(NSArray *)json;
++(NSDictionary *)dictionaryFromLicense:(License *)license;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 

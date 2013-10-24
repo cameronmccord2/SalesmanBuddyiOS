@@ -23,6 +23,8 @@
 @property(nonatomic)NSInteger stateId;
 @property(nonatomic, strong)NSString *notes;
 
++(NSDictionary *)dictionaryFromContactInfo:(ContactInfo *)contactInfo;
+
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 
 @end
