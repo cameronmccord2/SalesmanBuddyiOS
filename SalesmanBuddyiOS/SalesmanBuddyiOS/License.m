@@ -7,6 +7,7 @@
 //
 
 #import "License.h"
+#import "StateQuestions.h"
 
 @implementation License
 
@@ -41,9 +42,17 @@
 
 +(NSDictionary *)dictionaryFromLicense:(License *)license{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
+//    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
     [d setValue:license.photo forKey:@"photo"];
+    [d setValue:@(license.stateId) forKey:@"stateId"];
+    [d setValue:@(license.longitude) forKey:@"longitude"];
+    [d setValue:@(license.latitude) forKey:@"latitude"];
     [d setObject:[ContactInfo dictionaryFromContactInfo:license.contactInfo] forKey:@"contactInfo"];
+    NSMutableArray *stateQuestionsResponses = [[NSMutableArray alloc] initWithCapacity:license.stateQuestionsResponses.count];
+    for (StateQuestions *sq in license.stateQuestionsResponses) {
+        [stateQuestionsResponses addObject:[StateQuestions dictionaryFromStateQuestions:sq]];
+    }
+    [d setObject:stateQuestionsResponses forKey:@"stateQuestionsResponses"];
     return d;
 }
 

@@ -24,6 +24,7 @@
         self.tabBarItem.image = [UIImage imageNamed:@"newLicence"];
         self.stateQuestions = [[NSArray alloc] init];
         self.textFields = [[NSMutableArray alloc] init];
+        self.contactInfo = [[ContactInfo alloc] init];
         self.licenseImage = nil;
         viewHasLoaded = false;
         [self registerForKeyboardNotifications];
@@ -38,6 +39,14 @@
     viewHasLoaded = true;
     if (self.stateQuestions.count > 0) {
         [self buildView];
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        self.alert = [[UIAlertView alloc] initWithTitle:@"Location services NOT enabled" message:@"Scanning new licenses requires saving your current location for security purposes. Please go to Settings-Privacy-Location Services and enable this app's location privileges." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        self.alert.tag = CantGetLocationTag;
+        [self.alert show];
     }
 }
 
@@ -76,9 +85,8 @@
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification{
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
+    self.scrollView.contentInset = self.scrollViewInsets;
+    self.scrollView.scrollIndicatorInsets = self.scrollViewInsets;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
@@ -89,6 +97,45 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     NSLog(@"active field cleared");
     activeField = nil;
+    NSString *text = textField.text;
+    switch (textField.tag) {
+        case LastName:
+            self.contactInfo.lastName = text;
+            break;
+            
+        case FirstName:
+            self.contactInfo.firstName = text;
+            break;
+            
+        case Email:
+            self.contactInfo.email = text;
+            break;
+            
+        case PhoneNumber:
+            self.contactInfo.phoneNumber = text;
+            break;
+            
+        case StreetAddress:
+            self.contactInfo.streetAddress = text;
+            break;
+            
+        case City:
+            self.contactInfo.city = text;
+            break;
+            
+        case Notes:
+            self.contactInfo.notes = text;
+            break;
+            
+        default:
+            for (StateQuestions *sq in self.stateQuestions) {
+                if (sq.uniqueTag == textField.tag) {
+                    sq.responseText = text;
+                    break;
+                }
+            }
+            break;
+    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField*)textField;{
@@ -165,7 +212,7 @@
 }
 
 enum {
-  Junk = 0, LastName, FirstName, Email, PhoneNumber, StreetAddress, City, StateId, Notes
+  Junk = 0, LastName, FirstName, Email, PhoneNumber, StreetAddress, City, StateId, Notes, CantGetLocationTag
 };
 
 -(void)buildView{
@@ -229,9 +276,9 @@ enum {
     yValue = [self makeUIButtonWithTitle:@"Save Information" x:0 y:yValue width:SaveInfoButtonWidth height:SaveInfoButtonHeight topPad:SaveInfoButtonTopPad view:self.scrollView backgroundColor:SaveInfoButtonColor alignToCenter:YES selectorToDo:saveInformationSelector forControlEvent:UIControlEventTouchDown target:self];
     
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, yValue)];
-    UIEdgeInsets scrollViewInset = UIEdgeInsetsMake(0.0, 0.0, 56.0, 0.0);
-    [self.scrollView setContentInset:scrollViewInset];
-    [self.scrollView setScrollIndicatorInsets:scrollViewInset];
+    self.scrollViewInsets = UIEdgeInsetsMake(0.0, 0.0, 56.0, 0.0);
+    [self.scrollView setContentInset:self.scrollViewInsets];
+    [self.scrollView setScrollIndicatorInsets:self.scrollViewInsets];
     [self.view addSubview:self.scrollView];
 }
 
@@ -253,11 +300,48 @@ enum {
 
 -(IBAction)saveInformation:(id)sender{
     NSLog(@"saving information");
-    if (self.licenseImage == nil) {
+    BOOL stateQuestionsAnswered = false;
+    for (StateQuestions *sq in self.stateQuestions) {
+        if (sq.responseText.length > 0) {
+            stateQuestionsAnswered = true;
+        }else{
+            stateQuestionsAnswered = false;
+            break;
+        }
+    }
+    if (self.licenseImage == nil || !stateQuestionsAnswered) {
         self.alert = [[UIAlertView alloc] initWithTitle:@"Submission Error" message:@"Please be sure to take an image and answer the required state questions before submitting." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [self.alert show];
+        self.license = nil;
         return;
+    }else{
+        License *l = [[License alloc] init];
+        l.stateId = 44;
+        self.contactInfo.stateId = 44;
+        l.contactInfo = self.contactInfo;
+        CLLocationCoordinate2D coordinate = [[DAOManager sharedManager] getLocation];
+        l.longitude = coordinate.longitude;
+        l.latitude = coordinate.latitude;
+        l.stateQuestionsResponses = self.stateQuestions;
+        self.license = l;
+        if (self.finishedPhoto != nil) {
+            self.license.photo = self.finishedPhoto.filename;
+            [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+        }
     }
+}
+
+-(void)finishedPhoto:(FinishedPhoto *)finishedPhoto{
+    NSLog(@"finished putting photo, %@", finishedPhoto.filename);
+    self.finishedPhoto = finishedPhoto;
+    if (self.license != nil) {
+        self.license.photo = self.finishedPhoto.filename;
+        [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+    }
+}
+
+-(void)finishedSubmitLicense{
+    NSLog(@"finished submitting license");
 }
 
 -(IBAction)takePicture:(id)sender{
@@ -278,16 +362,31 @@ enum {
     [self presentViewController:self.imagePickerController animated:YES completion:nil];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    self.finishedPhoto = nil;// clear photo so everything waits until it comes back from saving to server
     [self dismissViewControllerAnimated:YES completion:nil]; //Do this first!
     self.licenseImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.imageView setImage:self.licenseImage];
+    [[DAOManager sharedManager] putImage:UIImageJPEGRepresentation(self.licenseImage, 1.0) forStateId:44 forDelegate:self];
     // set it to nil here?
     
     //image = [ImageHelpers imageWithImage:image scaledToSize:CGSizeMake(480, 640)];
     
     //    [imageView setImage:image];
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if (alertView.tag == CantGetLocationTag) {
+        [self.tabBarController setSelectedIndex:0];
+    }
+}
+
+-(void)showThisModal:(UIViewController *)viewController{
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+-(void)licenses:(NSArray *)licenses{
+    NSLog(@"finished successfully");
 }
 
 @end

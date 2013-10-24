@@ -10,14 +10,17 @@
 
 @interface StateQuestions : NSObject
 
-@property(nonatomic)NSInteger id;
+@property(nonatomic)NSInteger stateQuestionsSpecificsId;
 @property(nonatomic)NSInteger stateQuestionId;
 @property(nonatomic, strong)NSString *questionText;
 @property(nonatomic)NSInteger responseType;
 @property(nonatomic)NSInteger questionOrder;
 @property(nonatomic)NSInteger uniqueTag;
+@property(nonatomic, strong)NSString *responseText;
+@property(nonatomic)NSInteger responseBool;
 
 +(NSArray *)parseJsonArray:(NSArray *)json;
++(NSDictionary *)dictionaryFromStateQuestions:(StateQuestions *)stateQuestions;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 

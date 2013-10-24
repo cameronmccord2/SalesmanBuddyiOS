@@ -20,15 +20,25 @@
     return array;
 }
 
++(NSDictionary *)dictionaryFromStateQuestions:(StateQuestions *)stateQuestions{
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setObject:@(stateQuestions.stateQuestionsSpecificsId) forKey:@"stateQuestionsSpecificsId"];
+    [d setObject:stateQuestions.responseText forKey:@"responseText"];
+    [d setObject:@(stateQuestions.responseBool) forKey:@"responseBool"];
+    return d;
+}
+
 -(id)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
-        self.id = [dictionary[@"id"] integerValue];
+        self.stateQuestionsSpecificsId = [dictionary[@"id"] integerValue];
         self.stateQuestionId = [dictionary[@"stateQuestionId"] integerValue];
         self.questionText = dictionary[@"questionText"];
         self.responseType = [dictionary[@"responseType"] integerValue];
         self.questionOrder = [dictionary[@"questionOrder"] integerValue];
         self.uniqueTag = [[DAOManager sharedManager] getAUniqueTag];
+        self.responseText = [NSString stringWithFormat:@""];// used locally
+        self.responseBool = 0;
     }
     return self;
 }

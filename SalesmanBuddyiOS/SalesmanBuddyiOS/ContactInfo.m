@@ -43,7 +43,7 @@
 
 +(NSDictionary *)dictionaryFromContactInfo:(ContactInfo *)contactInfo{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-    [d setValue:[NSNumber numberWithInt:contactInfo.licenseId] forKey:@"licenseId"];
+//    [d setValue:[NSNumber numberWithInt:contactInfo.licenseId] forKey:@"licenseId"];
     [d setValue:[NSNumber numberWithInt:contactInfo.stateId] forKey:@"stateId"];
 //    [d setValue:user.created forKey:@"created"];
     [d setValue:contactInfo.firstName forKey:@"firstName"];

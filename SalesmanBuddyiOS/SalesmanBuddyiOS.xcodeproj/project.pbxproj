@@ -48,6 +48,8 @@
 		DC6F065F1816896300EBE962 /* Dealership.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F065E1816896300EBE962 /* Dealership.m */; };
 		DC6F066218168ACB00EBE962 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F066118168ACB00EBE962 /* State.m */; };
 		DC6F066518168CCA00EBE962 /* StateQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F066418168CCA00EBE962 /* StateQuestions.m */; };
+		DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */; };
+		DCEB3B721818F97800052ADA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB3B711818F97800052ADA /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +129,9 @@
 		DC6F066118168ACB00EBE962 /* State.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = State.m; sourceTree = "<group>"; };
 		DC6F066318168CCA00EBE962 /* StateQuestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StateQuestions.h; sourceTree = "<group>"; };
 		DC6F066418168CCA00EBE962 /* StateQuestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StateQuestions.m; sourceTree = "<group>"; };
+		DCEB3B6E1818F4B600052ADA /* FinishedPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedPhoto.h; sourceTree = "<group>"; };
+		DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedPhoto.m; sourceTree = "<group>"; };
+		DCEB3B711818F97800052ADA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCEB3B721818F97800052ADA /* CoreLocation.framework in Frameworks */,
 				21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */,
 				21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */,
 				21CABB30180C443F000BB826 /* CoreGraphics.framework in Frameworks */,
@@ -179,6 +185,7 @@
 		21CABB2C180C443F000BB826 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DCEB3B711818F97800052ADA /* CoreLocation.framework */,
 				21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */,
 				21FDA8B7180F0D4C00C9FB5B /* Security.framework */,
 				21CABB2D180C443F000BB826 /* Foundation.framework */,
@@ -305,6 +312,8 @@
 				DC6F066118168ACB00EBE962 /* State.m */,
 				DC6F066318168CCA00EBE962 /* StateQuestions.h */,
 				DC6F066418168CCA00EBE962 /* StateQuestions.m */,
+				DCEB3B6E1818F4B600052ADA /* FinishedPhoto.h */,
+				DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -356,6 +365,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "McCord Inc";
 				TargetAttributes = {
+					21CABB29180C443F000BB826 = {
+						DevelopmentTeam = 578ZHS94U8;
+					};
 					21CABB49180C4440000BB826 = {
 						TestTargetID = 21CABB29180C443F000BB826;
 					};
@@ -425,6 +437,7 @@
 				21CABB3C180C443F000BB826 /* main.m in Sources */,
 				21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */,
 				21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */,
+				DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */,
 				21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */,
 				21FDA91E1811A53B00C9FB5B /* License.m in Sources */,
 				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
@@ -551,10 +564,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
 				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -564,10 +580,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
 				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

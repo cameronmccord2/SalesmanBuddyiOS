@@ -7,12 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 #import "GTMOAuth2ViewControllerTouch.h"
 #import "ContactInfo.h"
 #import "User.h"
 #import "License.h"
+#import "FinishedPhoto.h"
 
-@interface DAOManager : NSObject{
+@interface DAOManager : NSObject<CLLocationManagerDelegate, NSXMLParserDelegate>{
     NSMutableArray *licenses;
     NSMutableArray *callQueue;
     NSDecimalNumber *connectionNumber;
@@ -29,6 +31,7 @@
     NSNumber *typeSubmitContactInfo;
     NSNumber *typeSubmitImageData;
     NSNumber *typeConfirmUser;
+    NSNumber *typeDeleteLicenseById;
     NSMutableDictionary *dataFromConnectionByTag;
     NSMutableDictionary *connections;
     BOOL tryingToAuthenticate;
@@ -41,11 +44,16 @@
 @property(nonatomic, strong)NSString *kMyClientID;
 @property(nonatomic, strong)NSString *kMyClientSecret;
 @property(nonatomic, strong)NSString *scope;
+@property(nonatomic, strong)User *user;
+@property(nonatomic, strong)NSString *error;
+@property(nonatomic, strong)NSXMLParser *parser;
 
 +(DAOManager *)sharedManager;
 -(void)signOutOfGoogle;
 -(void)confirmUser;
--(void)putImage:(NSData *)bodyData forDelegate:(id)delegate;
+-(User *)getUser;
+-(CLLocationCoordinate2D)getLocation;
+-(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id)delegate;
 -(void)putLicense:(License *)license forDelegate:(id)delegate;
 -(void)putContactInfo:(ContactInfo *)contactInfo forDelegate:(id)delegate;
 -(void)deleteLicenseById:(NSInteger)licenseId forDelegate:(id)delegate;
@@ -79,5 +87,7 @@
 -(void)states:(NSArray *)states;
 -(void)user:(User *)user;
 -(void)licenseImage:(NSData *)imageData;
+-(void)finishedPhoto:(FinishedPhoto *)finishedPhoto;
+-(void)finishedSubmitLicense;
 
 @end

@@ -18,8 +18,9 @@
 @property(nonatomic, strong)NSDate *created;
 @property(nonatomic)float longitude;
 @property(nonatomic)float latitude;
-@property(nonatomic)NSInteger userId;
+//@property(nonatomic)NSInteger userId;
 @property(nonatomic, strong)ContactInfo *contactInfo;
+@property(nonatomic, strong)NSArray *stateQuestionsResponses;
 
 +(NSArray *)parseJsonArray:(NSArray *)json;
 +(NSDictionary *)dictionaryFromLicense:(License *)license;

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "DAOManager.h"
 
-@interface NewLicenseViewController : UIViewController<DAOManagerDelegateProtocal, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate>{
+
+@interface NewLicenseViewController : UIViewController<DAOManagerDelegateProtocal, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIAlertViewDelegate>{
     BOOL viewHasLoaded;
     UITextField *activeField;
 }
@@ -22,6 +23,10 @@
 @property(nonatomic, strong)UIScrollView *scrollView;
 @property(nonatomic, strong)NSMutableArray *textFields;
 @property(nonatomic, strong)UIImage *licenseImage;
+@property(nonatomic, strong)ContactInfo *contactInfo;
+@property(nonatomic, strong)FinishedPhoto *finishedPhoto;
+@property(nonatomic, strong)License *license;
+@property(nonatomic)UIEdgeInsets scrollViewInsets;
 
 
 - (id)initWithContext:(NSManagedObjectContext *)managedObjectContext;

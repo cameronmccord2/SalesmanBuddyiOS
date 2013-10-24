@@ -25,7 +25,7 @@ NSString *userExistsUrl = @"userExists";
 NSString *contactInfoUrl = @"contactinfo";
 NSString *licenseImageUrl = @"licenseimage";
 NSString *stateQuestionsUrl = @"statequestions";
-NSString *saveImageUrl = @"saveImageUrl";
+NSString *saveImageUrl = @"savedata";
 NSString *confirmUserUrl = @"userExists";
 
 +(DAOManager *)sharedManager{
@@ -45,6 +45,7 @@ NSString *confirmUserUrl = @"userExists";
         self.kMyClientID = @"38235450166-dgbh1m7aaab7kopia2upsdj314odp8fc.apps.googleusercontent.com";     // pre-assigned by service
         self.kMyClientSecret = @"zC738ZbMHopT2C1cyKiKDBQ6"; // pre-assigned by service
         self.scope = @"https://www.googleapis.com/auth/plus.me"; // scope for Google+ API
+        self.error = @"";
         
         callQueue = [[NSMutableArray alloc] init];
         tryingToAuthenticate = false;
@@ -68,6 +69,10 @@ NSString *confirmUserUrl = @"userExists";
         typeSubmitNewUser = [[NSDecimalNumber alloc] initWithInt:11];
         typeSubmitImageData = [[NSDecimalNumber alloc] initWithInt:12];
         typeConfirmUser = [[NSDecimalNumber alloc] initWithInt:13];
+        typeDeleteLicenseById = [[NSDecimalNumber alloc] initWithInt:14];
+        
+        NSLog(@"going to get the current location");
+        [self getLocation];
         
         NSLog(@"going to confirm user");
         [self confirmUser];
@@ -78,6 +83,22 @@ NSString *confirmUserUrl = @"userExists";
 -(NSInteger)getAUniqueTag{
     currentUniqueTag++;
     return currentUniqueTag;
+}
+
+-(User *)getUser{
+    return self.user;
+}
+
+-(CLLocationCoordinate2D)getLocation{
+    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    [locationManager startUpdatingLocation];
+    CLLocation *location = [locationManager location];
+    CLLocationCoordinate2D coordinate = [location coordinate];
+    [locationManager stopUpdatingLocation];
+    return coordinate;
 }
 
 
@@ -112,19 +133,22 @@ NSString *confirmUserUrl = @"userExists";
     [self makeRequestWithVerb:@"PUT" forUrl:url body:[User dictionaryFromUser:user] forType:typeConfirmUser finalDelegate:self];
 }
 
--(void)putImage:(NSData *)bodyData forDelegate:(id)delegate{
+-(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id)delegate{
     NSError *error = nil;
     NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, saveImageUrl]];
+    url = [url URLByAppendingQueryStringKey:@"stateid" value:[NSString stringWithFormat:@"%ld", (long)stateId]];
+    url = [url URLByAppendingQueryStringKey:@"extension" value:[NSString stringWithFormat:@"jpeg"]];
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
     [req setHTTPMethod:@"PUT"];
     if(bodyData){
         [req setValue:[NSString stringWithFormat:@"%d", [bodyData length]] forHTTPHeaderField:@"Content-Length"];
-        [req setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
+        [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
         [req setHTTPBody:bodyData];
     }
     if(error)
         NSLog(@"%@", error);
     else{
+        NSLog(@"putting image");
         [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeSubmitImageData body:nil delegate:delegate]];
         [self makeAuthViableAndExecuteCallQueue:delegate];
     }
@@ -132,6 +156,7 @@ NSString *confirmUserUrl = @"userExists";
 
 -(void)putLicense:(License *)license forDelegate:(id)delegate{
     NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl]];
+    NSLog(@"%@", [License dictionaryFromLicense:license]);
     [self makeRequestWithVerb:@"PUT" forUrl:url body:[License dictionaryFromLicense:license] forType:typeSubmitLicense finalDelegate:delegate];
 }
 
@@ -152,7 +177,7 @@ NSString *confirmUserUrl = @"userExists";
     if(error)
         NSLog(@"%@", error);
     else{
-        [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeSubmitImageData body:nil delegate:delegate]];
+        [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeDeleteLicenseById body:nil delegate:delegate]];
         [self makeAuthViableAndExecuteCallQueue:delegate];
     }
 }
@@ -265,7 +290,7 @@ NSString *confirmUserUrl = @"userExists";
 
 #pragma mark - Connection Handling
 -(void)connection:(NSURLConnectionWithTag *)connection didReceiveData:(NSData *)data{
-    NSLog(@"saving data for unique tag: %@", connection.uniqueTag);
+    NSLog(@"saving data for unique tag: %@, typeTag: %@", connection.uniqueTag, connection.typeTag);
     if ([dataFromConnectionByTag objectForKey:connection.uniqueTag] == nil) {
         NSMutableData *newData = [[NSMutableData alloc] initWithData:data];
         [dataFromConnectionByTag setObject:newData forKey:connection.uniqueTag];
@@ -300,11 +325,14 @@ NSString *confirmUserUrl = @"userExists";
     if ([dataFromConnectionByTag objectForKey:conn.uniqueTag]) {
         if ([conn.typeTag isEqualToNumber:typeLicenses] || [conn.typeTag isEqualToNumber:typeSubmitLicense]) {
             NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag] options:NSJSONReadingMutableContainers error:&e];
-            NSLog(@"made json array");
+            NSLog(@"made json array for licenses");
             if (e != nil) {
                 NSLog(@"error deserializing json array, %@", e.localizedDescription);
+                NSXMLParser *p = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [p setDelegate:self];
+                [p parse];
             }else if ([conn.finalDelegate respondsToSelector:@selector(licenses:)]) {
-                NSLog(@"responds to selector");
+                NSLog(@"responds to selector: %@", jsonArray);
                 NSArray *licenses1 = [License parseJsonArray:jsonArray];
                 NSLog(@"parsed licenses: %ld", (long)licenses1.count);
                 [conn.finalDelegate performSelector:@selector(licenses:) withObject:licenses1];
@@ -319,8 +347,12 @@ NSString *confirmUserUrl = @"userExists";
             NSLog(@"got user");
             if (e != nil) {
                 NSLog(@"error deserializing json object, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
             }else if ([conn.typeTag isEqualToNumber:typeConfirmUser]) {
                 blockingRequestRunning = false;
+                self.user = [[User alloc] initWithDictionary:d];
                 NSLog(@"unblocking requests");
                 NSLog(@"%@", d);
             }else if([conn.finalDelegate respondsToSelector:@selector(user:)]){
@@ -335,55 +367,84 @@ NSString *confirmUserUrl = @"userExists";
             NSLog(@"got states");
             if (e != nil) {
                 NSLog(@"error deserializing json array, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
             }else if ([conn.finalDelegate respondsToSelector:@selector(states:)]) {
                 NSLog(@"responds to selector");
                 NSArray *states = [State parseJsonArray:jsonArray];
                 NSLog(@"parsed states");
                 [conn.finalDelegate performSelector:@selector(states:) withObject:states];
             }else
-                NSLog(@"cannot send licenses to delegate");
+                NSLog(@"cannot send states to delegate");
             
         }else if([conn.typeTag isEqualToNumber:typeDealerships]){
             NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag] options:NSJSONReadingMutableContainers error:&e];
             NSLog(@"got dealerships");
             if (e != nil) {
                 NSLog(@"error deserializing json array, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
             }else if ([conn.finalDelegate respondsToSelector:@selector(dealerships:)]) {
                 NSLog(@"responds to selector");
                 NSArray *dealerships = [Dealership parseJsonArray:jsonArray];
                 NSLog(@"parsed dealerships");
                 [conn.finalDelegate performSelector:@selector(dealerships:) withObject:dealerships];
             }else
-                NSLog(@"cannot send licenses to delegate");
+                NSLog(@"cannot send dealerships to delegate");
             
         }else if([conn.typeTag isEqualToNumber:typeContactInfo] || [conn.typeTag isEqualToNumber:typeSubmitContactInfo]){
             NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag] options:NSJSONReadingMutableContainers error:&e];
             NSLog(@"got contact info");
             if (e != nil) {
                 NSLog(@"error deserializing json array, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
             }else if ([conn.finalDelegate respondsToSelector:@selector(contactInfo:)]) {
                 NSLog(@"responds to selector");
                 ContactInfo *contactInfo = [[ContactInfo alloc] initWithDictionary:d];
-                NSLog(@"parsed licenses");
+                NSLog(@"parsed contact info");
                 [conn.finalDelegate performSelector:@selector(contactInfo:) withObject:contactInfo];
             }else
-                NSLog(@"cannot send licenses to delegate");
+                NSLog(@"cannot send contactInfo to delegate");
             
         }else if([conn.typeTag isEqualToNumber:typeLicenseImage]){
             
+        }else if([conn.typeTag isEqualToNumber:typeSubmitImageData]){
+            NSLog(@"%@", [dataFromConnectionByTag objectForKey:conn.uniqueTag]);
+            NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag] options:NSJSONReadingMutableContainers error:&e];
+            NSLog(@"got finished info");
+            if (e != nil) {
+                NSLog(@"error deserializing json, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
+            }else if ([conn.finalDelegate respondsToSelector:@selector(finishedPhoto:)]) {
+                NSLog(@"responds to selector");
+                FinishedPhoto *finishedPhoto = [[FinishedPhoto alloc] initWithDictionary:d];
+                NSLog(@"parsed finished photo");
+                [conn.finalDelegate performSelector:@selector(finishedPhoto:) withObject:finishedPhoto];
+            }else
+                NSLog(@"cannot send finishedPhoto to delegate");
         }else if([conn.typeTag isEqualToNumber:typeStateQuestions]){
             NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag] options:NSJSONReadingMutableContainers error:&e];
             NSLog(@"got state questions, %@", jsonArray);
             if (e != nil) {
                 NSLog(@"error deserializing json array, %@", e.localizedDescription);
+                self.parser = [[NSXMLParser alloc] initWithData:[dataFromConnectionByTag objectForKey:conn.uniqueTag]];
+                [self.parser setDelegate:self];
+                [self.parser parse];
             }else if ([conn.finalDelegate respondsToSelector:@selector(stateQuestions:)]) {
                 NSLog(@"responds to selector");
                 NSArray *array = [StateQuestions parseJsonArray:jsonArray];
                 NSLog(@"parsed stateQuestions: %ld", (long)array.count);
                 [conn.finalDelegate performSelector:@selector(stateQuestions:) withObject:array];
             }else
-                NSLog(@"cannot send licenses to delegate");
-        }
+                NSLog(@"cannot send stateQuestions to delegate");
+        }else
+            NSLog(@"type not accounted for: %@", conn.typeTag);
     }else
         NSLog(@"couldnt find data for typeTag: %@, uniqueTag: %@", conn.typeTag, conn.uniqueTag);
     
@@ -391,6 +452,15 @@ NSString *confirmUserUrl = @"userExists";
     [dataFromConnectionByTag removeObjectForKey:conn.uniqueTag]; // after done using the data, remove it
     [connections removeObjectForKey:conn.uniqueTag];// remove the connection
     [self doFetchQueue];
+}
+
+- (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
+    self.error = [NSString stringWithFormat:@"%@, %@", self.error, string];
+}
+
+-(void)parserDidEndDocument:(NSXMLParser *)parser{
+    NSLog(@"error: %@", self.error);
+    self.error = @"";
 }
 
 -(void)connection:(NSURLConnectionWithTag *)conn didFailWithError:(NSError *)error{
