@@ -11,7 +11,7 @@
 
 @interface LicenseListViewController : UITableViewController <DAOManagerDelegateProtocal>
 @property(nonatomic, strong)NSManagedObjectContext *context;
-@property(nonatomic, strong)NSArray *licenses;
+@property(nonatomic, strong)NSMutableArray *licenses;
 
 -(id)initWithContext:(NSManagedObjectContext *)managedObjectContext;
 

@@ -12,6 +12,7 @@
 
 @property(nonatomic)NSInteger stateQuestionsSpecificsId;
 @property(nonatomic)NSInteger stateQuestionId;
+@property(nonatomic)NSInteger responseId;
 @property(nonatomic, strong)NSString *questionText;
 @property(nonatomic)NSInteger responseType;
 @property(nonatomic)NSInteger questionOrder;

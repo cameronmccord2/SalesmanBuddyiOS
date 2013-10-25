@@ -10,6 +10,7 @@
 //#import "UIView+FLKAutoLayout.h"
 #import "StateQuestions.h"
 
+
 @interface NewLicenseViewController ()
 
 @end
@@ -26,11 +27,31 @@
         self.textFields = [[NSMutableArray alloc] init];
         self.contactInfo = [[ContactInfo alloc] init];
         self.licenseImage = nil;
+        self.imagePickerController = nil;
+        self.alert = nil;
+        activeField = nil;
         viewHasLoaded = false;
+        licenseImageSavingStarted = false;
         [self registerForKeyboardNotifications];
         [[DAOManager sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
     }
     return self;
+}
+
+-(void)resetView{
+    self.textFields = [[NSMutableArray alloc] init];
+    self.contactInfo = [[ContactInfo alloc] init];
+    self.licenseImage = nil;
+    self.alert = nil;
+    viewHasLoaded = false;
+    licenseImageSavingStarted = false;
+    activeField = nil;
+    self.imagePickerController = nil;
+    for (StateQuestions *sq in self.stateQuestions) {
+        sq.responseBool = 0;
+        sq.responseText = @"";
+    }
+    [self buildView];
 }
 
 - (void)viewDidLoad
@@ -217,7 +238,7 @@ enum {
 
 -(void)buildView{
     NSLog(@"building view");
-    int yValue = 15;// initial y value
+    NSInteger yValue = 15;// initial y value
     float imageViewWidth = [self view].frame.size.width * .5f;
     float imageViewHeight = imageViewWidth;
     float imageViewTopPad = 5;
@@ -290,8 +311,7 @@ enum {
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -324,23 +344,37 @@ enum {
         l.latitude = coordinate.latitude;
         l.stateQuestionsResponses = self.stateQuestions;
         self.license = l;
-        if (self.finishedPhoto != nil) {
-            self.license.photo = self.finishedPhoto.filename;
-            [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+        if (self.licenseImage != nil) {
+            self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
+            [self presentViewController:self.loadingModal animated:NO completion:nil];
+            if (self.finishedPhoto != nil) {
+                [self uploadLicense];
+            }
         }
     }
+}
+
+-(void)uploadLicense{
+    if (self.loadingModal == nil) {
+        self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
+        [self presentViewController:self.loadingModal animated:NO completion:nil];
+    }
+    self.license.photo = self.finishedPhoto.filename;
+    [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
 }
 
 -(void)finishedPhoto:(FinishedPhoto *)finishedPhoto{
     NSLog(@"finished putting photo, %@", finishedPhoto.filename);
     self.finishedPhoto = finishedPhoto;
     if (self.license != nil) {
-        self.license.photo = self.finishedPhoto.filename;
-        [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+        [self uploadLicense];
     }
 }
 
--(void)finishedSubmitLicense{
+-(void)finishedSubmitLicense:(License *)license{
+    [self.loadingModal dismissViewControllerAnimated:NO completion:nil];
+    [self resetView];
+    [self.tabBarController setSelectedIndex:0];
     NSLog(@"finished submitting license");
 }
 
@@ -367,7 +401,11 @@ enum {
     [self dismissViewControllerAnimated:YES completion:nil]; //Do this first!
     self.licenseImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     [self.imageView setImage:self.licenseImage];
-    [[DAOManager sharedManager] putImage:UIImageJPEGRepresentation(self.licenseImage, 1.0) forStateId:44 forDelegate:self];
+    licenseImageSavingStarted = true;
+    //https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html#//apple_ref/c/tdef/NSDataBase64EncodingOptions
+    NSData *data = [UIImageJPEGRepresentation(self.licenseImage, 1.0) base64EncodedDataWithOptions:NSDataBase64Encoding76CharacterLineLength];
+    NSLog(@"first part: %lu", (unsigned long)data.length);
+    [[DAOManager sharedManager] putImage:data forStateId:44 forDelegate:self];
     // set it to nil here?
     
     //image = [ImageHelpers imageWithImage:image scaledToSize:CGSizeMake(480, 640)];
@@ -383,10 +421,6 @@ enum {
 
 -(void)showThisModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
-}
-
--(void)licenses:(NSArray *)licenses{
-    NSLog(@"finished successfully");
 }
 
 @end

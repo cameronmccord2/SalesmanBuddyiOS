@@ -25,6 +25,7 @@
     [d setObject:@(stateQuestions.stateQuestionsSpecificsId) forKey:@"stateQuestionsSpecificsId"];
     [d setObject:stateQuestions.responseText forKey:@"responseText"];
     [d setObject:@(stateQuestions.responseBool) forKey:@"responseBool"];
+    [d setObject:@(stateQuestions.responseId) forKey:@"id"];
     return d;
 }
 
@@ -32,13 +33,14 @@
     self = [super init];
     if (self) {
         self.stateQuestionsSpecificsId = [dictionary[@"id"] integerValue];
+        self.responseId = [dictionary[@"responseId"] integerValue];
         self.stateQuestionId = [dictionary[@"stateQuestionId"] integerValue];
         self.questionText = dictionary[@"questionText"];
         self.responseType = [dictionary[@"responseType"] integerValue];
         self.questionOrder = [dictionary[@"questionOrder"] integerValue];
         self.uniqueTag = [[DAOManager sharedManager] getAUniqueTag];
-        self.responseText = [NSString stringWithFormat:@""];// used locally
-        self.responseBool = 0;
+        self.responseText = dictionary[@"responseText"];
+        self.responseBool = [dictionary[@"responseBool"] integerValue];
     }
     return self;
 }

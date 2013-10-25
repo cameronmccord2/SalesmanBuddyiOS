@@ -21,7 +21,7 @@
 //@property(nonatomic)NSInteger userId;
 //@property(nonatomic, strong)ContactInfo *contactInfo;
 
-+(NSArray *)parseJsonArray:(NSArray *)json{
++(NSMutableArray *)parseJsonArray:(NSArray *)json{
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSDictionary *dictionary in json) {
         [array addObject:[[License alloc] initWithDictionary:dictionary]];
@@ -36,17 +36,18 @@
         self.photo = dictionary[@"photo"];
         //        l.created = dictionary[date];
         self.contactInfo = [[ContactInfo alloc] initWithDictionary:dictionary[@"contactInfo"]];
+        self.stateQuestionsResponses = [StateQuestions parseJsonArray:dictionary[@"stateQuestions"]];
     }
     return self;
 }
 
 +(NSDictionary *)dictionaryFromLicense:(License *)license{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-//    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
+    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
     [d setValue:license.photo forKey:@"photo"];
     [d setValue:@(license.stateId) forKey:@"stateId"];
-    [d setValue:@(license.longitude) forKey:@"longitude"];
-    [d setValue:@(license.latitude) forKey:@"latitude"];
+    [d setValue:@(license.longitude) forKey:@"longitude"];// not for update
+    [d setValue:@(license.latitude) forKey:@"latitude"];// not for update
     [d setObject:[ContactInfo dictionaryFromContactInfo:license.contactInfo] forKey:@"contactInfo"];
     NSMutableArray *stateQuestionsResponses = [[NSMutableArray alloc] initWithCapacity:license.stateQuestionsResponses.count];
     for (StateQuestions *sq in license.stateQuestionsResponses) {

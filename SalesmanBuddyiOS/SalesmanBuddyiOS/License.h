@@ -22,7 +22,7 @@
 @property(nonatomic, strong)ContactInfo *contactInfo;
 @property(nonatomic, strong)NSArray *stateQuestionsResponses;
 
-+(NSArray *)parseJsonArray:(NSArray *)json;
++(NSMutableArray *)parseJsonArray:(NSArray *)json;
 +(NSDictionary *)dictionaryFromLicense:(License *)license;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;

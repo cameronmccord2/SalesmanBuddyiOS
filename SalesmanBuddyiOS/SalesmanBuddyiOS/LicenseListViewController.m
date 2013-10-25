@@ -8,6 +8,7 @@
 
 #import "LicenseListViewController.h"
 #import "License.h"
+#import "EditLicenseDetailsViewController.h"
 
 @interface LicenseListViewController ()
 
@@ -21,7 +22,7 @@
         self.context = managedObjectContext;
         self.title = NSLocalizedString(@"Licenses", @"Licenses");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
-        self.licenses = [[NSArray alloc] init];
+        self.licenses = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -49,7 +50,7 @@
 
 #pragma mark - DAOManagerDelegateProtocal functions
 
--(void)licenses:(NSArray *)licenses{
+-(void)licenses:(NSMutableArray *)licenses{
     NSLog(@"recieved licenses");
     self.licenses = licenses;
     [self.tableView reloadData];
@@ -93,7 +94,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"setting up cell");
+//    NSLog(@"setting up cell");
     static NSString *CellIdentifier = @"UITableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -107,28 +108,39 @@
     return cell;
 }
 
-/*
+
 // Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     return YES;
 }
-*/
 
-/*
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        License *l = [self.licenses objectAtIndex:indexPath.row];
+        NSLog(@"deleting license with id: %ld", (long)l.id);
+        [self.licenses removeObjectAtIndex:indexPath.row];
+        [[DAOManager sharedManager] deleteLicenseById:l.id forDelegate:self];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-*/
+
+-(void)deletedLicenseWithId:(DeleteLicenseResponse *)deleteLicenseResponse{
+    if (deleteLicenseResponse.success == 1) {
+        NSLog(@"deleted license with id: %ld, message: %@", (long)deleteLicenseResponse.licenseId, deleteLicenseResponse.message);
+    }else{
+        NSLog(@"failed to delete license with id: %ld, message: %@", (long)deleteLicenseResponse.licenseId, deleteLicenseResponse.message);
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    EditLicenseDetailsViewController *eldvc = [[EditLicenseDetailsViewController alloc] initWithLicense:[self.licenses objectAtIndex:indexPath.row]];
+    [self presentViewController:eldvc animated:YES completion:nil];
+}
 
 /*
 // Override to support rearranging the table view.
@@ -145,17 +157,5 @@
     return YES;
 }
 */
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

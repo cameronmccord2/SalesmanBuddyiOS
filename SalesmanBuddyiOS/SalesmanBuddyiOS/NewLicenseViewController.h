@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "DAOManager.h"
+#import "LoadingModalViewController.h"
 
 
 @interface NewLicenseViewController : UIViewController<DAOManagerDelegateProtocal, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIAlertViewDelegate>{
     BOOL viewHasLoaded;
     UITextField *activeField;
+    BOOL licenseImageSavingStarted;
 }
 
 @property(nonatomic, strong)NSManagedObjectContext *context;
@@ -27,6 +29,7 @@
 @property(nonatomic, strong)FinishedPhoto *finishedPhoto;
 @property(nonatomic, strong)License *license;
 @property(nonatomic)UIEdgeInsets scrollViewInsets;
+@property(nonatomic, strong)LoadingModalViewController *loadingModal;
 
 
 - (id)initWithContext:(NSManagedObjectContext *)managedObjectContext;

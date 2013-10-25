@@ -13,6 +13,7 @@
 #import "User.h"
 #import "License.h"
 #import "FinishedPhoto.h"
+#import "DeleteLicenseResponse.h"
 
 @interface DAOManager : NSObject<CLLocationManagerDelegate, NSXMLParserDelegate>{
     NSMutableArray *licenses;
@@ -32,6 +33,7 @@
     NSNumber *typeSubmitImageData;
     NSNumber *typeConfirmUser;
     NSNumber *typeDeleteLicenseById;
+    NSNumber *typeSubmitLicenseUpdate;
     NSMutableDictionary *dataFromConnectionByTag;
     NSMutableDictionary *connections;
     BOOL tryingToAuthenticate;
@@ -88,6 +90,9 @@
 -(void)user:(User *)user;
 -(void)licenseImage:(NSData *)imageData;
 -(void)finishedPhoto:(FinishedPhoto *)finishedPhoto;
--(void)finishedSubmitLicense;
+-(void)finishedSubmitLicense:(License *)license;
+-(void)deletedLicenseWithId:(DeleteLicenseResponse *)deleteLicenseResponse;
+-(void)updatedLicense:(License *)updatedLicense;
+-(void)imageData:(NSData *)data;
 
 @end
