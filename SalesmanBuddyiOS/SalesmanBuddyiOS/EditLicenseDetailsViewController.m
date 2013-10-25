@@ -295,7 +295,7 @@ enum {
     NSLog(@"saving information");
     self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
     [self presentViewController:self.loadingModal animated:NO completion:nil];
-    [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+    [[DAOManager sharedManager] updateLicense:self.license forDelegate:self];
 }
 
 -(void)updatedLicense:(License *)updatedLicense{

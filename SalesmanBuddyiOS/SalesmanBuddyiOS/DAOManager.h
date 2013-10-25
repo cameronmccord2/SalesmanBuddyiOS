@@ -68,6 +68,7 @@
 -(void)getContactInfoByLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
 -(void)getLicenseImageForLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
 -(void)getStateQuestionsForStateId:(NSInteger)stateId forDelegate:(id)delegate;
+-(void)updateLicense:(License *)license forDelegate:(id)delegate;
 
 -(NSInteger)getAUniqueTag;
 
