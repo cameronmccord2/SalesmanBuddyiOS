@@ -15,6 +15,7 @@
     BOOL viewHasLoaded;
     UITextField *activeField;
     BOOL licenseImageSavingStarted;
+    BOOL licenseIsReady;
 }
 
 @property(nonatomic, strong)NSManagedObjectContext *context;

@@ -138,7 +138,7 @@ NSString *confirmUserUrl = @"userExists";
     NSError *error = nil;
     NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, saveImageUrl]];
     url = [url URLByAppendingQueryStringKey:@"stateid" value:[NSString stringWithFormat:@"%ld", (long)stateId]];
-    url = [url URLByAppendingQueryStringKey:@"extension" value:[NSString stringWithFormat:@"jpeg"]];
+    url = [url URLByAppendingQueryStringKey:@"base64" value:[NSString stringWithFormat:@"1"]];
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
     [req setHTTPMethod:@"PUT"];
     if(bodyData){
@@ -310,9 +310,26 @@ NSString *confirmUserUrl = @"userExists";
         return;
     }else{
         [[dataFromConnectionByTag objectForKey:connection.uniqueTag] appendData:data];
+        if ([connection.typeTag isEqualToNumber:typeLicenseImage]) {
+            connection.currentLength += data.length;
+            if ([connection.finalDelegate respondsToSelector:@selector(connectionProgress:total:)]) {
+                [connection.finalDelegate performSelector:@selector(connectionProgress:total:) withObject:@(connection.currentLength) withObject:@(connection.totalLength)];
+            }else
+                NSLog(@"cant execute selector connectionProgress:total:");
+        }
     }
 }
 
+- (void)connection:(NSURLConnectionWithTag *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite{// for upload progress
+    if ([connection.typeTag isEqualToNumber:typeSubmitImageData]) {
+        if ([connection.finalDelegate respondsToSelector:@selector(connectionProgress:total:)]) {
+            [connection.finalDelegate performSelector:@selector(connectionProgress:total:) withObject:@(totalBytesWritten) withObject:@(totalBytesExpectedToWrite)];
+        }else
+            NSLog(@"cant perform selector connectionProgress:total:");
+    }
+}
+
+// TODO cancel image download connections when going to main list
 - (void) connection:(NSURLConnectionWithTag *)connection didReceiveResponse:(NSURLResponse *)response{
     if([response isKindOfClass:[NSHTTPURLResponse class]]){
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
@@ -327,6 +344,10 @@ NSString *confirmUserUrl = @"userExists";
                     [connection.finalDelegate performSelector:@selector(showThisModal:) withObject:viewController];
                 }else
                     NSLog(@"cant load new user modal");
+            }
+        }else if([connection.typeTag isEqualToNumber:typeLicenseImage]){// record total estimated content length for these types
+            if (connection.totalLength == 0) {
+                connection.totalLength = response.expectedContentLength;
             }
         }
     }
@@ -568,6 +589,7 @@ NSString *confirmUserUrl = @"userExists";
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     if ([delegate respondsToSelector:@selector(showThisModal:)]) {
+        self.conrollerResponsibleForGoogleLogin = delegate;
         [delegate showThisModal:navController];
     }else
         NSLog(@"delegate cant show view controller for google login");
@@ -588,6 +610,9 @@ NSString *confirmUserUrl = @"userExists";
         NSLog(@"got authentication back, success");
         if (![auth canAuthorize]) {
             NSLog(@"error, came back but cant authorize, never should happen");
+        }
+        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissThisViewController:)]) {
+            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissThisViewController:) withObject:viewController];
         }
         tryingToAuthenticate = false;
         [self doFetchQueue];

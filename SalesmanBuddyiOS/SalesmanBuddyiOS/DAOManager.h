@@ -49,6 +49,7 @@
 @property(nonatomic, strong)User *user;
 @property(nonatomic, strong)NSString *error;
 @property(nonatomic, strong)NSXMLParser *parser;
+@property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
 
 +(DAOManager *)sharedManager;
 -(void)signOutOfGoogle;
@@ -81,6 +82,7 @@
 @protocol DAOManagerDelegateProtocal <NSObject>
 
 -(void)showThisModal:(UIViewController *)viewController;
+-(void)dismissThisViewController:(UIViewController *)viewController;
 
 @optional
 -(void)licenses:(NSArray *)licenses;
@@ -95,5 +97,6 @@
 -(void)deletedLicenseWithId:(DeleteLicenseResponse *)deleteLicenseResponse;
 -(void)updatedLicense:(License *)updatedLicense;
 -(void)imageData:(NSData *)data;
+-(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total;
 
 @end

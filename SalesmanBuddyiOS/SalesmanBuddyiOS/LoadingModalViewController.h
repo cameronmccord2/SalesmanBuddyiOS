@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface LoadingModalViewController : UIViewController
+#import "DAOManager.h"
+@interface LoadingModalViewController : UIViewController<DAOManagerDelegateProtocal>
 
 @property(nonatomic, strong)NSString *title;
 @property(nonatomic, strong)NSString *message;
+@property(nonatomic, strong)NSProgress *progress;
+@property(nonatomic, strong)UILabel *lastLabel;
+@property(nonatomic)BOOL useUploadProgress;
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message useUploadProgress:(BOOL)useUploadProgress;
 -(void)dismiss;
+-(void)uploadProgress:(NSNumber *)progress total:(NSNumber *)total;
 
 @end

@@ -15,6 +15,8 @@
 @property (nonatomic, strong)NSNumber *typeTag;
 @property (nonatomic, strong)NSDecimalNumber *uniqueTag;
 @property (nonatomic, strong)id finalDelegate;
+@property(nonatomic)NSInteger totalLength;
+@property(nonatomic)NSInteger currentLength;
 
 -(id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate startImmediately:(BOOL)startImmediately typeTag:(NSNumber *)newTag uniqueTag:(NSDecimalNumber *)newUniqueTag finalDelegate:(id)newFinalDelegate;
 

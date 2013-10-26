@@ -28,7 +28,9 @@
     if (self) {
         self.id = [dictionary[@"id"] integerValue];
         self.licenseId = [dictionary[@"licenseId"] integerValue];
-//        self.created = dictionary[@"created"];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        self.created = [dateFormat dateFromString:dictionary[@"created"]];
         self.firstName = dictionary[@"firstName"];
         self.lastName = dictionary[@"lastName"];
         self.email = dictionary[@"email"];
@@ -43,6 +45,7 @@
 
 +(NSDictionary *)dictionaryFromContactInfo:(ContactInfo *)contactInfo{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setValue:@(contactInfo.id) forKey:@"id"];
 //    [d setValue:[NSNumber numberWithInt:contactInfo.licenseId] forKey:@"licenseId"];
     [d setValue:[NSNumber numberWithInt:contactInfo.stateId] forKey:@"stateId"];
 //    [d setValue:user.created forKey:@"created"];

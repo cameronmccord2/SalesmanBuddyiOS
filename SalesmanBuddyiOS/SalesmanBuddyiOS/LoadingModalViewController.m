@@ -14,11 +14,13 @@
 
 @implementation LoadingModalViewController
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message useUploadProgress:(BOOL)useUploadProgress{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         self.title = title;
         self.message = message;
+        self.useUploadProgress = useUploadProgress;
+        self.progress = nil;
     }
     return self;
 }
@@ -37,6 +39,7 @@
         [title setTextAlignment:NSTextAlignmentCenter];
         //        [title alignCenterXWithView:view predicate:nil];
     }
+    self.lastLabel = title;
     return y + height + topPad;
 }
 
@@ -47,14 +50,32 @@
     [self.view setBackgroundColor:[UIColor clearColor]];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(([self view].frame.size.width - modalWidth) * .5f, ([self view].frame.size.width - modalHeight) * .5f, modalWidth, modalHeight)];
     [view setBackgroundColor:[UIColor whiteColor]];
-    NSInteger yValue = [self makeLabelWithText:self.title x:0 y:0 width:modalWidth height:modalHeight topPad:0 view:view backgroundColor:[UIColor clearColor] alignToCenter:YES];
-    yValue = [self makeLabelWithText:self.message x:0 y:yValue width:modalWidth height:modalHeight topPad:10 view:view backgroundColor:[UIColor clearColor] alignToCenter:YES];
+    NSInteger yValue = [self makeLabelWithText:self.title x:0 y:0 width:modalWidth height:20 topPad:0 view:view backgroundColor:[UIColor clearColor] alignToCenter:YES];
+    yValue = [self makeLabelWithText:self.message x:0 y:yValue width:modalWidth height:20 topPad:10 view:view backgroundColor:[UIColor clearColor] alignToCenter:YES];
+    if (self.useUploadProgress) {
+        yValue = [self makeLabelWithText:@"0%" x:0 y:yValue width:modalWidth height:30 topPad:10 view:view backgroundColor:[UIColor blueColor] alignToCenter:YES];
+    }
     [self.view addSubview:view];
 }
 
 - (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+-(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+    if (self.progress == nil) {
+        self.progress = [NSProgress progressWithTotalUnitCount:total.longValue];
+    }
+    self.progress.completedUnitCount = progress.longValue;
+    [self.lastLabel setText:self.progress.localizedDescription];
+}
+
+-(void)showThisModal:(UIViewController *)viewController{
+    [self presentViewController:viewController animated:YES completion:nil];
+}
+
+-(void)dismissThisViewController:(UIViewController *)viewController{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

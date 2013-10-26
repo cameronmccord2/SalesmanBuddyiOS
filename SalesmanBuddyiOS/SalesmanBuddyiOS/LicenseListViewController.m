@@ -60,6 +60,10 @@
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
+-(void)dismissThisViewController:(UIViewController *)viewController{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 
 
@@ -138,7 +142,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    EditLicenseDetailsViewController *eldvc = [[EditLicenseDetailsViewController alloc] initWithLicense:[self.licenses objectAtIndex:indexPath.row]];
+    EditLicenseDetailsViewController *eldvc = [[EditLicenseDetailsViewController alloc] initWithLicense:[self.licenses objectAtIndex:indexPath.row] delegate:self];
     [self presentViewController:eldvc animated:YES completion:nil];
 }
 

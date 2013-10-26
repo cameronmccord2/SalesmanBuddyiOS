@@ -16,9 +16,10 @@
 
 @implementation EditLicenseDetailsViewController
 
-- (id)initWithLicense:(License *)license{
+- (id)initWithLicense:(License *)license delegate:(id)delegate{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        self.delegate = delegate;
         self.license = license;
         self.textFields = [[NSMutableArray alloc] init];
         self.licenseImage = nil;
@@ -225,7 +226,7 @@ enum {
     float TextFieldTopPad = 5;
     float TextFieldLeftPad = 20;
     UIColor *textFieldBackgroundColor = [UIColor grayColor];
-    float SaveInfoButtonWidth = 300;
+    float SaveInfoButtonWidth = 150;
     float SaveInfoButtonHeight = 40;
     float SaveInfoButtonTopPad = 20;
     SEL saveInformationSelector = @selector(saveInformation:);
@@ -264,6 +265,8 @@ enum {
     // state
     yValue = [self makeUITextFieldWithPlaceholder:@"Notes" initialText:self.license.contactInfo.notes x:TextFieldLeftPad y:yValue width:TextFieldWidth height:TextFieldHeight topPad:TextFieldTopPad view:self.scrollView backgroundColor:textFieldBackgroundColor alignToCenter:NO uniqueTag:Notes isLastTextField:YES];
     
+    yValue = [self makeUIButtonWithTitle:@"Cancel" x:0 y:yValue width:SaveInfoButtonWidth * .5f height:SaveInfoButtonHeight topPad:SaveInfoButtonTopPad view:self.scrollView backgroundColor:[UIColor redColor] alignToCenter:YES selectorToDo:@selector(dismissView) forControlEvent:UIControlEventTouchDown target:self];
+    
     yValue = [self makeUIButtonWithTitle:@"Save Information" x:0 y:yValue width:SaveInfoButtonWidth height:SaveInfoButtonHeight topPad:SaveInfoButtonTopPad view:self.scrollView backgroundColor:SaveInfoButtonColor alignToCenter:YES selectorToDo:saveInformationSelector forControlEvent:UIControlEventTouchDown target:self];
     
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, yValue)];
@@ -282,8 +285,9 @@ enum {
 
 -(void)imageData:(NSData *)data{
     NSLog(@"got image data");
-    NSLog(@"first part: %lu", (unsigned long)data.length);// TODO check on encoding to and from the server****************************************************************************************************************************************************************
-    self.licenseImage = [UIImage imageWithData:[[NSData alloc] initWithBase64EncodedData:data options:NSDataBase64DecodingIgnoreUnknownCharacters]];
+    NSLog(@"first part: %lu", (unsigned long)data.length);
+    self.licenseImage = [UIImage imageWithData:data];
+//    self.licenseImage = [UIImage imageWithData:[[NSData alloc] initWithBase64EncodedData:data options:NSDataBase64DecodingIgnoreUnknownCharacters]];// incorrect
     if (self.imageView != nil) {
         [self.imageView setImage:self.licenseImage];
         NSLog(@"gave image data to image view");
@@ -293,14 +297,23 @@ enum {
 
 -(IBAction)saveInformation:(id)sender{
     NSLog(@"saving information");
-    self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
+    self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data." useUploadProgress:NO ];
     [self presentViewController:self.loadingModal animated:NO completion:nil];
+    NSLog(@"%@", [License dictionaryFromLicense:self.license]);
     [[DAOManager sharedManager] updateLicense:self.license forDelegate:self];
 }
 
 -(void)updatedLicense:(License *)updatedLicense{
-    [self.loadingModal dismissViewControllerAnimated:NO completion:nil];
-    NSLog(@"finished submitting license");
+    NSLog(@"license updated");
+    [self dismissView];
+}
+
+-(void)dismissView{
+    NSLog(@"closing modal");
+    if ([self.delegate respondsToSelector:@selector(dismissThisViewController:)]) {
+        [self.delegate performSelector:@selector(dismissThisViewController:) withObject:self];
+    }else
+        NSLog(@"Delegate cannot dismiss details modal");
 }
 
 //-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
@@ -311,6 +324,10 @@ enum {
 
 -(void)showThisModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
+}
+
+-(void)dismissThisViewController:(UIViewController *)viewController{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

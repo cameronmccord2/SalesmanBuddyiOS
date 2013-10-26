@@ -21,6 +21,8 @@
         typeTag = newTypeTag;
         finalDelegate = newFinalDelegate;
         uniqueTag = newUniqueTag;
+        self.totalLength = 0;
+        self.currentLength = 0;
     }
     return self;
 }

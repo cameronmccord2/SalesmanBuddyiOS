@@ -17,7 +17,9 @@
         self.dealershipId = [dictionary[@"dealershipId"] integerValue];
         self.deviceType = [dictionary[@"deviceType"] integerValue];
         self.type = [dictionary[@"type"] integerValue];
-//        self.created = [dictionary[@"created"] integerValue];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        self.created = [dateFormat dateFromString:dictionary[@"created"]];
         self.googleUserId = dictionary[@"googleUserId"];
     }
     return self;

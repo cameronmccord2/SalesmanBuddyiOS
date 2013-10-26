@@ -26,7 +26,9 @@
         self.name = dictionary[@"name"];
         self.city = dictionary[@"city"];
         self.stateId = [dictionary[@"stateId"] integerValue];
-//        self.created = [dictionary[@"created"] integerValue];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        self.created = [dateFormat dateFromString:dictionary[@"created"]];
     }
     return self;
 }

@@ -31,6 +31,7 @@
         self.alert = nil;
         activeField = nil;
         viewHasLoaded = false;
+        licenseIsReady = false;
         licenseImageSavingStarted = false;
         [self registerForKeyboardNotifications];
         [[DAOManager sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
@@ -44,6 +45,7 @@
     self.licenseImage = nil;
     self.alert = nil;
     viewHasLoaded = false;
+    licenseIsReady = false;
     licenseImageSavingStarted = false;
     activeField = nil;
     self.imagePickerController = nil;
@@ -256,7 +258,7 @@ enum {
     float TextFieldTopPad = 5;
     float TextFieldLeftPad = 20;
     UIColor *textFieldBackgroundColor = [UIColor grayColor];
-    float SaveInfoButtonWidth = 300;
+    float SaveInfoButtonWidth = 150;
     float SaveInfoButtonHeight = 40;
     float SaveInfoButtonTopPad = 20;
     SEL saveInformationSelector = @selector(saveInformation:);
@@ -293,6 +295,8 @@ enum {
     yValue = [self makeUITextFieldWithPlaceholder:@"City" x:TextFieldLeftPad y:yValue width:TextFieldWidth height:TextFieldHeight topPad:TextFieldTopPad view:self.scrollView backgroundColor:textFieldBackgroundColor alignToCenter:NO uniqueTag:City isLastTextField:NO];
     // state
     yValue = [self makeUITextFieldWithPlaceholder:@"Notes" x:TextFieldLeftPad y:yValue width:TextFieldWidth height:TextFieldHeight topPad:TextFieldTopPad view:self.scrollView backgroundColor:textFieldBackgroundColor alignToCenter:NO uniqueTag:Notes isLastTextField:YES];
+    
+    yValue = [self makeUIButtonWithTitle:@"Clear" x:0 y:yValue width:SaveInfoButtonWidth * .5f height:SaveInfoButtonHeight topPad:SaveInfoButtonTopPad view:self.scrollView backgroundColor:[UIColor redColor] alignToCenter:YES selectorToDo:@selector(resetView) forControlEvent:UIControlEventTouchDown target:self];
     
     yValue = [self makeUIButtonWithTitle:@"Save Information" x:0 y:yValue width:SaveInfoButtonWidth height:SaveInfoButtonHeight topPad:SaveInfoButtonTopPad view:self.scrollView backgroundColor:SaveInfoButtonColor alignToCenter:YES selectorToDo:saveInformationSelector forControlEvent:UIControlEventTouchDown target:self];
     
@@ -345,18 +349,21 @@ enum {
         l.stateQuestionsResponses = self.stateQuestions;
         self.license = l;
         if (self.licenseImage != nil) {
-            self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
+            self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data." useUploadProgress:YES];
             [self presentViewController:self.loadingModal animated:NO completion:nil];
             if (self.finishedPhoto != nil) {
                 [self uploadLicense];
+            }else{
+                licenseIsReady = YES;
             }
-        }
+        }else
+            NSLog(@"waiting for photo to upload");
     }
 }
 
 -(void)uploadLicense{
     if (self.loadingModal == nil) {
-        self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data."];
+        self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data." useUploadProgress:YES];
         [self presentViewController:self.loadingModal animated:NO completion:nil];
     }
     self.license.photo = self.finishedPhoto.filename;
@@ -366,7 +373,7 @@ enum {
 -(void)finishedPhoto:(FinishedPhoto *)finishedPhoto{
     NSLog(@"finished putting photo, %@", finishedPhoto.filename);
     self.finishedPhoto = finishedPhoto;
-    if (self.license != nil) {
+    if (licenseIsReady) {
         [self uploadLicense];
     }
 }
@@ -413,6 +420,14 @@ enum {
     //    [imageView setImage:image];
 }
 
+-(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+    if (self.loadingModal != nil) {
+        if([self.loadingModal respondsToSelector:@selector(connectionProgress:total:)]){
+            [self.loadingModal performSelector:@selector(connectionProgress:total:) withObject:progress withObject:total];
+        }
+    }
+}
+
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (alertView.tag == CantGetLocationTag) {
         [self.tabBarController setSelectedIndex:0];
@@ -421,6 +436,10 @@ enum {
 
 -(void)showThisModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
+}
+
+-(void)dismissThisViewController:(UIViewController *)viewController{
+    [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

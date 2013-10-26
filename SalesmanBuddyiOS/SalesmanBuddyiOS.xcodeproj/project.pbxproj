@@ -35,6 +35,7 @@
 		21D2D66B181723D5006E6063 /* FLKAutoLayoutPredicateList.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D666181723D5006E6063 /* FLKAutoLayoutPredicateList.m */; };
 		21D2D66C181723D5006E6063 /* UIView+FLKAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D668181723D5006E6063 /* UIView+FLKAutoLayout.m */; };
 		21D2D66D181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D66A181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m */; };
+		21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D353E0181AE04D0082C06E /* SettingsViewController.m */; };
 		21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B7180F0D4C00C9FB5B /* Security.framework */; };
 		21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */; };
 		21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */; };
@@ -109,6 +110,8 @@
 		21D2D668181723D5006E6063 /* UIView+FLKAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FLKAutoLayout.m"; sourceTree = "<group>"; };
 		21D2D669181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FLKAutoLayoutPredicate.h"; sourceTree = "<group>"; };
 		21D2D66A181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FLKAutoLayoutPredicate.m"; sourceTree = "<group>"; };
+		21D353DF181AE04D0082C06E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		21D353E0181AE04D0082C06E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		21FDA8B7180F0D4C00C9FB5B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		21FDA905180F105800C9FB5B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 				21A251121819BBFD00C28188 /* LoadingModalViewController.m */,
 				21A251141819BF8600C28188 /* EditLicenseDetailsViewController.h */,
 				21A251151819BF8600C28188 /* EditLicenseDetailsViewController.m */,
+				21D353DF181AE04D0082C06E /* SettingsViewController.h */,
+				21D353E0181AE04D0082C06E /* SettingsViewController.m */,
 			);
 			path = SalesmanBuddyiOS;
 			sourceTree = "<group>";
@@ -457,6 +462,7 @@
 				DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */,
 				21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */,
 				21FDA91E1811A53B00C9FB5B /* License.m in Sources */,
+				21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */,
 				21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */,
 				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
 				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,

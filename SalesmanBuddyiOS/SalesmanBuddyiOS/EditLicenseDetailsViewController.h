@@ -23,7 +23,8 @@
 @property(nonatomic)UIEdgeInsets scrollViewInsets;
 @property(nonatomic, strong)LoadingModalViewController *loadingModal;
 @property(nonatomic, strong)UIImageView *imageView;
+@property(nonatomic, weak)UIViewController *delegate;
 
-- (id)initWithLicense:(License *)license;
+- (id)initWithLicense:(License *)license delegate:(id)delegate;
 
 @end
