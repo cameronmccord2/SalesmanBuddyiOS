@@ -24,7 +24,13 @@
 @property(nonatomic, strong)LoadingModalViewController *loadingModal;
 @property(nonatomic, strong)UIImageView *imageView;
 @property(nonatomic, weak)UIViewController *delegate;
+@property(nonatomic, strong)NSProgress *progress;
+@property(nonatomic, strong)UIProgressView *progressView;
+@property(nonatomic, weak)NSURLConnection *imageConnection;
 
 - (id)initWithLicense:(License *)license delegate:(id)delegate;
 
+#pragma mark - DAOManagerDelegateProtocal methods
+
+-(void)connectionObject:(NSURLConnection *)connection;
 @end

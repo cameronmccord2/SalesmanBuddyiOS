@@ -98,5 +98,6 @@
 -(void)updatedLicense:(License *)updatedLicense;
 -(void)imageData:(NSData *)data;
 -(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total;
+-(void)connectionObject:(NSURLConnection *)connection;
 
 @end

@@ -34,9 +34,13 @@
     if (self) {
         self.id = [dictionary[@"id"] integerValue];
         self.photo = dictionary[@"photo"];
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"yyyy-MM-dd"];
-        self.created = [dateFormat dateFromString:dictionary[@"created"]];
+//        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+//        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+//        self.created = [dateFormat dateFromString:dictionary[@"created"]];
+//        NSLog(@"from object: %@", self.created);
+//        NSLog(@"from dictionary: %@", dictionary[@"created"]);
+//        NSLog(@"from formatter: %@", [dateFormat dateFromString:dictionary[@"created"]]);
+        self.created = dictionary[@"created"];
         self.contactInfo = [[ContactInfo alloc] initWithDictionary:dictionary[@"contactInfo"]];
         self.stateQuestionsResponses = [StateQuestions parseJsonArray:dictionary[@"stateQuestions"]];
     }

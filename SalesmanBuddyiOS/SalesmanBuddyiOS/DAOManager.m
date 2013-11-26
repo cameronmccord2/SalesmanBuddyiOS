@@ -283,7 +283,16 @@ NSString *confirmUserUrl = @"userExists";
                 NSLog(@"auth authorized");
                 tryingToAuthenticate = false;
                 [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
-                [connections setObject:[[NSURLConnectionWithTag alloc]initWithRequest:cq.request delegate:self startImmediately:YES typeTag:cq.type uniqueTag:connectionNumber finalDelegate:cq.delegate] forKey:connectionNumber];
+                NSURLConnectionWithTag *connectionObject = [[NSURLConnectionWithTag alloc]initWithRequest:cq.request delegate:self startImmediately:YES typeTag:cq.type uniqueTag:connectionNumber finalDelegate:cq.delegate];
+                
+                [connections setObject:connectionObject forKey:connectionNumber];
+                
+                if ([cq.delegate respondsToSelector:@selector(connectionObject:)]) {
+                    if ([cq.type isEqualToNumber:typeLicenseImage]) {// only give back connection objects for image downloads
+                        [cq.delegate performSelector:@selector(connectionObject:) withObject:connectionObject];
+                    }
+                }else
+                    NSLog(@"doesnt respond to connectionObject:");
                 [connectionNumber decimalNumberByAdding:[NSDecimalNumber one]];
                 [self doFetchQueue];
             }else{

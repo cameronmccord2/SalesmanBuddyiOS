@@ -44,7 +44,6 @@
 		21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9111810BB5A00C9FB5B /* DAOManager.m */; };
 		21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		21FDA91A18118A8C00C9FB5B /* ClassAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA91918118A8C00C9FB5B /* ClassAdditions.m */; };
 		21FDA91E1811A53B00C9FB5B /* License.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA91D1811A53B00C9FB5B /* License.m */; };
 		21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9201811A71200C9FB5B /* ContactInfo.m */; };
 		DC6F065918167E3300EBE962 /* NewUserModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F065818167E3300EBE962 /* NewUserModalViewController.m */; };
@@ -54,6 +53,19 @@
 		DC6F066518168CCA00EBE962 /* StateQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F066418168CCA00EBE962 /* StateQuestions.m */; };
 		DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */; };
 		DCEB3B721818F97800052ADA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB3B711818F97800052ADA /* CoreLocation.framework */; };
+		E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC941842E42500766997 /* blueArrow.png */; };
+		E4A8CC9D1842E42500766997 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC951842E42500766997 /* blueArrow@2x.png */; };
+		E4A8CC9E1842E42500766997 /* blueArrowOriginal.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC961842E42500766997 /* blueArrowOriginal.png */; };
+		E4A8CC9F1842E42500766997 /* flagGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC971842E42500766997 /* flagGrey.png */; };
+		E4A8CCA01842E42500766997 /* flagGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC981842E42500766997 /* flagGrey@2x.png */; };
+		E4A8CCA11842E42500766997 /* flagRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC991842E42500766997 /* flagRed.png */; };
+		E4A8CCA21842E42500766997 /* flagRed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC9A1842E42500766997 /* flagRed@2x.png */; };
+		E4A8CCA31842E42500766997 /* flagRedOriginal.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC9B1842E42500766997 /* flagRedOriginal.png */; };
+		E4A9C7E5184513C80095294D /* LicenseTableViewCellGUI.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */; };
+		E4A9C7E8184513EB0095294D /* LicenseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7E7184513EB0095294D /* LicenseTableViewCell.m */; };
+		E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FC18455D7B0095294D /* NSStringAdditions.m */; };
+		E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */; };
+		E4A9C80318455D7B0095294D /* Random.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80018455D7B0095294D /* Random.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,7 +138,6 @@
 		21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2SignIn.m; sourceTree = "<group>"; };
 		21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMHTTPFetcher.h; sourceTree = "<group>"; };
 		21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
-		21FDA91918118A8C00C9FB5B /* ClassAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAdditions.m; sourceTree = "<group>"; };
 		21FDA91C1811A53B00C9FB5B /* License.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = License.h; sourceTree = "<group>"; };
 		21FDA91D1811A53B00C9FB5B /* License.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = License.m; sourceTree = "<group>"; };
 		21FDA91F1811A71200C9FB5B /* ContactInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfo.h; sourceTree = "<group>"; };
@@ -144,6 +155,23 @@
 		DCEB3B6E1818F4B600052ADA /* FinishedPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedPhoto.h; sourceTree = "<group>"; };
 		DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedPhoto.m; sourceTree = "<group>"; };
 		DCEB3B711818F97800052ADA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		E4A8CC941842E42500766997 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		E4A8CC951842E42500766997 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		E4A8CC961842E42500766997 /* blueArrowOriginal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrowOriginal.png; sourceTree = "<group>"; };
+		E4A8CC971842E42500766997 /* flagGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flagGrey.png; sourceTree = "<group>"; };
+		E4A8CC981842E42500766997 /* flagGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flagGrey@2x.png"; sourceTree = "<group>"; };
+		E4A8CC991842E42500766997 /* flagRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flagRed.png; sourceTree = "<group>"; };
+		E4A8CC9A1842E42500766997 /* flagRed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "flagRed@2x.png"; sourceTree = "<group>"; };
+		E4A8CC9B1842E42500766997 /* flagRedOriginal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flagRedOriginal.png; sourceTree = "<group>"; };
+		E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LicenseTableViewCellGUI.xib; sourceTree = "<group>"; };
+		E4A9C7E6184513EB0095294D /* LicenseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseTableViewCell.h; sourceTree = "<group>"; };
+		E4A9C7E7184513EB0095294D /* LicenseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseTableViewCell.m; sourceTree = "<group>"; };
+		E4A9C7FB18455D7B0095294D /* NSStringAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAdditions.h; sourceTree = "<group>"; };
+		E4A9C7FC18455D7B0095294D /* NSStringAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAdditions.m; sourceTree = "<group>"; };
+		E4A9C7FD18455D7B0095294D /* NSURLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLAdditions.h; sourceTree = "<group>"; };
+		E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLAdditions.m; sourceTree = "<group>"; };
+		E4A9C7FF18455D7B0095294D /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
+		E4A9C80018455D7B0095294D /* Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Random.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,13 +240,11 @@
 		21CABB35180C443F000BB826 /* SalesmanBuddyiOS */ = {
 			isa = PBXGroup;
 			children = (
+				E4A8CCA41842E43100766997 /* Images */,
 				21FDA91B1811A52700C9FB5B /* Model */,
 				21FDA90B180F108100C9FB5B /* Managers */,
 				21FDA90C180F109100C9FB5B /* Utilities */,
-				21CABB9D180F04AE000BB826 /* CallQueue.h */,
-				21CABB9E180F04AE000BB826 /* CallQueue.m */,
-				21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */,
-				21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */,
+				E4A9C7FA18455C980095294D /* Connection Classes */,
 				21CABB3E180C443F000BB826 /* AppDelegate.h */,
 				21CABB3F180C443F000BB826 /* AppDelegate.m */,
 				21CABB44180C443F000BB826 /* Images.xcassets */,
@@ -236,6 +262,9 @@
 				21A251151819BF8600C28188 /* EditLicenseDetailsViewController.m */,
 				21D353DF181AE04D0082C06E /* SettingsViewController.h */,
 				21D353E0181AE04D0082C06E /* SettingsViewController.m */,
+				E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */,
+				E4A9C7E6184513EB0095294D /* LicenseTableViewCell.h */,
+				E4A9C7E7184513EB0095294D /* LicenseTableViewCell.m */,
 			);
 			path = SalesmanBuddyiOS;
 			sourceTree = "<group>";
@@ -298,8 +327,8 @@
 		21FDA90C180F109100C9FB5B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E4A9C80418455D810095294D /* Additions */,
 				21D2D664181723D5006E6063 /* FLKAutoLayout */,
-				21FDA91918118A8C00C9FB5B /* ClassAdditions.m */,
 				21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */,
 				21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */,
 				21FDA9131810C19000C9FB5B /* GTMOAuth2SignIn.h */,
@@ -336,6 +365,45 @@
 				21A251181819E14B00C28188 /* DeleteLicenseResponse.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		E4A8CCA41842E43100766997 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8CC941842E42500766997 /* blueArrow.png */,
+				E4A8CC951842E42500766997 /* blueArrow@2x.png */,
+				E4A8CC961842E42500766997 /* blueArrowOriginal.png */,
+				E4A8CC971842E42500766997 /* flagGrey.png */,
+				E4A8CC981842E42500766997 /* flagGrey@2x.png */,
+				E4A8CC991842E42500766997 /* flagRed.png */,
+				E4A8CC9A1842E42500766997 /* flagRed@2x.png */,
+				E4A8CC9B1842E42500766997 /* flagRedOriginal.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		E4A9C7FA18455C980095294D /* Connection Classes */ = {
+			isa = PBXGroup;
+			children = (
+				21CABB9D180F04AE000BB826 /* CallQueue.h */,
+				21CABB9E180F04AE000BB826 /* CallQueue.m */,
+				21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */,
+				21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */,
+			);
+			name = "Connection Classes";
+			sourceTree = "<group>";
+		};
+		E4A9C80418455D810095294D /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				E4A9C7FB18455D7B0095294D /* NSStringAdditions.h */,
+				E4A9C7FC18455D7B0095294D /* NSStringAdditions.m */,
+				E4A9C7FD18455D7B0095294D /* NSURLAdditions.h */,
+				E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */,
+				E4A9C7FF18455D7B0095294D /* Random.h */,
+				E4A9C80018455D7B0095294D /* Random.m */,
+			);
+			name = Additions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,8 +484,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4A8CC9F1842E42500766997 /* flagGrey.png in Resources */,
+				E4A8CC9D1842E42500766997 /* blueArrow@2x.png in Resources */,
 				21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */,
+				E4A8CCA31842E42500766997 /* flagRedOriginal.png in Resources */,
+				E4A8CCA21842E42500766997 /* flagRed@2x.png in Resources */,
+				E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */,
 				21CABB3A180C443F000BB826 /* InfoPlist.strings in Resources */,
+				E4A8CC9E1842E42500766997 /* blueArrowOriginal.png in Resources */,
+				E4A9C7E5184513C80095294D /* LicenseTableViewCellGUI.xib in Resources */,
+				E4A8CCA11842E42500766997 /* flagRed.png in Resources */,
+				E4A8CCA01842E42500766997 /* flagGrey@2x.png in Resources */,
 				21CABB45180C443F000BB826 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -439,10 +516,10 @@
 			files = (
 				21D2D66B181723D5006E6063 /* FLKAutoLayoutPredicateList.m in Sources */,
 				DC6F065C181682FD00EBE962 /* User.m in Sources */,
-				21FDA91A18118A8C00C9FB5B /* ClassAdditions.m in Sources */,
 				21A251161819BF8600C28188 /* EditLicenseDetailsViewController.m in Sources */,
 				21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */,
 				DC6F066218168ACB00EBE962 /* State.m in Sources */,
+				E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */,
 				21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */,
 				21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */,
 				21D2D66C181723D5006E6063 /* UIView+FLKAutoLayout.m in Sources */,
@@ -457,13 +534,16 @@
 				21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */,
 				21A251131819BBFD00C28188 /* LoadingModalViewController.m in Sources */,
 				21CABB3C180C443F000BB826 /* main.m in Sources */,
+				E4A9C80318455D7B0095294D /* Random.m in Sources */,
 				21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */,
 				21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */,
 				21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */,
+				E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */,
 				21FDA91E1811A53B00C9FB5B /* License.m in Sources */,
 				21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */,
 				21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */,
+				E4A9C7E8184513EB0095294D /* LicenseTableViewCell.m in Sources */,
 				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
 				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,
 				21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */,

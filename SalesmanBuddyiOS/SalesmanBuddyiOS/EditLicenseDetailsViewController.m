@@ -38,6 +38,10 @@
     [self buildView];
 }
 
+-(void)connectionObject:(NSURLConnection *)connection{
+    self.imageConnection = connection;
+}
+
 #pragma mark - Keyboard stuff
 
 - (void)registerForKeyboardNotifications{
@@ -210,6 +214,12 @@ enum {
     Junk = 0, LastName, FirstName, Email, PhoneNumber, StreetAddress, City, StateId, Notes, CantGetLocationTag
 };
 
+-(UIProgressView *)setupProgressView{
+    UIProgressView *p = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    p.progress = 0.0f;
+    return p;
+}
+
 -(void)buildView{
     NSLog(@"building view");
     NSInteger yValue = 15;// initial y value
@@ -241,8 +251,17 @@ enum {
     self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, yValue + imageViewTopPad, imageViewWidth, imageViewHeight)];
     if (self.licenseImage != nil) {
         [self.imageView setImage:self.licenseImage];
+        [self.scrollView addSubview:self.imageView];
+    }else{
+        if (self.progressView == nil) {
+            self.progressView = [self setupProgressView];
+            NSLog(@"setup progress view");
+        }
+        [self.progressView setFrame:CGRectMake(10, yValue + imageViewTopPad, imageViewWidth, 10)];
+        [self.view addSubview:self.progressView];
+        NSLog(@"put progress view on view");
     }
-    [self.scrollView addSubview:self.imageView];
+    
     yValue += imageViewTopPad + imageViewHeight;
     
     // State required questions
@@ -290,9 +309,22 @@ enum {
 //    self.licenseImage = [UIImage imageWithData:[[NSData alloc] initWithBase64EncodedData:data options:NSDataBase64DecodingIgnoreUnknownCharacters]];// incorrect
     if (self.imageView != nil) {
         [self.imageView setImage:self.licenseImage];
+        [self.scrollView addSubview:self.imageView];
         NSLog(@"gave image data to image view");
 //        [self buildView];
     }
+}
+
+-(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+    if (self.progress == nil) {
+        self.progress = [NSProgress progressWithTotalUnitCount:total.longValue];
+    }
+    if (self.progressView == nil) {
+        self.progressView = [self setupProgressView];
+    }
+    self.progressView.progress = progress.floatValue;
+    self.progress.completedUnitCount = progress.longValue;
+    NSLog(@"updated progress view");
 }
 
 -(IBAction)saveInformation:(id)sender{
@@ -311,6 +343,9 @@ enum {
 -(void)dismissView{
     NSLog(@"closing modal");
     if ([self.delegate respondsToSelector:@selector(dismissThisViewController:)]) {
+        if (self.imageConnection != nil) {
+            [self.imageConnection cancel];
+        }
         [self.delegate performSelector:@selector(dismissThisViewController:) withObject:self];
     }else
         NSLog(@"Delegate cannot dismiss details modal");

@@ -9,10 +9,13 @@
 #import "LicenseListViewController.h"
 #import "License.h"
 #import "EditLicenseDetailsViewController.h"
+#import "LicenseTableViewCell.h"
 
 @interface LicenseListViewController ()
 
 @end
+
+NSString *CellIdentifier = @"LicenseTableViewCell";
 
 @implementation LicenseListViewController
 
@@ -23,13 +26,23 @@
         self.title = NSLocalizedString(@"Licenses", @"Licenses");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
         self.licenses = [[NSMutableArray alloc] init];
+//        self.dateFormatter = [NSDateFormatter dateFormatFromTemplate:<#(NSString *)#> options:<#(NSUInteger)#> locale:<#(NSLocale *)#>
+//        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
+//        [self.tableView registerNib:(UINib *)[nib firstObject] forCellReuseIdentifier:CellIdentifier];
+//        [self.tableView registerClass:[LicenseTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 52, 0);
+    self.tableView.contentInset = inset;
+    
+//    NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
+//    UINib *nib = (UINib *)[nibs firstObject];
+//    [[self tableView] registerNib:nib forCellReuseIdentifier:CellIdentifier];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -98,15 +111,37 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
+//    NSLog(@"count: %ld", (long)nib.count);
 //    NSLog(@"setting up cell");
-    static NSString *CellIdentifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    LicenseTableViewCell *cell = (LicenseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        NSLog(@"made new cell");
+        cell = [[LicenseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        
+        cell.name = [[UILabel alloc] initWithFrame:CGRectMake(7, 2, 206, 21)];
+        [cell.contentView addSubview:cell.name];
+        
+        cell.details = [[UILabel alloc] initWithFrame:CGRectMake(7, 20, 206, 21)];
+        [cell.details setFont:[UIFont systemFontOfSize:14.0]];
+        [cell.contentView addSubview:cell.details];
+        
+        cell.flag = [[UIImageView alloc] initWithFrame:CGRectMake(221, 0, 49, 43)];
+        [cell.contentView addSubview:cell.flag];
+        
+        UIImageView *accesoryView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 0, 47, 43)];
+        [accesoryView setImage:[UIImage imageNamed:@"blueArrow.png"]];
+        [cell.contentView addSubview:accesoryView];
     }
     int index = [indexPath row];
     License *l = [self.licenses objectAtIndex:index];
-    cell.textLabel.text = l.contactInfo.lastName;
+    [cell.name setText:[NSString stringWithFormat:@"%@, %@", l.contactInfo.lastName, l.contactInfo.firstName]];
+    [cell.details setText:[NSString stringWithFormat:@"%@,  ID: %@", l.created, @"12345"]];
+    BOOL isFlagged = true;
+    if (isFlagged)
+        [cell.flag setImage:[UIImage imageNamed:@"flagRed.png"]];
+    else
+        [cell.flag setImage:[UIImage imageNamed:@"flagGrey.png"]];
     // Configure the cell...
     
     return cell;

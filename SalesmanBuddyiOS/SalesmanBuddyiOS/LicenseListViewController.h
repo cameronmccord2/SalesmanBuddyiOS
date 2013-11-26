@@ -12,6 +12,7 @@
 @interface LicenseListViewController : UITableViewController <DAOManagerDelegateProtocal>
 @property(nonatomic, strong)NSManagedObjectContext *context;
 @property(nonatomic, strong)NSMutableArray *licenses;
+@property(nonatomic, strong)NSDateFormatter *dateFormatter;
 
 -(id)initWithContext:(NSManagedObjectContext *)managedObjectContext;
 
