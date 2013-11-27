@@ -13,7 +13,9 @@
 #import "Dealership.h"
 #import "State.h"
 #import "StateQuestions.h"
-#import "ClassAdditions.m"
+#import "NSURLAdditions.h"
+#import "NSStringAdditions.h"
+#import "MTCAuthManager.h"
 
 @implementation DAOManager
 
@@ -121,7 +123,8 @@ NSString *confirmUserUrl = @"userExists";
         NSLog(@"make post reuqest error: %@", error);
     }else{
         [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:type body:nil delegate:delegate]];
-        [self makeAuthViableAndExecuteCallQueue:delegate];
+//        [self makeAuthViableAndExecuteCallQueue:delegate];
+        [self doFetchQueue];
     }
 }
 
@@ -151,7 +154,8 @@ NSString *confirmUserUrl = @"userExists";
     else{
         NSLog(@"putting image");
         [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeSubmitImageData body:nil delegate:delegate]];
-        [self makeAuthViableAndExecuteCallQueue:delegate];
+//        [self makeAuthViableAndExecuteCallQueue:delegate];
+        [self doFetchQueue];
     }
 }
 
@@ -188,7 +192,8 @@ NSString *confirmUserUrl = @"userExists";
         NSLog(@"%@", error);
     else{
         [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeDeleteLicenseById body:nil delegate:delegate]];
-        [self makeAuthViableAndExecuteCallQueue:delegate];
+//        [self makeAuthViableAndExecuteCallQueue:delegate];
+        [self doFetchQueue];
     }
 }
 
@@ -200,7 +205,8 @@ NSString *confirmUserUrl = @"userExists";
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, urlPiece]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
     [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:type body:nil delegate:delegate]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+//    [self makeAuthViableAndExecuteCallQueue:delegate];
+    [self doFetchQueue];
 }
 
 -(void)getLicensesForDelegate:(id)delegate{
@@ -224,7 +230,8 @@ NSString *confirmUserUrl = @"userExists";
     url = [url URLByAppendingQueryStringKey:@"contactinfoid" value:[NSString stringWithFormat:@"%ld", (long)contactInfoId]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
     [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeContactInfo body:nil delegate:delegate]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+//    [self makeAuthViableAndExecuteCallQueue:delegate];
+    [self doFetchQueue];
 }
 
 -(void)getContactInfoByLicenseId:(NSInteger)licenseId forDelegate:(id)delegate{
@@ -232,7 +239,8 @@ NSString *confirmUserUrl = @"userExists";
     url = [url URLByAppendingQueryStringKey:@"licenseid" value:[NSString stringWithFormat:@"%ld", (long)licenseId]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
     [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeContactInfo body:nil delegate:delegate]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+//    [self makeAuthViableAndExecuteCallQueue:delegate];
+    [self doFetchQueue];
 }
 
 -(void)getLicenseImageForLicenseId:(NSInteger)licenseId forDelegate:(id)delegate{
@@ -240,7 +248,8 @@ NSString *confirmUserUrl = @"userExists";
     url = [url URLByAppendingQueryStringKey:@"licenseid" value:[NSString stringWithFormat:@"%ld", (long)licenseId]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
     [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeLicenseImage body:nil delegate:delegate]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+//    [self makeAuthViableAndExecuteCallQueue:delegate];
+    [self doFetchQueue];
 }
 
 -(void)getStateQuestionsForStateId:(NSInteger)stateId forDelegate:(id)delegate{
@@ -248,7 +257,8 @@ NSString *confirmUserUrl = @"userExists";
     url = [url URLByAppendingQueryStringKey:@"stateid" value:[NSString stringWithFormat:@"%ld", (long)stateId]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
     [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:typeStateQuestions body:nil delegate:delegate]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+//    [self makeAuthViableAndExecuteCallQueue:delegate];
+    [self doFetchQueue];
 }
 
 
@@ -269,45 +279,40 @@ NSString *confirmUserUrl = @"userExists";
 // Initialize Connection
 -(void)doRequest:(CallQueue *)cq{
     NSLog(@"doing request");
-    if (self.auth == nil) {
-        NSLog(@"auth is nil");
-        [self showGoogleLogin:cq.delegate];
-    }else{
-        cq.alreadySent = true;
-        if ([cq.type isEqualToNumber:typeConfirmUser]) {
-            blockingRequestRunning = true;
-            NSLog(@"doing blocking request");
-        }
-        [self.auth authorizeRequest:cq.request completionHandler:^(NSError *error) {
-            if (error == nil) {// success
-                NSLog(@"auth authorized");
-                tryingToAuthenticate = false;
-                [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
-                NSURLConnectionWithTag *connectionObject = [[NSURLConnectionWithTag alloc]initWithRequest:cq.request delegate:self startImmediately:YES typeTag:cq.type uniqueTag:connectionNumber finalDelegate:cq.delegate];
-                
-                [connections setObject:connectionObject forKey:connectionNumber];
-                
-                if ([cq.delegate respondsToSelector:@selector(connectionObject:)]) {
-                    if ([cq.type isEqualToNumber:typeLicenseImage]) {// only give back connection objects for image downloads
-                        [cq.delegate performSelector:@selector(connectionObject:) withObject:connectionObject];
-                    }
-                }else
-                    NSLog(@"doesnt respond to connectionObject:");
-                [connectionNumber decimalNumberByAdding:[NSDecimalNumber one]];
-                [self doFetchQueue];
-            }else{
-                NSLog(@"failed to authorize request, %@", error.localizedDescription);
-                cq.alreadySent = false;
-                if (![self.auth canAuthorize]) {
-                    NSLog(@"auth cannot authorize");
-                    [self showGoogleLogin:cq.delegate];
-                }else{
-                    NSLog(@"trying again imediately");
-                    [self doRequest:cq];
-                }
-            }
-        }];
+    cq.alreadySent = true;
+    if ([cq.type isEqualToNumber:typeConfirmUser]) {
+        blockingRequestRunning = true;
+        NSLog(@"doing blocking request");
     }
+    [[MTCAuthManager sharedManager] authorizeRequest:cq.request completionHandler:^(NSError *error) {
+        if (error == nil) {// success
+            NSLog(@"auth authorized");
+            tryingToAuthenticate = false;
+            [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
+            NSURLConnectionWithTag *connectionObject = [[NSURLConnectionWithTag alloc]initWithRequest:cq.request delegate:self startImmediately:YES typeTag:cq.type uniqueTag:connectionNumber finalDelegate:cq.delegate];
+            
+            [connections setObject:connectionObject forKey:connectionNumber];
+            
+            if ([cq.delegate respondsToSelector:@selector(connectionObject:)]) {
+                if ([cq.type isEqualToNumber:typeLicenseImage]) {// only give back connection objects for image downloads
+                    [cq.delegate performSelector:@selector(connectionObject:) withObject:connectionObject];
+                }
+            }else
+                NSLog(@"doesnt respond to connectionObject:");
+            [connectionNumber decimalNumberByAdding:[NSDecimalNumber one]];
+            [self doFetchQueue];
+        }else{
+            NSLog(@"failed to authorize request, %@", error.localizedDescription);
+            cq.alreadySent = false;
+            if (![self.auth canAuthorize]) {
+                NSLog(@"auth cannot authorize");
+                [self showGoogleLogin:cq.delegate];
+            }else{
+                NSLog(@"trying again imediately");
+                [self doRequest:cq];
+            }
+        }
+    }];
 }
 
 #pragma mark - Connection Handling
@@ -338,7 +343,6 @@ NSString *confirmUserUrl = @"userExists";
     }
 }
 
-// TODO cancel image download connections when going to main list
 - (void) connection:(NSURLConnectionWithTag *)connection didReceiveResponse:(NSURLResponse *)response{
     if([response isKindOfClass:[NSHTTPURLResponse class]]){
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
@@ -584,77 +588,77 @@ NSString *confirmUserUrl = @"userExists";
 }
 
 
-#pragma mark - Google oauth2 stuff
+#pragma mark - Google oauth2 stuffd
 
--(void)showGoogleLogin:(id)delegate{
-    NSLog(@"going to show google login");
-    GTMOAuth2ViewControllerTouch *viewController;
-    viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:self.scope
-                                                                clientID:self.kMyClientID
-                                                            clientSecret:self.kMyClientSecret
-                                                        keychainItemName:self.kKeychainItemName
-                                                                delegate:self
-                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    if ([delegate respondsToSelector:@selector(showThisModal:)]) {
-        self.conrollerResponsibleForGoogleLogin = delegate;
-        [delegate showThisModal:navController];
-    }else
-        NSLog(@"delegate cant show view controller for google login");
-    // calls -(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error
-}
-
-
--(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
-    if (error != nil) {
-        NSLog(@"%ld", (long)error.code);
-        if (error.code == -1000) {
-            NSLog(@"User closed the login modal before authenticating");
-        }else
-            NSLog(@"unsupported error code");
-    } else {
-        self.auth = auth;
-        self.auth.shouldAuthorizeAllRequests = true;
-        NSLog(@"got authentication back, success");
-        if (![auth canAuthorize]) {
-            NSLog(@"error, came back but cant authorize, never should happen");
-        }
-        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissThisViewController:)]) {
-            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissThisViewController:) withObject:viewController];
-        }
-        tryingToAuthenticate = false;
-        [self doFetchQueue];
-    }
-}
-
--(void)makeAuthViableAndExecuteCallQueue:(id)delegate{
-    GTMOAuth2Authentication *auth;
-    if (self.auth == nil) {
-        NSLog(@"getting auth from keychain");
-        // Get the saved authentication, if any, from the keychain.
-        auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
-                                                                     clientID:self.kMyClientID
-                                                                 clientSecret:self.kMyClientSecret];
-    }else
-        auth = self.auth;
-//    [self signOutOfGoogle];
-    auth.shouldAuthorizeAllRequests = true;
-    // We can determine later if the auth object contains an access token by calling its -canAuthorize method
-    if (![auth canAuthorize]) {
-        NSLog(@"auth cannot authorize");
-        [self showGoogleLogin:delegate];
-    }else{
-        NSLog(@"auth can authorize");
-        self.auth = auth;
-        [self doFetchQueue];
-    }
-}
-
--(void)signOutOfGoogle{
-    [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:self.kKeychainItemName];
-    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
-}
+//-(void)showGoogleLogin:(id)delegate{
+//    NSLog(@"going to show google login");
+//    GTMOAuth2ViewControllerTouch *viewController;
+//    viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:self.scope
+//                                                                clientID:self.kMyClientID
+//                                                            clientSecret:self.kMyClientSecret
+//                                                        keychainItemName:self.kKeychainItemName  // if nil, then the user has to sign in every time the application runs
+//                                                                delegate:self
+//                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+//    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//    if ([delegate respondsToSelector:@selector(showThisModal:)]) {
+//        self.conrollerResponsibleForGoogleLogin = delegate;
+//        [delegate showThisModal:navController];
+//    }else
+//        NSLog(@"delegate cant show view controller for google login");
+//    // calls -(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error
+//}
+//
+//
+//-(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
+//    if (error != nil) {
+//        NSLog(@"%ld", (long)error.code);
+//        if (error.code == -1000) {
+//            NSLog(@"User closed the login modal before authenticating");
+//        }else
+//            NSLog(@"unsupported error code");
+//    } else {
+//        self.auth = auth;
+//        self.auth.shouldAuthorizeAllRequests = true;
+//        NSLog(@"got authentication back, success");
+//        if (![auth canAuthorize]) {
+//            NSLog(@"error, came back but cant authorize, never should happen");
+//        }
+//        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissThisViewController:)]) {
+//            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissThisViewController:) withObject:viewController];
+//        }
+//        tryingToAuthenticate = false;
+//        [self doFetchQueue];
+//    }
+//}
+//
+//-(void)makeAuthViableAndExecuteCallQueue:(id)delegate{
+//    GTMOAuth2Authentication *auth;
+//    if (self.auth == nil) {
+//        NSLog(@"getting auth from keychain");
+//        // Get the saved authentication, if any, from the keychain.
+//        auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
+//                                                                     clientID:self.kMyClientID
+//                                                                 clientSecret:self.kMyClientSecret];
+//    }else
+//        auth = self.auth;
+////    [self signOutOfGoogle];
+//    auth.shouldAuthorizeAllRequests = true;
+//    // We can determine later if the auth object contains an access token by calling its -canAuthorize method
+//    if (![auth canAuthorize]) {
+//        NSLog(@"auth cannot authorize");
+//        [self showGoogleLogin:delegate];
+//    }else{
+//        NSLog(@"auth can authorize");
+//        self.auth = auth;
+//        [self doFetchQueue];
+//    }
+//}
+//
+//-(void)signOutOfGoogle{
+//    [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:self.kKeychainItemName];
+//    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
+//}
 
 
 @end

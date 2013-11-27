@@ -66,6 +66,8 @@
 		E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FC18455D7B0095294D /* NSStringAdditions.m */; };
 		E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */; };
 		E4A9C80318455D7B0095294D /* Random.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80018455D7B0095294D /* Random.m */; };
+		E4A9C80D184564E00095294D /* MTCAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80C184564E00095294D /* MTCAuthManager.m */; };
+		E4A9C810184574F80095294D /* MTCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80F184574F80095294D /* MTCUser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +174,10 @@
 		E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLAdditions.m; sourceTree = "<group>"; };
 		E4A9C7FF18455D7B0095294D /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		E4A9C80018455D7B0095294D /* Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Random.m; sourceTree = "<group>"; };
+		E4A9C80B184564E00095294D /* MTCAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTCAuthManager.h; sourceTree = "<group>"; };
+		E4A9C80C184564E00095294D /* MTCAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTCAuthManager.m; sourceTree = "<group>"; };
+		E4A9C80E184574F80095294D /* MTCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTCUser.h; sourceTree = "<group>"; };
+		E4A9C80F184574F80095294D /* MTCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTCUser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,6 +326,10 @@
 				21CABBA4180F0540000BB826 /* UploadFileManager.m */,
 				21FDA9101810BB5A00C9FB5B /* DAOManager.h */,
 				21FDA9111810BB5A00C9FB5B /* DAOManager.m */,
+				E4A9C80B184564E00095294D /* MTCAuthManager.h */,
+				E4A9C80C184564E00095294D /* MTCAuthManager.m */,
+				E4A9C80E184574F80095294D /* MTCUser.h */,
+				E4A9C80F184574F80095294D /* MTCUser.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -521,6 +531,7 @@
 				DC6F066218168ACB00EBE962 /* State.m in Sources */,
 				E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */,
 				21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */,
+				E4A9C810184574F80095294D /* MTCUser.m in Sources */,
 				21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */,
 				21D2D66C181723D5006E6063 /* UIView+FLKAutoLayout.m in Sources */,
 				DC6F066518168CCA00EBE962 /* StateQuestions.m in Sources */,
@@ -528,6 +539,7 @@
 				21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */,
 				21FDA90A180F107200C9FB5B /* UserManager.m in Sources */,
 				21CABB40180C443F000BB826 /* AppDelegate.m in Sources */,
+				E4A9C80D184564E00095294D /* MTCAuthManager.m in Sources */,
 				21D2D66D181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m in Sources */,
 				DC6F065918167E3300EBE962 /* NewUserModalViewController.m in Sources */,
 				DC6F065F1816896300EBE962 /* Dealership.m in Sources */,

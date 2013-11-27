@@ -41,7 +41,7 @@
     NSInteger currentUniqueTag;
 }
 
-@property(nonatomic, strong)GTMOAuth2Authentication* auth;
+//@property(nonatomic, strong)GTMOAuth2Authentication* auth;
 @property(nonatomic, strong)NSString *kKeychainItemName;
 @property(nonatomic, strong)NSString *kMyClientID;
 @property(nonatomic, strong)NSString *kMyClientSecret;
