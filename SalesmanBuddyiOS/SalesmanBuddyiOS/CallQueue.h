@@ -18,6 +18,10 @@
 @property(nonatomic, strong)NSMutableURLRequest *request;
 @property(nonatomic, strong)NSDictionary *body;
 @property(nonatomic, strong)NSNumber *type;
+@property(nonatomic, strong)id success;
+@property(nonatomic, strong)id error;
+@property(nonatomic, strong)id then;
+@property(nonatomic, strong)id progress;
 
 
 -(id)initQueueItem:(NSMutableURLRequest *)newRequest type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate;

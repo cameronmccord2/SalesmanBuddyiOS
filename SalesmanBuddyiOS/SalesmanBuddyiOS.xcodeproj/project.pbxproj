@@ -68,6 +68,7 @@
 		E4A9C80318455D7B0095294D /* Random.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80018455D7B0095294D /* Random.m */; };
 		E4A9C80D184564E00095294D /* MTCAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80C184564E00095294D /* MTCAuthManager.m */; };
 		E4A9C810184574F80095294D /* MTCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80F184574F80095294D /* MTCUser.m */; };
+		E4A9C8131846469E0095294D /* AuthorizeQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C8121846469E0095294D /* AuthorizeQueue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +179,8 @@
 		E4A9C80C184564E00095294D /* MTCAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTCAuthManager.m; sourceTree = "<group>"; };
 		E4A9C80E184574F80095294D /* MTCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTCUser.h; sourceTree = "<group>"; };
 		E4A9C80F184574F80095294D /* MTCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTCUser.m; sourceTree = "<group>"; };
+		E4A9C8111846469E0095294D /* AuthorizeQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizeQueue.h; sourceTree = "<group>"; };
+		E4A9C8121846469E0095294D /* AuthorizeQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizeQueue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +402,8 @@
 				21CABB9E180F04AE000BB826 /* CallQueue.m */,
 				21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */,
 				21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */,
+				E4A9C8111846469E0095294D /* AuthorizeQueue.h */,
+				E4A9C8121846469E0095294D /* AuthorizeQueue.m */,
 			);
 			name = "Connection Classes";
 			sourceTree = "<group>";
@@ -553,6 +558,7 @@
 				21FDA9211811A71200C9FB5B /* ContactInfo.m in Sources */,
 				E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */,
 				21FDA91E1811A53B00C9FB5B /* License.m in Sources */,
+				E4A9C8131846469E0095294D /* AuthorizeQueue.m in Sources */,
 				21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */,
 				21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */,
 				E4A9C7E8184513EB0095294D /* LicenseTableViewCell.m in Sources */,

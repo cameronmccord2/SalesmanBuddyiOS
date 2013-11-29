@@ -10,7 +10,7 @@
 
 @interface MTCUser : NSObject
 
-+(NSDictionary *)dictionaryFromUser:(User *)user;
++(NSDictionary *)dictionaryFromUser:(MTCUser *)user;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 

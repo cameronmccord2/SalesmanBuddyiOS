@@ -7,6 +7,7 @@
 //
 
 #import "SettingsViewController.h"
+#import "MTCAuthManager.h"
 
 @interface SettingsViewController ()
 
@@ -58,7 +59,7 @@
 
 -(void)logoutUser:(id)sender{
     NSLog(@"logging out user");
-    [[DAOManager sharedManager] signOutOfGoogle];
+    [[MTCAuthManager sharedManager] signOut];
     [self.tabBarController setSelectedIndex:0];
 }
 
@@ -173,11 +174,14 @@ enum {
     return y + topPad + height;
 }
 
--(void)showThisModal:(UIViewController *)viewController{
+
+#pragma mark - MTCAuthManagerViewControllerDelegateProtocal
+
+-(void)showAuthModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
--(void)dismissThisViewController:(UIViewController *)viewController{
+-(void)dismissAuthModal:(UIViewController *)viewController{
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

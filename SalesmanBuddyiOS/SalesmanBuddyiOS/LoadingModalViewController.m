@@ -70,11 +70,14 @@
     [self.lastLabel setText:self.progress.localizedDescription];
 }
 
--(void)showThisModal:(UIViewController *)viewController{
+
+#pragma mark - MTCAuthManagerViewControllerDelegateProtocal
+
+-(void)showAuthModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
--(void)dismissThisViewController:(UIViewController *)viewController{
+-(void)dismissAuthModal:(UIViewController *)viewController{
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

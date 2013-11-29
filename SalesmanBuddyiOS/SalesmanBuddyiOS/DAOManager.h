@@ -14,6 +14,7 @@
 #import "License.h"
 #import "FinishedPhoto.h"
 #import "DeleteLicenseResponse.h"
+//#import "MTCAuthManager.h"
 
 @interface DAOManager : NSObject<CLLocationManagerDelegate, NSXMLParserDelegate>{
     NSMutableArray *licenses;
@@ -41,7 +42,7 @@
     NSInteger currentUniqueTag;
 }
 
-//@property(nonatomic, strong)GTMOAuth2Authentication* auth;
+@property(nonatomic, strong)GTMOAuth2Authentication* auth;
 @property(nonatomic, strong)NSString *kKeychainItemName;
 @property(nonatomic, strong)NSString *kMyClientID;
 @property(nonatomic, strong)NSString *kMyClientSecret;
@@ -52,7 +53,6 @@
 @property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
 
 +(DAOManager *)sharedManager;
--(void)signOutOfGoogle;
 -(void)confirmUser;
 -(User *)getUser;
 -(CLLocationCoordinate2D)getLocation;
@@ -81,8 +81,8 @@
 
 @protocol DAOManagerDelegateProtocal <NSObject>
 
--(void)showThisModal:(UIViewController *)viewController;
--(void)dismissThisViewController:(UIViewController *)viewController;
+-(void)showAuthModal:(UIViewController *)viewController;
+-(void)dismissAuthModal:(UIViewController *)viewController;
 
 @optional
 -(void)licenses:(NSArray *)licenses;

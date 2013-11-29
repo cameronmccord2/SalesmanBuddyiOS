@@ -10,6 +10,7 @@
 #import "GTMOAuth2ViewControllerTouch.h"
 #import "NSURLConnectionWithTag.h"
 #import "MTCUser.h"
+#import "AuthorizeQueue.h"
 
 @implementation MTCAuthManager
 
@@ -50,9 +51,9 @@
         
 
         self.error = @"";
-        
+        self.alreadyAuthorizing = false;
         self.user = nil;
-        
+        self.queue = [[NSMutableArray alloc] initWithCapacity:10];
         connectionNumber = [NSDecimalNumber zero];
         typeGetUser = [[NSDecimalNumber alloc] initWithInt:1];
         
@@ -85,7 +86,7 @@
     return scope;
 }
 
--(BOOL)authorizeRequest:(NSMutableURLRequest *)request delegate:(id)delegate{
+-(BOOL)authorizeRequest:(NSMutableURLRequest *)request delegate:(id)delegate{// removed because not async
     if (self.auth == nil) {
         // cache the request so that we can do it once we are authenticated, force all other authorization requests into the queue too
         [self login:delegate];// this part is broken because it is async******************************************************
@@ -94,18 +95,26 @@
         return [self.auth authorizeRequest:request];
 }
 
--(void)authorizeRequest:(NSMutableURLRequest *)request delegate:(id)delegate didFinishSelector:(SEL)sel{
+-(void)authorizeRequest:(NSMutableURLRequest *)request authDelegate:(id)authDelegate loginModalDelegate:(id)loginModalDelegate didFinishSelector:(SEL)sel{
     if (self.auth == nil) {
         // cache the request so that we can do it once we are authenticated, force all other authorization requests into the queue too
-        [self login:delegate];
+        [self.queue addObject:[AuthorizeQueue queuedRequest:request authDelegate:authDelegate loginModalDelegate:loginModalDelegate handler:nil finishSelector:sel]];
+        if (!self.alreadyAuthorizing) {
+            self.alreadyAuthorizing = true;
+            [self login:loginModalDelegate];
+        }
     }else
-        [self.auth authorizeRequest:request delegate:delegate didFinishSelector:sel];
+        [self.auth authorizeRequest:request delegate:authDelegate didFinishSelector:sel];
 }
 
--(void)authorizeRequest:(NSMutableURLRequest *)request delegate:(id)delegate completionHandler:(void (^)(NSError *))handler{
+-(void)authorizeRequest:(NSMutableURLRequest *)request authDelegate:(id)authDelegate loginModalDelegate:(id)loginModalDelegate completionHandler:(void (^)(NSError *))handler{
     if (self.auth == nil) {
         // cache the request so that we can do it once we are authenticated, force all other authorization requests into the queue too
-        [self login:delegate];
+        [self.queue addObject:[AuthorizeQueue queuedRequest:request authDelegate:authDelegate loginModalDelegate:loginModalDelegate handler:handler finishSelector:nil]];
+        if (!self.alreadyAuthorizing) {
+            self.alreadyAuthorizing = true;
+            [self login:loginModalDelegate];
+        }
     }else
         [self.auth authorizeRequest:request completionHandler:handler];
 }
@@ -115,6 +124,19 @@
         return false;
     }else
         return [self.auth canAuthorize];
+}
+
+-(void)runQueue{
+    for (AuthorizeQueue *aq in self.queue) {
+        if (!aq.alreadyStarted) {
+            aq.alreadyStarted = true;
+            if (aq.handler != nil)
+                [self authorizeRequest:aq.request authDelegate:aq.authDelegate loginModalDelegate:aq.loginModalDelegate completionHandler:aq.handler];
+            else
+                [self authorizeRequest:aq.request authDelegate:aq.authDelegate loginModalDelegate:aq.loginModalDelegate didFinishSelector:aq.selector];
+            [self.queue removeObject:aq];
+        }
+    }
 }
 
 
@@ -144,61 +166,73 @@
 #pragma mark - Auth stuff
 
 -(GTMOAuth2Authentication *)makeAuth{
+    GTMOAuth2Authentication *auth;
+//    // MTC OAuth2
+//    static NSString *redirectURI = @"https://mtc.byu.edu/OAuthCallback";
+//    // The controller will watch for the server to redirect the web view to this URI, but this URI will not be loaded, so it need not be for any actual web page.
+//    
+//    NSURL *tokenURL = [NSURL URLWithString:@"https://auth.mtc.byu.edu/oauth2/auth"];
+//    static NSString *serviceName = @"MTCAuthService";
+//    auth = [GTMOAuth2Authentication authenticationWithServiceProvider:serviceName
+//                                                             tokenURL:tokenURL
+//                                                          redirectURI:redirectURI
+//                                                             clientID:self.kClientID
+//                                                         clientSecret:self.kClientSecret];
     
-    // MTC OAuth2
-    static NSString *redirectURI = @"https://mtc.byu.edu/OAuthCallback";
-    // The controller will watch for the server to redirect the web view to this URI, but this URI will not be loaded, so it need not be for any actual web page.
-    
-    NSURL *tokenURL = [NSURL URLWithString:@"https://auth.mtc.byu.edu/oauth2/auth"];
-    static NSString *serviceName = @"MTCAuthService";
-    return [GTMOAuth2Authentication authenticationWithServiceProvider:serviceName
-                                                             tokenURL:tokenURL
-                                                          redirectURI:redirectURI
-                                                             clientID:self.kClientID
-                                                         clientSecret:self.kClientSecret];
-    
-    //        // Google oauth2
-    //        return [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
-    //                                                                     clientID:self.kMyClientID
-    //                                                                 clientSecret:self.kMyClientSecret];
+    // Google oauth2
+    auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
+                                                                 clientID:self.kClientID
+                                                             clientSecret:self.kClientSecret];
+    auth.shouldAuthorizeAllRequests = true;
+    return auth;
+}
+
+-(void)forceLogin:(id)delegate{
+    [self signOut];
+    [self login:delegate];
 }
 
 -(void)login:(id)delegate{
-    NSLog(@"going to show login");
+    NSLog(@"trying to login");
     
     if(self.auth == nil)
         self.auth = [self makeAuth];
     if ([self.auth canAuthorize]) {
-        [self viewController:nil finishedWithAuth:self.auth error:nil];// got good auth from the keychain so just keep going
+//        [self viewController:nil finishedWithAuth:self.auth error:nil];// got good auth from the keychain so just keep going
+        self.alreadyAuthorizing = false;
+        self.auth.shouldAuthorizeAllRequests = true;
+        [self runQueue];
         return;
     }
+    NSLog(@"going to show login");
     
-    // MTC
-    NSURL *authURL = [NSURL URLWithString:@"https://auth.mtc.byu.edu/oauth2/auth"];
-    self.auth.scope = [self spaceDelimitedScope];
-    GTMOAuth2ViewControllerTouch *viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithAuthentication:self.auth
-                                                                  authorizationURL:authURL
-                                                                  keychainItemName:self.kKeychainItemName
-                                                                          delegate:self
-                                                                  finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+//    // MTC
+//    NSURL *authURL = [NSURL URLWithString:@"https://auth.mtc.byu.edu/oauth2/auth"];
+//    self.auth.scope = [self spaceDelimitedScope];
+//    GTMOAuth2ViewControllerTouch *viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithAuthentication:self.auth
+//                                                                  authorizationURL:authURL
+//                                                                  keychainItemName:self.kKeychainItemName
+//                                                                          delegate:self
+//                                                                  finishedSelector:@selector(viewController:finishedWithAuth:error:)];
     
     
-//    // Google 
-//    GTMOAuth2ViewControllerTouch *viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:[self spaceDelimitedScope]
-//                                                                clientID:self.kClientID
-//                                                            clientSecret:self.kClientSecret
-//                                                        keychainItemName:self.kKeychainItemName  // if nil, then the user has to sign in every time the application runs
-//                                                                delegate:self
-//                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+    // Google 
+    GTMOAuth2ViewControllerTouch *viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:[self spaceDelimitedScope]
+                                                                clientID:self.kClientID
+                                                            clientSecret:self.kClientSecret
+                                                        keychainItemName:self.kKeychainItemName  // if nil, then the user has to sign in every time the application runs
+                                                                delegate:self
+                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
     
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    
+    self.conrollerResponsibleForLogin = delegate;
     if ([delegate respondsToSelector:@selector(showAuthModal:)]) {
-        self.conrollerResponsibleForGoogleLogin = delegate;
         [delegate showAuthModal:navController];
     }else
-        NSLog(@"delegate cant show view controller for google login");
+        NSLog(@"delegate cant show view controller for login");
     // calls -(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error
 }
 
@@ -208,9 +242,10 @@
         NSLog(@"%ld", (long)error.code);
         if (error.code == -1000) {
             NSLog(@"User closed the login modal before authenticating");
-            if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(userCanceledLogin)]) {
-                [self.conrollerResponsibleForGoogleLogin performSelector:@selector(userCanceledLogin) withObject:viewController];
-            }
+            if ([self.conrollerResponsibleForLogin respondsToSelector:@selector(userCanceledLogin)]) {
+                [self.conrollerResponsibleForLogin performSelector:@selector(userCanceledLogin) withObject:viewController];
+            }else
+                NSLog(@"delegate cant respond to userCanceledLogin");
         }else
             NSLog(@"unsupported error code");
     } else {
@@ -220,12 +255,17 @@
         if (![auth canAuthorize]) {
             NSLog(@"error, came back but cant authorize, never should happen");
         }
-        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissAuthModal:)]) {
-            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissAuthModal:) withObject:viewController];
+        if ([self.conrollerResponsibleForLogin respondsToSelector:@selector(dismissAuthModal:)]) {
+            [self.conrollerResponsibleForLogin performSelector:@selector(dismissAuthModal:) withObject:viewController];
         }else
             NSLog(@"delegate cant do dismissAuthModal:");
-        [self doFetchQueue];
+        self.alreadyAuthorizing = false;
+        [self runQueue];
     }
+}
+
+-(void)authGaveError:(NSError *)error{// have the authorizeRequest function hand the error to this controller, if error, deal with it, if not, hand it back up like it should
+    NSLog(@"auth gave error");
 }
 
 
@@ -256,8 +296,8 @@
     // MTC
     
     
-//    // Google
-//    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
+    // Google
+    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
 }
 
 

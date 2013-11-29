@@ -15,7 +15,6 @@
 #import "StateQuestions.h"
 #import "NSURLAdditions.h"
 #import "NSStringAdditions.h"
-#import "MTCAuthManager.h"
 
 @implementation DAOManager
 
@@ -77,8 +76,8 @@ NSString *confirmUserUrl = @"userExists";
         NSLog(@"going to get the current location");
         [self getLocation];
         
-        NSLog(@"going to confirm user");
-        [self confirmUser];
+//        NSLog(@"going to confirm user");
+//        [self confirmUser];
     }
     return self;
 }
@@ -284,7 +283,7 @@ NSString *confirmUserUrl = @"userExists";
         blockingRequestRunning = true;
         NSLog(@"doing blocking request");
     }
-    [[MTCAuthManager sharedManager] authorizeRequest:cq.request completionHandler:^(NSError *error) {
+    [self.auth authorizeRequest:cq.request completionHandler:^(NSError *error) {
         if (error == nil) {// success
             NSLog(@"auth authorized");
             tryingToAuthenticate = false;
@@ -302,11 +301,12 @@ NSString *confirmUserUrl = @"userExists";
             [connectionNumber decimalNumberByAdding:[NSDecimalNumber one]];
             [self doFetchQueue];
         }else{
-            NSLog(@"failed to authorize request, %@", error.localizedDescription);
+            NSLog(@"this should never be hit, right? All authentication gets handled in the authmanager");
+            NSLog(@"failed to authorize request, reason: %@", error.localizedDescription);
             cq.alreadySent = false;
             if (![self.auth canAuthorize]) {
-                NSLog(@"auth cannot authorize");
-                [self showGoogleLogin:cq.delegate];
+                NSLog(@"auth cannot authorize, load login view here");
+//                [self showGoogleLogin:cq.delegate];
             }else{
                 NSLog(@"trying again imediately");
                 [self doRequest:cq];
@@ -351,10 +351,10 @@ NSString *confirmUserUrl = @"userExists";
             if (status == 403) {
                 NSLog(@"recieved status unauthorized for typeUserExists");
                 [connection cancel];
-                if ([connection.finalDelegate respondsToSelector:@selector(showThisModal:)]) {
+                if ([connection.finalDelegate respondsToSelector:@selector(showAuthModal:)]) {
                     NewUserModalViewController *rootViewController = [[NewUserModalViewController alloc] initWithNibName:nil bundle:nil];
                     UINavigationController *viewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-                    [connection.finalDelegate performSelector:@selector(showThisModal:) withObject:viewController];
+                    [connection.finalDelegate performSelector:@selector(showAuthModal:) withObject:viewController];
                 }else
                     NSLog(@"cant load new user modal");
             }
@@ -590,75 +590,75 @@ NSString *confirmUserUrl = @"userExists";
 
 #pragma mark - Google oauth2 stuffd
 
-//-(void)showGoogleLogin:(id)delegate{
-//    NSLog(@"going to show google login");
-//    GTMOAuth2ViewControllerTouch *viewController;
-//    viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:self.scope
-//                                                                clientID:self.kMyClientID
-//                                                            clientSecret:self.kMyClientSecret
-//                                                        keychainItemName:self.kKeychainItemName  // if nil, then the user has to sign in every time the application runs
-//                                                                delegate:self
-//                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-//    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-//    if ([delegate respondsToSelector:@selector(showThisModal:)]) {
-//        self.conrollerResponsibleForGoogleLogin = delegate;
-//        [delegate showThisModal:navController];
-//    }else
-//        NSLog(@"delegate cant show view controller for google login");
-//    // calls -(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error
-//}
-//
-//
-//-(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
-//    if (error != nil) {
-//        NSLog(@"%ld", (long)error.code);
-//        if (error.code == -1000) {
-//            NSLog(@"User closed the login modal before authenticating");
-//        }else
-//            NSLog(@"unsupported error code");
-//    } else {
-//        self.auth = auth;
-//        self.auth.shouldAuthorizeAllRequests = true;
-//        NSLog(@"got authentication back, success");
-//        if (![auth canAuthorize]) {
-//            NSLog(@"error, came back but cant authorize, never should happen");
-//        }
-//        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissThisViewController:)]) {
-//            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissThisViewController:) withObject:viewController];
-//        }
-//        tryingToAuthenticate = false;
-//        [self doFetchQueue];
-//    }
-//}
-//
-//-(void)makeAuthViableAndExecuteCallQueue:(id)delegate{
-//    GTMOAuth2Authentication *auth;
-//    if (self.auth == nil) {
-//        NSLog(@"getting auth from keychain");
-//        // Get the saved authentication, if any, from the keychain.
-//        auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
-//                                                                     clientID:self.kMyClientID
-//                                                                 clientSecret:self.kMyClientSecret];
-//    }else
-//        auth = self.auth;
-////    [self signOutOfGoogle];
-//    auth.shouldAuthorizeAllRequests = true;
-//    // We can determine later if the auth object contains an access token by calling its -canAuthorize method
-//    if (![auth canAuthorize]) {
-//        NSLog(@"auth cannot authorize");
-//        [self showGoogleLogin:delegate];
-//    }else{
-//        NSLog(@"auth can authorize");
-//        self.auth = auth;
-//        [self doFetchQueue];
-//    }
-//}
-//
-//-(void)signOutOfGoogle{
-//    [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:self.kKeychainItemName];
-//    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
-//}
+-(void)showGoogleLogin:(id)delegate{
+    NSLog(@"going to show google login");
+    GTMOAuth2ViewControllerTouch *viewController;
+    viewController = [[GTMOAuth2ViewControllerTouch alloc] initWithScope:self.scope
+                                                                clientID:self.kMyClientID
+                                                            clientSecret:self.kMyClientSecret
+                                                        keychainItemName:self.kKeychainItemName  // if nil, then the user has to sign in every time the application runs
+                                                                delegate:self
+                                                        finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    if ([delegate respondsToSelector:@selector(showAuthModal:)]) {
+        self.conrollerResponsibleForGoogleLogin = delegate;
+        [delegate showAuthModal:navController];
+    }else
+        NSLog(@"delegate cant show view controller for google login");
+    // calls -(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error
+}
+
+
+-(void)viewController:(GTMOAuth2ViewControllerTouch *)viewController finishedWithAuth:(GTMOAuth2Authentication *)auth error:(NSError *)error {
+    if (error != nil) {
+        NSLog(@"%ld", (long)error.code);
+        if (error.code == -1000) {
+            NSLog(@"User closed the login modal before authenticating");
+        }else
+            NSLog(@"unsupported error code");
+    } else {
+        self.auth = auth;
+        self.auth.shouldAuthorizeAllRequests = true;
+        NSLog(@"got authentication back, success");
+        if (![auth canAuthorize]) {
+            NSLog(@"error, came back but cant authorize, never should happen");
+        }
+        if ([self.conrollerResponsibleForGoogleLogin respondsToSelector:@selector(dismissAuthModal:)]) {
+            [self.conrollerResponsibleForGoogleLogin performSelector:@selector(dismissAuthModal:) withObject:viewController];
+        }
+        tryingToAuthenticate = false;
+        [self doFetchQueue];
+    }
+}
+
+-(void)makeAuthViableAndExecuteCallQueue:(id)delegate{
+    GTMOAuth2Authentication *auth;
+    if (self.auth == nil) {
+        NSLog(@"getting auth from keychain");
+        // Get the saved authentication, if any, from the keychain.
+        auth = [GTMOAuth2ViewControllerTouch authForGoogleFromKeychainForName:self.kKeychainItemName
+                                                                     clientID:self.kMyClientID
+                                                                 clientSecret:self.kMyClientSecret];
+    }else
+        auth = self.auth;
+//    [self signOutOfGoogle];
+    auth.shouldAuthorizeAllRequests = true;
+    // We can determine later if the auth object contains an access token by calling its -canAuthorize method
+    if (![auth canAuthorize]) {
+        NSLog(@"auth cannot authorize");
+        [self showGoogleLogin:delegate];
+    }else{
+        NSLog(@"auth can authorize");
+        self.auth = auth;
+        [self doFetchQueue];
+    }
+}
+
+-(void)signOutOfGoogle{
+    [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:self.kKeychainItemName];
+    [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];
+}
 
 
 @end

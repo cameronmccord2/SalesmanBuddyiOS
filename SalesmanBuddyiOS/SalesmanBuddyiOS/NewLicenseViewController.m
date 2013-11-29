@@ -34,7 +34,6 @@
         licenseIsReady = false;
         licenseImageSavingStarted = false;
         [self registerForKeyboardNotifications];
-        [[DAOManager sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
     }
     return self;
 }
@@ -56,13 +55,13 @@
     [self buildView];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
     viewHasLoaded = true;
-    if (self.stateQuestions.count > 0) {
+    if (self.stateQuestions.count > 0)
         [self buildView];
-    }
+    else
+        [[DAOManager sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -307,6 +306,13 @@ enum {
     [self.view addSubview:self.scrollView];
 }
 
+- (void)didReceiveMemoryWarning{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Selectors
+
 -(void)stateQuestions:(NSArray *)stateQuestions{
     NSLog(@"recieved state questions, %ld", (long)stateQuestions.count);
     self.stateQuestions = stateQuestions;
@@ -314,13 +320,6 @@ enum {
         [self buildView];
     }
 }
-
-- (void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Selectors
 
 -(IBAction)saveInformation:(id)sender{
     NSLog(@"saving information");
@@ -434,11 +433,14 @@ enum {
     }
 }
 
--(void)showThisModal:(UIViewController *)viewController{
+
+#pragma mark - MTCAuthManagerViewControllerDelegateProtocal
+
+-(void)showAuthModal:(UIViewController *)viewController{
     [self presentViewController:viewController animated:YES completion:nil];
 }
 
--(void)dismissThisViewController:(UIViewController *)viewController{
+-(void)dismissAuthModal:(UIViewController *)viewController{
     [viewController dismissViewControllerAnimated:YES completion:nil];
 }
 

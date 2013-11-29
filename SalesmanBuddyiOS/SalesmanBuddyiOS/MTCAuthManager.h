@@ -28,28 +28,36 @@
 @property(nonatomic, strong)MTCUser *user;
 @property(nonatomic, strong)NSString *error;
 @property(nonatomic, strong)NSXMLParser *parser;
-@property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
+@property(nonatomic, strong)UIViewController *conrollerResponsibleForLogin;
+@property(nonatomic, strong)NSMutableArray *queue;
+@property(nonatomic)BOOL alreadyAuthorizing;
 
 +(MTCAuthManager *)sharedManager;
 
+-(void)forceLogin:(id)delegate;
 -(void)signOut;
 -(void)addScope:(NSString *)scope;
--(BOOL)authorizeRequest:(NSMutableURLRequest *)request;
--(void)authorizeRequest:(NSMutableURLRequest *)request delegate:(id)delegate didFinishSelector:(SEL)sel;
--(void)authorizeRequest:(NSMutableURLRequest *)request completionHandler:(void (^)(NSError *))handler;
-
+-(BOOL)canAuthorize;
+//-(BOOL)authorizeRequest:(NSMutableURLRequest *)request;// not set up for syncro
+-(void)authorizeRequest:(NSMutableURLRequest *)request authDelegate:(id)authDelegate loginModalDelegate:(id)loginModalDelegate didFinishSelector:(SEL)sel;
+-(void)authorizeRequest:(NSMutableURLRequest *)request authDelegate:(id)authDelegate loginModalDelegate:(id)loginModalDelegate completionHandler:(void (^)(NSError *))handler;
+-(void)authGaveError:(NSError *)error;
 
 
 @end
 
-@protocol MTCAuthManagerDelegateProtocal <NSObject>
-
--(void)showAuthModal:(UIViewController *)viewController;
--(void)dismissAuthModal:(UIViewController *)viewController;
+@protocol MTCAuthManagerDAODelegateProtocal <NSObject>
 
 @optional
 
 -(void)gotUser:(MTCUser *)user;
 -(void)userCanceledLogin;
+
+@end
+
+@protocol MTCAuthManagerViewControllerDelegateProtocal <NSObject>
+
+-(void)showAuthModal:(UIViewController *)viewController;
+-(void)dismissAuthModal:(UIViewController *)viewController;
 
 @end
