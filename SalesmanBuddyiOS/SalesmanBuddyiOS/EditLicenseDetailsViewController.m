@@ -315,7 +315,7 @@ enum {
     }
 }
 
--(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+-(void)connectionDownloadProgress:(NSNumber *)progress total:(NSNumber *)total{
     if (self.progress == nil) {
         self.progress = [NSProgress progressWithTotalUnitCount:total.longValue];
     }

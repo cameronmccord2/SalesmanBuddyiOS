@@ -53,6 +53,7 @@
 		DC6F066518168CCA00EBE962 /* StateQuestions.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F066418168CCA00EBE962 /* StateQuestions.m */; };
 		DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */; };
 		DCEB3B721818F97800052ADA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB3B711818F97800052ADA /* CoreLocation.framework */; };
+		E46859D518497B2F004C5C82 /* NSURLConnectionWithExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = E46859D418497B2F004C5C82 /* NSURLConnectionWithExtras.m */; };
 		E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC941842E42500766997 /* blueArrow.png */; };
 		E4A8CC9D1842E42500766997 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC951842E42500766997 /* blueArrow@2x.png */; };
 		E4A8CC9E1842E42500766997 /* blueArrowOriginal.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC961842E42500766997 /* blueArrowOriginal.png */; };
@@ -158,6 +159,8 @@
 		DCEB3B6E1818F4B600052ADA /* FinishedPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedPhoto.h; sourceTree = "<group>"; };
 		DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedPhoto.m; sourceTree = "<group>"; };
 		DCEB3B711818F97800052ADA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		E46859D318497B2F004C5C82 /* NSURLConnectionWithExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionWithExtras.h; sourceTree = "<group>"; };
+		E46859D418497B2F004C5C82 /* NSURLConnectionWithExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionWithExtras.m; sourceTree = "<group>"; };
 		E4A8CC941842E42500766997 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
 		E4A8CC951842E42500766997 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
 		E4A8CC961842E42500766997 /* blueArrowOriginal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrowOriginal.png; sourceTree = "<group>"; };
@@ -404,6 +407,8 @@
 				21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */,
 				E4A9C8111846469E0095294D /* AuthorizeQueue.h */,
 				E4A9C8121846469E0095294D /* AuthorizeQueue.m */,
+				E46859D318497B2F004C5C82 /* NSURLConnectionWithExtras.h */,
+				E46859D418497B2F004C5C82 /* NSURLConnectionWithExtras.m */,
 			);
 			name = "Connection Classes";
 			sourceTree = "<group>";
@@ -548,6 +553,7 @@
 				21D2D66D181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m in Sources */,
 				DC6F065918167E3300EBE962 /* NewUserModalViewController.m in Sources */,
 				DC6F065F1816896300EBE962 /* Dealership.m in Sources */,
+				E46859D518497B2F004C5C82 /* NSURLConnectionWithExtras.m in Sources */,
 				21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */,
 				21A251131819BBFD00C28188 /* LoadingModalViewController.m in Sources */,
 				21CABB3C180C443F000BB826 /* main.m in Sources */,

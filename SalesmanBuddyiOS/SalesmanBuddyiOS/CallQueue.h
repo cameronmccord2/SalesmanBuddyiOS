@@ -14,16 +14,14 @@
 
 @property(nonatomic)BOOL alreadySent;
 @property(nonatomic, strong)id delegate;
-//@property(nonatomic, strong)NSURL *fullUrl;
 @property(nonatomic, strong)NSMutableURLRequest *request;
 @property(nonatomic, strong)NSDictionary *body;
-@property(nonatomic, strong)NSNumber *type;
-@property(nonatomic, strong)id success;
-@property(nonatomic, strong)id error;
-@property(nonatomic, strong)id then;
-@property(nonatomic, strong)id progress;
+@property(nonatomic, copy)void (^success)(NSData *, void(^)());
+@property(nonatomic, copy)void (^error)(NSData *, NSError *, void(^)());
+@property(nonatomic, copy)void (^then)(NSData *);
+@property(nonatomic, copy)void (^progress)(NSProgress *);
 
 
--(id)initQueueItem:(NSMutableURLRequest *)newRequest type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate;
-
+-(id)initQueueItem:(NSMutableURLRequest *)newRequest body:(NSDictionary *)newBody delegate:(id)newDelegate;
++(instancetype)initWithRequest:(NSMutableURLRequest *)request body:(NSDictionary *)body delegate:(id)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *))then progress:(void (^)(NSProgress *))progress;
 @end

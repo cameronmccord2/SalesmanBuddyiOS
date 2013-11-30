@@ -419,10 +419,10 @@ enum {
     //    [imageView setImage:image];
 }
 
--(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+-(void)connectionUploadProgress:(NSNumber *)progress total:(NSNumber *)total{
     if (self.loadingModal != nil) {
-        if([self.loadingModal respondsToSelector:@selector(connectionProgress:total:)]){
-            [self.loadingModal performSelector:@selector(connectionProgress:total:) withObject:progress withObject:total];
+        if([self.loadingModal respondsToSelector:@selector(connectionUploadProgress:total:)]){
+            [self.loadingModal performSelector:@selector(connectionUploadProgress:total:) withObject:progress withObject:total];
         }
     }
 }

@@ -11,15 +11,27 @@
 @implementation CallQueue
 
 
--(id)initQueueItem:(NSMutableURLRequest *)newRequest type:(NSNumber *)newType body:(NSDictionary *)newBody delegate:(id)newDelegate{
+-(id)initQueueItem:(NSMutableURLRequest *)newRequest body:(NSDictionary *)newBody delegate:(id)newDelegate{
     self = [super init];
     if (self) {
         self.request = newRequest;
         self.delegate = newDelegate;
         self.alreadySent = NO;
-        self.type = newType;
         self.body = newBody;
     }
     return self;
+}
+
++(instancetype)initWithRequest:(NSMutableURLRequest *)request body:(NSDictionary *)body delegate:(id)delegate success:(void (^)(NSData *, void (^)()))success error:(void (^)(NSData *, NSError *, void (^)()))error then:(void (^)(NSData *))then progress:(void (^)(NSProgress *))progress{
+    CallQueue *item = [[CallQueue alloc] init];
+    item.request = request;
+    item.body = body;
+    item.delegate = delegate;
+    item.success = success;
+    item.error = error;
+    item.then = then;
+    item.progress = progress;
+    item.alreadySent = NO;
+    return item;
 }
 @end

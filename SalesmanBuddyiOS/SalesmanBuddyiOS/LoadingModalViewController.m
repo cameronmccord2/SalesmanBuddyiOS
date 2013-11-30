@@ -62,7 +62,7 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)connectionProgress:(NSNumber *)progress total:(NSNumber *)total{
+-(void)connectionUploadProgress:(NSNumber *)progress total:(NSNumber *)total{
     if (self.progress == nil) {
         self.progress = [NSProgress progressWithTotalUnitCount:total.longValue];
     }
