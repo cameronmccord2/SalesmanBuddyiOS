@@ -7,21 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSURLConnectionWithExtras.h"
 
-@interface CallQueue : NSObject{
+@protocol DAOManagerDelegateProtocal;
 
-}
+@interface CallQueue : NSObject
 
 @property(nonatomic)BOOL alreadySent;
-@property(nonatomic, strong)id delegate;
+@property(nonatomic, strong)id<DAOManagerDelegateProtocal> delegate;
 @property(nonatomic, strong)NSMutableURLRequest *request;
 @property(nonatomic, strong)NSDictionary *body;
 @property(nonatomic, copy)void (^success)(NSData *, void(^)());
 @property(nonatomic, copy)void (^error)(NSData *, NSError *, void(^)());
-@property(nonatomic, copy)void (^then)(NSData *);
-@property(nonatomic, copy)void (^progress)(NSProgress *);
+@property(nonatomic, copy)void (^then)(NSData *, NSURLConnectionWithExtras *, NSProgress *);
 
++(instancetype)initWithRequest:(NSMutableURLRequest *)request body:(NSDictionary *)body authDelegate:(id<DAOManagerDelegateProtocal>)authDelegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
--(id)initQueueItem:(NSMutableURLRequest *)newRequest body:(NSDictionary *)newBody delegate:(id)newDelegate;
-+(instancetype)initWithRequest:(NSMutableURLRequest *)request body:(NSDictionary *)body delegate:(id)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *))then progress:(void (^)(NSProgress *))progress;
 @end

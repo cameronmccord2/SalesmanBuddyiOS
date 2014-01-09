@@ -18,6 +18,6 @@
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message useUploadProgress:(BOOL)useUploadProgress;
 -(void)dismiss;
--(void)uploadProgress:(NSNumber *)progress total:(NSNumber *)total;
+-(void)connectionUploadProgress:(NSNumber *)progress total:(NSNumber *)total;
 
 @end

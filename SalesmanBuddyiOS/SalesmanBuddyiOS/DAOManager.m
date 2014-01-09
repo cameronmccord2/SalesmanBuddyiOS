@@ -7,27 +7,11 @@
 //
 
 #import "DAOManager.h"
-#import "NSURLConnectionWithExtras.h"
-#import "CallQueue.h"
-#import "NewUserModalViewController.h"
-#import "Dealership.h"
-#import "State.h"
-#import "StateQuestions.h"
-#import "NSURLAdditions.h"
-#import "NSStringAdditions.h"
+
 
 @implementation DAOManager
 
-NSString *baseUrl = @"http://salesmanbuddytest1.elasticbeanstalk.com/v1/salesmanbuddy/";
-NSString *licensesUrl = @"licenses";
-NSString *statesUrl = @"states";
-NSString *dealershipsUrl = @"dealerships";
-NSString *userExistsUrl = @"userExists";
-NSString *contactInfoUrl = @"contactinfo";
-NSString *licenseImageUrl = @"licenseimage";
-NSString *stateQuestionsUrl = @"statequestions";
-NSString *saveImageUrl = @"savedata";
-NSString *confirmUserUrl = @"userExists";
+
 
 +(DAOManager *)sharedManager{
     static DAOManager *sharedManager;
@@ -42,42 +26,15 @@ NSString *confirmUserUrl = @"userExists";
 -(id)init{
     self = [super init];
     if (self) {
-        self.kKeychainItemName = @"SalesmanCompanionKeyV02";// set to nil to have the user login every time the app loads
-        self.kMyClientID = @"38235450166-dgbh1m7aaab7kopia2upsdj314odp8fc.apps.googleusercontent.com";     // pre-assigned by service
-        self.kMyClientSecret = @"zC738ZbMHopT2C1cyKiKDBQ6"; // pre-assigned by service
-        self.scope = @"https://www.googleapis.com/auth/plus.me"; // scope for Google+ API
+        self.scope = @"";
         self.error = @"";
-        
         callQueue = [[NSMutableArray alloc] init];
         tryingToAuthenticate = false;
         blockingRequestRunning = false;
         currentUniqueTag = 1000;
         dataFromConnectionByTag = [[NSMutableDictionary alloc] init];
         connections = [[NSMutableDictionary alloc] init];
-        licenses = [[NSMutableArray alloc] init];
-        
         connectionNumber = [NSDecimalNumber zero];
-        typeLicenses = [[NSDecimalNumber alloc] initWithInt:1];
-        typeOther = [[NSDecimalNumber alloc] initWithInt:2];
-        typeUserExists = [[NSDecimalNumber alloc] initWithInt:3];
-        typeDealerships = [[NSDecimalNumber alloc] initWithInt:4];
-        typeContactInfo = [[NSDecimalNumber alloc] initWithInt:5];
-        typeLicenseImage = [[NSDecimalNumber alloc] initWithInt:6];
-        typeStateQuestions = [[NSDecimalNumber alloc] initWithInt:7];
-        typeStates = [[NSDecimalNumber alloc] initWithInt:8];
-        typeSubmitContactInfo = [[NSDecimalNumber alloc] initWithInt:9];
-        typeSubmitLicense = [[NSDecimalNumber alloc] initWithInt:10];
-        typeSubmitNewUser = [[NSDecimalNumber alloc] initWithInt:11];
-        typeSubmitImageData = [[NSDecimalNumber alloc] initWithInt:12];
-        typeConfirmUser = [[NSDecimalNumber alloc] initWithInt:13];
-        typeDeleteLicenseById = [[NSDecimalNumber alloc] initWithInt:14];
-        typeSubmitLicenseUpdate = [[NSDecimalNumber alloc] initWithInt:15];
-        
-        NSLog(@"going to get the current location");
-        [self getLocation];
-        
-//        NSLog(@"going to confirm user");
-//        [self confirmUser];
     }
     return self;
 }
@@ -92,30 +49,116 @@ NSString *confirmUserUrl = @"userExists";
     return connectionNumber;
 }
 
--(User *)getUser{
-    return self.user;
-}
-
--(CLLocationCoordinate2D)getLocation{
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = kCLDistanceFilterNone;
-    [locationManager startUpdatingLocation];
-    CLLocation *location = [locationManager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    [locationManager stopUpdatingLocation];
-    return coordinate;
+-(void)addAuthScope:(NSString *)newScope{
+    if (self.scope.length > 0)
+        self.scope = [NSString stringWithFormat:@"%@ ", self.scope];// add a space
+    self.scope = [NSString stringWithFormat:@"%@%@", self.scope, newScope];
 }
 
 
-#pragma mark - Put Functions
 
-//Post function
--(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSURL *)url body:(NSDictionary *)bodyData finalDelegate:(id)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *))then progress:(void (^)(NSProgress *))progress{
+#pragma mark - Block Templates
+
+-(void (^)(NSData *, NSError *, void(^)()))errorTemplateForDelegate:(id)delegate selectorOnError:(SEL)errorSelector{
+    
+    void(^error)(NSData *, NSError *, void(^)()) = ^void(NSData *data, NSError *error, void(^cleanUp)()){
+        if (error == nil) {
+            NSLog(@"error was nil in error template, this shouldnt ever happen");
+        }
+        if (errorSelector == nil) {
+            NSLog(@"There was no error selector specified for delegate: %@. This error template function doesn't do anything without a selector.", delegate);
+            return;
+        }
+        
+        if ([delegate respondsToSelector:errorSelector]) {
+            NSLog(@"responds to selector");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [delegate performSelector:errorSelector withObject:data withObject:error];
+#pragma clang diagnostic pop
+        }else
+            NSLog(@"cannot send deletedLicenseWithId to delegate");
+        cleanUp();
+    };
+    return error;
+}
+
+
+-(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))thenTemplateForDelegate:(id)delegate selectorOnThen:(SEL)thenSelector{
+    void(^then)(NSData *, NSURLConnectionWithExtras *, NSProgress *) = ^void(NSData *data, NSURLConnectionWithExtras *connection, NSProgress *nsProgress){
+        if (thenSelector == nil) {
+            NSLog(@"There was no then selector specified for the delegate: %@. This then template function doesn't do anything without a selector", delegate);
+            return;
+        }
+        if ([delegate respondsToSelector:thenSelector]) {
+            NSLog(@"responds to then selector");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [delegate performSelector:thenSelector withObject:connection withObject:nsProgress];
+#pragma clang diagnostic pop
+        }else
+            NSLog(@"Delegate can't respond to the then selector. The then selector needs to accept an %@ and %@", [connection class], [nsProgress class]);
+    };
+    return then;
+}
+
+-(void (^)(NSData *, void(^cleanUp)()))successTemplateForDelegate:(id)delegate selectorOnSuccess:(SEL)successSelector parseClass:(Class)parseClass resultIsArray:(BOOL)resultIsArray{
+    
+    SEL parseJsonArraySelector = @selector(arrayFromDictionaryList:);
+    
+    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
+        NSError *e = nil;
+        if (resultIsArray) {
+            NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
+            NSLog(@"got Array");
+            if (e != nil) {
+                [self doJsonError:data error:e];
+            }else if ([delegate respondsToSelector:successSelector]) {
+                NSLog(@"responds to success selector");
+                if ([parseClass respondsToSelector:parseJsonArraySelector]) {
+                    NSLog(@"parseClass responds to selector: %@", NSStringFromSelector(parseJsonArraySelector));
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                    NSArray *array = [parseClass performSelector:parseJsonArraySelector withObject:jsonArray];
+                    NSLog(@"parsed list");
+                    [delegate performSelector:successSelector withObject:array];
+#pragma clang diagnostic pop
+                }else
+                    NSLog(@"parseClass cannot respond to parseJsonArray:, class: %@", parseClass);
+            }else
+                NSLog(@"cannot send list to delegate, doesnt repond to the specified successSelector: %@", NSStringFromSelector(successSelector));
+        }else{
+            NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
+            NSLog(@"got Dictionary");
+            if (e != nil) {
+                [self doJsonError:data error:e];
+            }else if ([delegate respondsToSelector:successSelector]) {
+                NSLog(@"responds to success selector");
+                if ([parseClass respondsToSelector:@selector(initWithDictionary:)]) {
+                    NSLog(@"parse classresponds to initWithDictionary:");
+                    NSLog(@"parsed contact info");
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                    [delegate performSelector:successSelector withObject:[[parseClass alloc] initWithDictionary:d]];
+#pragma clang diagnostic pop
+                }else
+                    NSLog(@"delegate: %@, cant respond to selector: initWithDictionary:", delegate);
+            }else
+                NSLog(@"cannot send contactInfo to delegate");
+        }
+        cleanUp();
+    };
+    return success;
+}
+
+
+
+#pragma mark - Generic Functions
+
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url body:(NSDictionary *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
     NSLog(@"making post request, %@", bodyData);
     NSError *e = nil;
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [req setHTTPMethod:verb];
     if(bodyData){
         NSData *postData = [NSJSONSerialization dataWithJSONObject:bodyData options:0 error:&e];
@@ -126,367 +169,32 @@ NSString *confirmUserUrl = @"userExists";
     if (e != nil) {
         NSLog(@"make post reuqest error: %@", e.localizedDescription);
     }else{
-        [callQueue addObject:[CallQueue initWithRequest:req body:bodyData delegate:delegate success:success error:error then:then progress:progress]];
+        [callQueue addObject:[CallQueue initWithRequest:req body:bodyData authDelegate:delegate success:success error:error then:then]];
         [self makeAuthViableAndExecuteCallQueue:delegate];
     }
 }
 
--(void)confirmUser{
-    NSLog(@"confirming user");
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, confirmUserUrl]];
-    User *user = [[User alloc] init];
-    user.deviceType = 1;
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got user");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else{
-            blockingRequestRunning = false;
-            self.user = [[User alloc] initWithDictionary:d];
-            NSLog(@"unblocking requests");
-            NSLog(@"%@", d);
-//            if([delegate respondsToSelector:@selector(user:)]){
-//                NSLog(@"responds to selector: user");
-//                User *user = [[User alloc] initWithDictionary:d];
-//                [delegate performSelector:@selector(user:) withObject:user];
-//            }
-        }
-        cleanUp();
-    };
-    
-    blockingRequestRunning = YES;
-    
-    [self makeRequestWithVerb:@"PUT" forUrl:url body:[User dictionaryFromUser:user] finalDelegate:self success:success error:nil then:nil progress:nil];
-}
-
--(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id)delegate{
-    NSError *error = nil;
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, saveImageUrl]];
-    url = [url URLByAppendingQueryStringKey:@"stateid" value:[NSString stringWithFormat:@"%ld", (long)stateId]];
-    url = [url URLByAppendingQueryStringKey:@"base64" value:[NSString stringWithFormat:@"1"]];
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    [req setHTTPMethod:@"PUT"];
-    if(bodyData){
-        [req setValue:[NSString stringWithFormat:@"%d", [bodyData length]] forHTTPHeaderField:@"Content-Length"];
-        [req setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
-        [req setHTTPBody:bodyData];
-    }
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got finished info");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(finishedPhoto:)]) {
-            NSLog(@"responds to selector");
-            FinishedPhoto *finishedPhoto = [[FinishedPhoto alloc] initWithDictionary:d];
-            NSLog(@"parsed finished photo");
-            [delegate performSelector:@selector(finishedPhoto:) withObject:finishedPhoto];
-        }else
-            NSLog(@"cannot send finishedPhoto to delegate");
-        cleanUp();
-    };
-    
-    if(error)
-        NSLog(@"%@", error);
-    else{
-        NSLog(@"putting image");
-        [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
-        [self makeAuthViableAndExecuteCallQueue:delegate];
-    }
-}
-
--(void)putLicense:(License *)license forDelegate:(id)delegate{
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl]];
-    NSLog(@"%@", [License dictionaryFromLicense:license]);
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got license");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if([delegate respondsToSelector:@selector(finishedSubmitLicense:)]){
-            NSLog(@"responds to selector: finishedSubmitLicense");
-            License *license = [[License alloc] initWithDictionary:d];
-            [delegate performSelector:@selector(finishedSubmitLicense:) withObject:license];
-        }else
-            NSLog(@"cant respond to selector finishedSubmitLicense:");
-        cleanUp();
-    };
-    
-    [self makeRequestWithVerb:@"PUT" forUrl:url body:[License dictionaryFromLicense:license] finalDelegate:delegate success:success error:nil then:nil progress:nil];
-}
-
--(void)putContactInfo:(ContactInfo *)contactInfo forDelegate:(id)delegate{
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, contactInfoUrl]];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got license");
-        if (e != nil) {
-           [self doJsonError:data error:e];
-        }else if([delegate respondsToSelector:@selector(finishedSubmitLicense:)]){
-            NSLog(@"responds to selector: finishedSubmitLicense");
-            License *license = [[License alloc] initWithDictionary:d];
-            [delegate performSelector:@selector(finishedSubmitLicense:) withObject:license];
-        }else
-            NSLog(@"cant respond to selector finishedSubmitLicense:");
-        cleanUp();
-    };
-    
-    [self makeRequestWithVerb:@"PUT" forUrl:url body:[ContactInfo dictionaryFromContactInfo:contactInfo] finalDelegate:delegate success:success error:nil then:nil progress:nil];
-}
-
-
-#pragma mark - Post Functions
-
--(void)updateLicense:(License *)license forDelegate:(id)delegate{
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl]];
-    NSLog(@"%@", [License dictionaryFromLicense:license]);
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got updatedLicense");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(updatedLicense:)]) {
-            NSLog(@"responds to selector updatedLicense");
-            License *license = [[License alloc] initWithDictionary:d];
-            NSLog(@"parsed updatedLicense");
-            [delegate performSelector:@selector(updatedLicense:) withObject:license];
-        }else
-            NSLog(@"cannot send updatedLicense to delegate");
-        cleanUp();
-    };
-    
-    [self makeRequestWithVerb:@"POST" forUrl:url body:[License dictionaryFromLicense:license] finalDelegate:delegate success:success error:nil then:nil progress:nil];
-}
-
-
-#pragma mark - Delete Functions
-
--(void)deleteLicenseById:(NSInteger)licenseId forDelegate:(id)delegate{
-    NSError *error = nil;
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl]];
-    url = [url URLByAppendingQueryStringKey:@"licenseid" value:[NSString stringWithFormat:@"%ld", (long)licenseId]];
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-    [req setHTTPMethod:@"DELETE"];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got deletedLicenseWithId");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(deletedLicenseWithId:)]) {
-            NSLog(@"responds to selector");
-            DeleteLicenseResponse *deleteLicenseResponse = [[DeleteLicenseResponse alloc] initWithDictionary:d];
-            NSLog(@"parsed deletedLicenseWithId");
-            [delegate performSelector:@selector(deletedLicenseWithId:) withObject:deleteLicenseResponse];
-        }else
-            NSLog(@"cannot send deletedLicenseWithId to delegate");
-        cleanUp();
-    };
-    
-    if(error)
-        NSLog(@"%@", error);
-    else{
-        [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
-        [self makeAuthViableAndExecuteCallQueue:delegate];
-    }
-}
-
-
-
-#pragma mark - Get Functions
-
--(void)genericGetFunctionForDelegate:(id)delegate forSpecificUrlString:(NSString *)urlPiece success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *))then progress:(void (^)(NSProgress *))progress{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, urlPiece]];
+-(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", urlString]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-//    [callQueue addObject:[[CallQueue alloc] initQueueItem:req type:type body:nil delegate:delegate]];
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:error then:then progress:progress]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
-//    [self doFetchQueue];
-}
-
--(void)getLicensesForDelegate:(id)delegate{
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"made json array for licenses");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(licenses:)]) {
-            NSLog(@"responds to selector licenses");
-            NSMutableArray *licenses1 = [License parseJsonArray:jsonArray];
-            NSLog(@"parsed licenses: %ld", (long)licenses1.count);
-            [delegate performSelector:@selector(licenses:) withObject:licenses1];
-        }else
-            NSLog(@"cannot send licenses to delegate");
-        cleanUp();
-    };
-    [self genericGetFunctionForDelegate:delegate forSpecificUrlString:licensesUrl success:success error:nil then:nil progress:nil];
-}
-
--(void)getStates:(id)delegate{
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got states");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(states:)]) {
-            NSLog(@"responds to selector");
-            NSArray *states = [State parseJsonArray:jsonArray];
-            NSLog(@"parsed states");
-            [delegate performSelector:@selector(states:) withObject:states];
-        }else
-            NSLog(@"cannot send states to delegate");
-        cleanUp();
-    };
-    [self genericGetFunctionForDelegate:delegate forSpecificUrlString:statesUrl success:success error:nil then:nil progress:nil];
-}
-
--(void)getDealerships:(id)delegate{
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got dealerships");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(dealerships:)]) {
-            NSLog(@"responds to selector");
-            NSArray *dealerships = [Dealership parseJsonArray:jsonArray];
-            NSLog(@"parsed dealerships");
-            [delegate performSelector:@selector(dealerships:) withObject:dealerships];
-        }else
-            NSLog(@"cannot send dealerships to delegate");
-        cleanUp();
-    };
-    [self genericGetFunctionForDelegate:delegate forSpecificUrlString:dealershipsUrl success:success error:nil then:nil progress:nil];
-}
-
--(void)getUserExists:(id)delegate{
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got user");
-        if (e != nil) {
-           [self doJsonError:data error:e];
-        }else if([delegate respondsToSelector:@selector(user:)]){
-            NSLog(@"responds to selector: user");
-            User *user = [[User alloc] initWithDictionary:d];
-            [delegate performSelector:@selector(user:) withObject:user];
-        }else
-            NSLog(@"cant respond to selector user:");
-        cleanUp();
-    };
-    [self genericGetFunctionForDelegate:delegate forSpecificUrlString:userExistsUrl success:success error:nil then:nil progress:nil];
-}
-
--(void)getContactInfoByContactInfoId:(NSInteger)contactInfoId forDelegate:(id)delegate{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, contactInfoUrl]];
-    url = [url URLByAppendingQueryStringKey:@"contactinfoid" value:[NSString stringWithFormat:@"%ld", (long)contactInfoId]];
-    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got contact info");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(contactInfo:)]) {
-            NSLog(@"responds to selector");
-            ContactInfo *contactInfo = [[ContactInfo alloc] initWithDictionary:d];
-            NSLog(@"parsed contact info");
-            [delegate performSelector:@selector(contactInfo:) withObject:contactInfo];
-        }else
-            NSLog(@"cannot send contactInfo to delegate");
-        cleanUp();
-    };
-    
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
+    [callQueue addObject:[CallQueue initWithRequest:req body:nil authDelegate:delegate success:success error:error then:then]];
     [self makeAuthViableAndExecuteCallQueue:delegate];
 }
 
--(void)getContactInfoByLicenseId:(NSInteger)licenseId forDelegate:(id)delegate{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, contactInfoUrl]];
-    url = [url URLByAppendingQueryStringKey:@"licenseid" value:[NSString stringWithFormat:@"%ld", (long)licenseId]];
-    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSDictionary *d = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got contact info");
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(contactInfo:)]) {
-            NSLog(@"responds to selector");
-            ContactInfo *contactInfo = [[ContactInfo alloc] initWithDictionary:d];
-            NSLog(@"parsed contact info");
-            [delegate performSelector:@selector(contactInfo:) withObject:contactInfo];
-        }else
-            NSLog(@"cannot send contactInfo to delegate");
-        cleanUp();
-    };
-    
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+-(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass{
+    [self genericGetFunctionForDelegate:delegate forUrlString:url success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:YES] error:nil then:nil];
 }
 
--(void)getLicenseImageForLicenseId:(NSInteger)licenseId forDelegate:(id)delegate{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, licenseImageUrl]];
-    url = [url URLByAppendingQueryStringKey:@"licenseid" value:[NSString stringWithFormat:@"%ld", (long)licenseId]];
-    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        if ([delegate respondsToSelector:@selector(imageData:)]) {
-            NSLog(@"responds to selector, imageData");
-            [delegate performSelector:@selector(imageData:) withObject:data];
-        }else
-            NSLog(@"cannot send delegate selector: imageData");
-        cleanUp();
-    };
-    
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
-}
-
--(void)getStateQuestionsForStateId:(NSInteger)stateId forDelegate:(id)delegate{
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, stateQuestionsUrl]];
-    url = [url URLByAppendingQueryStringKey:@"stateid" value:[NSString stringWithFormat:@"%ld", (long)stateId]];
-    NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    
-    void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
-        NSError *e = nil;
-        NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:&e];
-        NSLog(@"got state questions, %@", jsonArray);
-        if (e != nil) {
-            [self doJsonError:data error:e];
-        }else if ([delegate respondsToSelector:@selector(stateQuestions:)]) {
-            NSLog(@"responds to selector");
-            NSArray *array = [StateQuestions parseJsonArray:jsonArray];
-            NSLog(@"parsed stateQuestions: %ld", (long)array.count);
-            [delegate performSelector:@selector(stateQuestions:) withObject:array];
-        }else
-            NSLog(@"cannot send stateQuestions to delegate");
-
-        cleanUp();
-    };
-    
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil delegate:delegate success:success error:nil then:nil progress:nil]];
-    [self makeAuthViableAndExecuteCallQueue:delegate];
+-(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass{
+    [self genericGetFunctionForDelegate:delegate forUrlString:url success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:NO] error:nil then:nil];
 }
 
 
 #pragma mark - Fetch Queue
+
+-(void)runRequestQueue{
+    [self doFetchQueue];
+}
 
 -(void)doFetchQueue{
     NSLog(@"doing fetch queue");
@@ -514,14 +222,13 @@ NSString *confirmUserUrl = @"userExists";
                 NSLog(@"auth authorized");
                 tryingToAuthenticate = false;
                 [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
-//                NSURLConnectionWithTag *connectionObject = [[NSURLConnectionWithTag alloc]initWithRequest:cq.request delegate:self startImmediately:YES typeTag:cq.type uniqueTag:connectionNumber finalDelegate:cq.delegate];
-                NSURLConnectionWithExtras *connectionObject = [NSURLConnectionWithExtras connectionWithRequest:cq.request delegate:self startImmediately:YES uniqueTag:[self getConnectionNumber] finalDelegate:cq.delegate success:cq.success error:cq.error then:cq.then progress:cq.progress];
+                
+                NSURLConnectionWithExtras *connectionObject = [NSURLConnectionWithExtras connectionWithRequest:cq.request delegate:self startImmediately:YES uniqueTag:[self getConnectionNumber] finalDelegate:cq.delegate success:cq.success error:cq.error then:cq.then];
                 [connections setObject:connectionObject forKey:connectionNumber];
                 
-                if ([cq.delegate respondsToSelector:@selector(connectionObject:)]) {// give back connection object so it can be canceled
-                    [cq.delegate performSelector:@selector(connectionObject:) withObject:connectionObject];
-                }else
-                    NSLog(@"doesnt respond to connectionObject:");
+                
+                [self doThenWithData:nil connection:connectionObject];// hand back the connection object so it can be canceled if desired
+                
                 [self doFetchQueue];
             }else{
                 NSLog(@"failed to authorize request, %@", error.localizedDescription);
@@ -546,9 +253,33 @@ NSString *confirmUserUrl = @"userExists";
     [p parse];
 }
 
+
+#pragma mark - Execute block convenience functions
+
+-(void)doThenWithData:(NSData *)data connection:(NSURLConnectionWithExtras *)connection{
+    if (connection.then != nil) {
+        connection.then(data, connection, connection.nsProgress);
+    }
+}
+
+-(void)doErrorWithData:(NSData *)data error:(NSError *)error forConnection:(NSURLConnectionWithExtras *)connection{
+    if (data == nil) {
+        data = [dataFromConnectionByTag objectForKey:connection.uniqueTag];
+    }
+    void (^cleanUp)() = ^void(){
+        [dataFromConnectionByTag removeObjectForKey:connection.uniqueTag]; // after done using the data, remove it
+        [connections removeObjectForKey:connection.uniqueTag];// remove the connection
+        [self doFetchQueue];
+    };
+    
+    if (connection.error != nil) {
+        connection.error(data, error, cleanUp);
+    }
+}
+
 #pragma mark - Connection Handling
 -(void)connection:(NSURLConnectionWithExtras *)connection didReceiveData:(NSData *)data{
-    NSLog(@"saving data for unique tag: %@", connection.uniqueTag);
+    //    NSLog(@"saving data for unique tag: %@", connection.uniqueTag);
     if ([dataFromConnectionByTag objectForKey:connection.uniqueTag] == nil) {
         NSMutableData *newData = [[NSMutableData alloc] initWithData:data];
         [dataFromConnectionByTag setObject:newData forKey:connection.uniqueTag];
@@ -558,41 +289,37 @@ NSString *confirmUserUrl = @"userExists";
         [[dataFromConnectionByTag objectForKey:connection.uniqueTag] appendData:data];
         
         connection.nsProgress.completedUnitCount += data.length;
-        connection.progress(connection.nsProgress);
+        [self doThenWithData:[dataFromConnectionByTag objectForKey:connection.uniqueTag] connection:connection];
     }
 }
 
 - (void)connection:(NSURLConnectionWithExtras *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite{// for upload progress
     connection.nsProgress.totalUnitCount = totalBytesExpectedToWrite;
     connection.nsProgress.completedUnitCount = totalBytesWritten;
-    if (connection.progress != nil) {
-        connection.progress(connection.nsProgress);
-    }
+    [self doThenWithData:[dataFromConnectionByTag objectForKey:connection.uniqueTag] connection:connection];
 }
 
 - (void) connection:(NSURLConnectionWithExtras *)connection didReceiveResponse:(NSURLResponse *)response{
     NSLog(@"did recieve response");
     if([response isKindOfClass:[NSHTTPURLResponse class]]){
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-        int status = [httpResponse statusCode];
-        if ([connection.typeTag isEqualToNumber:typeUserExists]) {
-            if (status == 403) {
-                NSLog(@"recieved status unauthorized for typeUserExists");
-                [connection cancel];
-                if ([connection.finalDelegate respondsToSelector:@selector(showAuthModal:)]) {
-                    NewUserModalViewController *rootViewController = [[NewUserModalViewController alloc] initWithNibName:nil bundle:nil];
-                    UINavigationController *viewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-                    [connection.finalDelegate performSelector:@selector(showAuthModal:) withObject:viewController];
-                }else
-                    NSLog(@"cant load new user modal");
-            }
-        }
+        [connection setStatusCodeForNow:[httpResponse statusCode]];
+        //        if ([connection.typeTag isEqualToNumber:typeUserExists]) {
+        //            if (status == 403) {
+        //                NSLog(@"recieved status unauthorized for typeUserExists");
+        //                [connection cancel];
+        //                if ([connection.finalDelegate respondsToSelector:@selector(showAuthModal:)]) {
+        //                    NewUserModalViewController *rootViewController = [[NewUserModalViewController alloc] initWithNibName:nil bundle:nil];
+        //                    UINavigationController *viewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+        //                    [connection.finalDelegate performSelector:@selector(showAuthModal:) withObject:viewController];
+        //                }else
+        //                    NSLog(@"cant load new user modal");
+        //            }
+        //        }
         
         // NSProgress
         connection.nsProgress.totalUnitCount = response.expectedContentLength;
-        if (connection.progress != nil) {
-            connection.progress(connection.nsProgress);
-        }
+        [self doThenWithData:[dataFromConnectionByTag objectForKey:connection.uniqueTag] connection:connection];
     }
 }
 
@@ -611,13 +338,22 @@ NSString *confirmUserUrl = @"userExists";
         conn.success(data, cleanUp);
     }
     if (conn.then != nil) {
-        conn.then(data);
-    }
-    if (conn.progress != nil) {
         conn.nsProgress.completedUnitCount = conn.nsProgress.totalUnitCount;
-        conn.progress(conn.nsProgress);
+        conn.then(data, conn, conn.nsProgress);
     }
 }
+
+-(void)connection:(NSURLConnectionWithExtras *)conn didFailWithError:(NSError *)error{
+    [self doErrorWithData:nil error:error forConnection:conn];
+    
+    // DO A GLOBAL ERROR HANDLER FOR NOW FOR MY DAO
+    
+    NSString *errorString = [NSString stringWithFormat:@"Fetch  failed for url: %@, error: %@", conn.originalRequest.URL.absoluteString, [error localizedDescription]];
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [av show];
+}
+
+#pragma mark - XML Parser error functions
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
     self.error = [NSString stringWithFormat:@"%@, %@", self.error, string];
@@ -628,31 +364,9 @@ NSString *confirmUserUrl = @"userExists";
     self.error = @"";
 }
 
--(void)connection:(NSURLConnectionWithExtras *)conn didFailWithError:(NSError *)error{
-    
-    void (^cleanUp)() = ^void(){
-        [dataFromConnectionByTag removeObjectForKey:conn.uniqueTag]; // after done using the data, remove it
-        [connections removeObjectForKey:conn.uniqueTag];// remove the connection
-        [self doFetchQueue];
-    };
-    
-    if (conn.error != nil) {
-        conn.error([dataFromConnectionByTag objectForKey:conn.uniqueTag], error, cleanUp);
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    // DO A GLOBAL ERROR HANDLER FOR NOW FOR MY DAO
-    
-    NSString *errorString = [NSString stringWithFormat:@"Fetch  failed for url: %@, error: %@", conn.originalRequest.URL.absoluteString, [error localizedDescription]];
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [av show];
-}
+
+
+
 
 
 #pragma mark - Google oauth2 stuffd
@@ -711,7 +425,7 @@ NSString *confirmUserUrl = @"userExists";
                                                                  clientSecret:self.kMyClientSecret];
     }else
         auth = self.auth;
-//    [self signOutOfGoogle];
+    //    [self signOutOfGoogle];
     auth.shouldAuthorizeAllRequests = true;
     // We can determine later if the auth object contains an access token by calling its -canAuthorize method
     if (![auth canAuthorize]) {
@@ -724,7 +438,7 @@ NSString *confirmUserUrl = @"userExists";
     }
 }
 
--(void)signOutOfGoogle{
+-(void)signOut{
     NSLog(@"signing out");
     [GTMOAuth2ViewControllerTouch removeAuthFromKeychainForName:self.kKeychainItemName];
     [GTMOAuth2ViewControllerTouch revokeTokenForGoogleAuthentication:self.auth];

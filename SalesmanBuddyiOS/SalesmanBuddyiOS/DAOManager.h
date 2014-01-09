@@ -9,32 +9,31 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 #import "GTMOAuth2ViewControllerTouch.h"
-#import "ContactInfo.h"
-#import "User.h"
-#import "License.h"
-#import "FinishedPhoto.h"
-#import "DeleteLicenseResponse.h"
-//#import "MTCAuthManager.h"
+#import "NSURLConnectionWithExtras.h"
+#import "NSURLAdditions.h"
+#import "NSStringAdditions.h"
+#import "Random.h"
+#import "CallQueue.h"
+
+@protocol DAOManagerDelegateProtocol <NSObject>
+
+-(void)showAuthModal:(UIViewController *)viewController;
+-(void)dismissAuthModal:(UIViewController *)viewController;
+
+@end
+
+@protocol DAOManagerParseObjectProtocol <NSObject>
+
+@optional
+
++(void)arrayFromDictionaryList:(NSArray *)array;
+-(instancetype)initWithDictionary:(NSDictionary *)d;
+
+@end
 
 @interface DAOManager : NSObject<CLLocationManagerDelegate, NSXMLParserDelegate>{
-    NSMutableArray *licenses;
     NSMutableArray *callQueue;
     NSDecimalNumber *connectionNumber;
-    NSNumber *typeLicenses;
-    NSNumber *typeOther;
-    NSNumber *typeUserExists;
-    NSNumber *typeDealerships;
-    NSNumber *typeContactInfo;
-    NSNumber *typeLicenseImage;
-    NSNumber *typeStateQuestions;
-    NSNumber *typeStates;
-    NSNumber *typeSubmitNewUser;
-    NSNumber *typeSubmitLicense;
-    NSNumber *typeSubmitContactInfo;
-    NSNumber *typeSubmitImageData;
-    NSNumber *typeConfirmUser;
-    NSNumber *typeDeleteLicenseById;
-    NSNumber *typeSubmitLicenseUpdate;
     NSMutableDictionary *dataFromConnectionByTag;
     NSMutableDictionary *connections;
     BOOL tryingToAuthenticate;
@@ -47,31 +46,59 @@
 @property(nonatomic, strong)NSString *kMyClientID;
 @property(nonatomic, strong)NSString *kMyClientSecret;
 @property(nonatomic, strong)NSString *scope;
-@property(nonatomic, strong)User *user;
 @property(nonatomic, strong)NSString *error;
 @property(nonatomic, strong)NSXMLParser *parser;
 @property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
 
+/// Gets the shared manager of the DAO, There is only ever one instance of this.
+/// @return DAOManager's shared manager
 +(DAOManager *)sharedManager;
--(void)confirmUser;
--(User *)getUser;
--(CLLocationCoordinate2D)getLocation;
--(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id)delegate;
--(void)putLicense:(License *)license forDelegate:(id)delegate;
--(void)putContactInfo:(ContactInfo *)contactInfo forDelegate:(id)delegate;
--(void)deleteLicenseById:(NSInteger)licenseId forDelegate:(id)delegate;
--(void)genericGetFunctionForDelegate:(id)delegate forSpecificUrlString:(NSString *)urlPiece forType:(NSNumber *)type;
--(void)getLicensesForDelegate:(id)delegate;
--(void)getStates:(id)delegate;
--(void)getDealerships:(id)delegate;
--(void)getUserExists:(id)delegate;
--(void)getContactInfoByContactInfoId:(NSInteger)contactInfoId forDelegate:(id)delegate;
--(void)getContactInfoByLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
--(void)getLicenseImageForLicenseId:(NSInteger)licenseId forDelegate:(id)delegate;
--(void)getStateQuestionsForStateId:(NSInteger)stateId forDelegate:(id)delegate;
--(void)updateLicense:(License *)license forDelegate:(id)delegate;
 
--(NSInteger)getAUniqueTag;
+/// Generic GET function for DAOManager. All connection handling is behind the scenes.
+/// @param delegate Source timeline entity ID
+/// @param destId Destination timeline entity ID
+/// @param name Message name
+/// @return A newly created message instance
+-(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+
+/// Make an NSURLRequest with any verb. All connection handling is behind the scenes.
+/// @param verb Rest verb for the request: GET, PUT, POST, DELETE, etc.
+/// @param url The full url for the request including the http or https in NSString format.
+/// @param bodyData The data to be sent in the body already in a NSDictionary. This is for STRUCTURED data only such as JSON. NSData can only be sent with a new CallQueue request. Can be nil.
+/// @param authDelegate The delegate must conform to DAOManagerDelegateProtocol. This is so the delegate can show the login modal.
+/// @param success A block function that is called when the connection successfully completes. Can be nil.
+/// @param error A block function that is called when the connection errors. This function is called when connection:didFailWithError: is called by ios. Can be nil.
+/// @param then A block function that is called when the connection is created(data will be nil), when any response is recieved(status code gets set) or when didSendBodyData:, and when the connection closes in a non-error state. Can be nil.
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url body:(NSDictionary *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+
+/// Template error block function.
+/// @param delegate The delegate to send the specified selector to.
+/// @param errorSelector The selector to be performed on the delegate. Two objects are sent with the selector: NSData *, NSError *.
+-(void (^)(NSData *, NSError *, void(^)()))errorTemplateForDelegate:(id)delegate selectorOnError:(SEL)errorSelector;
+
+/// Template then block function
+/// @param delegate The delegate to send the specified selector to.
+/// @param thenSelector The selector to be performed on the delegate. Two objects are sent with the selector: NSURLConnectionWithExtras *, NSProgress *.
+-(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))thenTemplateForDelegate:(id)delegate selectorOnThen:(SEL)thenSelector;
+
+/// Runs the fetch queue. Blocking requests are run first, then all other requests in order of when they were recieved. Queue gets paused if requests cannot be authorized. Requests that came back 401 get added back to the queue in the order they were first recieved. Queue resumes when authentication gets resolved.
+-(void)runRequestQueue;
+
+/// Takes the data and runs it on an xml parser, removes the tags, and then prints it to the console. This is so an html error can be seen by humans.
+/// @param data The data to parse
+/// @param error The error's localizedDescription gets printed to the console with 'error deserializing json: ' on the front.
+-(void)doJsonError:(NSData *)data error:(NSError *)error;
+
+
+-(void)addAuthScope:(NSString *)newScope;
+-(void)signOut;
+
+
+
+
+-(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass;
+-(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass;
+-(void (^)(NSData *, void(^cleanUp)()))successTemplateForDelegate:(id)delegate selectorOnSuccess:(SEL)successSelector parseClass:(Class)parseClass resultIsArray:(BOOL)resultIsArray;
 
 
 // google callbacks
@@ -79,26 +106,72 @@
 
 @end
 
-@protocol DAOManagerDelegateProtocal <NSObject>
 
--(void)showAuthModal:(UIViewController *)viewController;
--(void)dismissAuthModal:(UIViewController *)viewController;
 
-@optional
--(void)licenses:(NSArray *)licenses;
--(void)stateQuestions:(NSArray *)stateQuestions;
--(void)contactInfo:(ContactInfo *)contactInfo;
--(void)dealerships:(NSArray *)dealerships;
--(void)states:(NSArray *)states;
--(void)user:(User *)user;
--(void)licenseImage:(NSData *)imageData;
--(void)finishedPhoto:(FinishedPhoto *)finishedPhoto;
--(void)finishedSubmitLicense:(License *)license;
--(void)deletedLicenseWithId:(DeleteLicenseResponse *)deleteLicenseResponse;
--(void)updatedLicense:(License *)updatedLicense;
--(void)imageData:(NSData *)data;
--(void)connectionDownloadProgress:(NSNumber *)progress total:(NSNumber *)total;
--(void)connectionUploadProgress:(NSNumber *)progress total:(NSNumber *)total;
--(void)connectionObject:(NSURLConnection *)connection;
 
-@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

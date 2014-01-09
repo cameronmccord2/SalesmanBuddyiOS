@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DAOManager.h"
+#import "SBDaoV1.h"
 
 @interface LicenseListViewController : UITableViewController <DAOManagerDelegateProtocal>
 @property(nonatomic, strong)NSManagedObjectContext *context;

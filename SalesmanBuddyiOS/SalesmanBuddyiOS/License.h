@@ -7,24 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ContactInfo.h"
 
 @interface License : NSObject
 
+/*
+ protected Integer id;
+ protected Date created;
+ protected Integer stateId;
+ //custom here
+ protected ArrayList<QuestionsAndAnswers> qaas;
+ */
+
 @property(nonatomic)NSInteger id;
-//@property(nonatomic)NSInteger showInUserList;
-@property(nonatomic, strong)NSString *photo;
 @property(nonatomic)NSInteger stateId;
 @property(nonatomic, strong)NSDate *created;
-@property(nonatomic)float longitude;
-@property(nonatomic)float latitude;
-//@property(nonatomic)NSInteger userId;
-@property(nonatomic, strong)ContactInfo *contactInfo;
-@property(nonatomic, strong)NSArray *stateQuestionsResponses;
+@property(nonatomic, strong)NSMutableArray *qaas;
 
 +(NSMutableArray *)parseJsonArray:(NSArray *)json;
 +(NSDictionary *)dictionaryFromLicense:(License *)license;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
+-(id)initWithQuestions:(NSArray *)questions;
 
 @end

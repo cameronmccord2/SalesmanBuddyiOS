@@ -10,12 +10,18 @@
 #import "License.h"
 #import "EditLicenseDetailsViewController.h"
 #import "LicenseTableViewCell.h"
+#import "LabelBoolCell.h"
+#import "LabelTextFieldCell.h"
+#import "QuestionAndAnswer.h"
 
 @interface LicenseListViewController ()
 
 @end
 
 NSString *CellIdentifier = @"LicenseTableViewCell";
+NSString *kLabelTextFieldCell = @"LabelTextFieldCell";
+NSString *kLabelBoolCell = @"LabelBoolCell";
+NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeiru qweporipoiuqwerasdfasdfasdfasdfasdfasdf opiuei  qwerp iqpoiue poi wqpeoriupoie  eiur qwer,zxc qer zxcv wer  c .e c    eqwr xc easdfasdf";
 
 @implementation LicenseListViewController
 
@@ -39,6 +45,10 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
     UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 52, 0);
     self.tableView.contentInset = inset;
     
+    // custom cells
+    [[self tableView] registerClass:[LabelTextFieldCell class] forCellReuseIdentifier:kLabelTextFieldCell];
+    [[self tableView] registerClass:[LabelBoolCell class] forCellReuseIdentifier:kLabelBoolCell];
+    
 //    NSArray *nibs = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
 //    UINib *nib = (UINib *)[nibs firstObject];
 //    [[self tableView] registerNib:nib forCellReuseIdentifier:CellIdentifier];
@@ -51,7 +61,7 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [[DAOManager sharedManager] getLicensesForDelegate:self];
+    [[SBDaoV1 sharedManager] getLicensesForDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -113,13 +123,31 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
     return [self.licenses count];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    int height = 0;
+    switch ([indexPath row] % 2) {
+        case 0:
+            height = [LabelTextFieldCell getCellHeightForLabelText:text];
+            break;
+            
+        case 1:
+            height = [LabelBoolCell getCellHeightForLabelText:[NSString stringWithFormat:@"bool, index: %ld, %@", (long)[indexPath row], text]];
+            
+        default:
+            
+            break;
+    }
+    NSLog(@"height: %ld", (long)height);
+    return height;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
-//    NSLog(@"count: %ld", (long)nib.count);
-//    NSLog(@"setting up cell");
+    NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
+    NSLog(@"count: %ld", (long)nib.count);
+    NSLog(@"setting up cell");
     LicenseTableViewCell *cell = (LicenseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSLog(@"made new cell");
+        NSLog(@"made new cell, this actually got hit!!!!!!!!!!!!!!!!!!!!");
         cell = [[LicenseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.name = [[UILabel alloc] initWithFrame:CGRectMake(7, 2, 206, 21)];
@@ -136,6 +164,8 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
         [accesoryView setImage:[UIImage imageNamed:@"blueArrow.png"]];
         [cell.contentView addSubview:accesoryView];
     }
+    
+    // Fix the flag thing on all cells
     int index = [indexPath row];
     License *l = [self.licenses objectAtIndex:index];
     [cell.name setText:[NSString stringWithFormat:@"%@, %@", l.contactInfo.lastName, l.contactInfo.firstName]];
@@ -145,8 +175,6 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
         [cell.flag setImage:[UIImage imageNamed:@"flagRed.png"]];
     else
         [cell.flag setImage:[UIImage imageNamed:@"flagGrey.png"]];
-    // Configure the cell...
-    
     return cell;
 }
 
@@ -163,7 +191,7 @@ NSString *CellIdentifier = @"LicenseTableViewCell";
         License *l = [self.licenses objectAtIndex:indexPath.row];
         NSLog(@"deleting license with id: %ld", (long)l.id);
         [self.licenses removeObjectAtIndex:indexPath.row];
-        [[DAOManager sharedManager] deleteLicenseById:l.id forDelegate:self];
+        [[SBDaoV1 sharedManager] deleteLicenseById:l.id forDelegate:self];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {

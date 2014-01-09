@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DAOManager.h"
+#import "SBDaoV1.h"
 #import "LoadingModalViewController.h"
 
 @interface EditLicenseDetailsViewController : UIViewController<DAOManagerDelegateProtocal, UITextFieldDelegate>{

@@ -7,7 +7,6 @@
 //
 
 #import "EditLicenseDetailsViewController.h"
-#import "StateQuestions.h"
 #import "LoadingModalViewController.h"
 
 @interface EditLicenseDetailsViewController ()
@@ -28,7 +27,7 @@
         viewHasLoaded = false;
         self.alert = nil;
         [self registerForKeyboardNotifications];
-        [[DAOManager sharedManager] getLicenseImageForLicenseId:self.license.id forDelegate:self];
+        [[SBDaoV1 sharedManager] getLicenseImageForLicenseId:self.license.id forDelegate:self];
     }
     return self;
 }
@@ -332,7 +331,7 @@ enum {
     self.loadingModal = [[LoadingModalViewController alloc] initWithTitle:@"Uploading" message:@"Please wait while we upload the photo and data." useUploadProgress:NO ];
     [self presentViewController:self.loadingModal animated:NO completion:nil];
     NSLog(@"%@", [License dictionaryFromLicense:self.license]);
-    [[DAOManager sharedManager] updateLicense:self.license forDelegate:self];
+    [[SBDaoV1 sharedManager] updateLicense:self.license forDelegate:self];
 }
 
 -(void)updatedLicense:(License *)updatedLicense{
@@ -342,11 +341,11 @@ enum {
 
 -(void)dismissView{
     NSLog(@"closing modal");
-    if ([self.delegate respondsToSelector:@selector(dismissThisViewController:)]) {
+    if ([self.delegate respondsToSelector:@selector(dismissAuthModal:)]) {
         if (self.imageConnection != nil) {
             [self.imageConnection cancel];
         }
-        [self.delegate performSelector:@selector(dismissThisViewController:) withObject:self];
+        [self.delegate performSelector:@selector(dismissAuthModal:) withObject:self];
     }else
         NSLog(@"Delegate cannot dismiss details modal");
 }

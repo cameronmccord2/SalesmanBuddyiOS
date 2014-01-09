@@ -61,7 +61,7 @@
     if (self.stateQuestions.count > 0)
         [self buildView];
     else
-        [[DAOManager sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
+        [[SBDaoV1 sharedManager] getStateQuestionsForStateId:44 forDelegate:self];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -342,7 +342,7 @@ enum {
         l.stateId = 44;
         self.contactInfo.stateId = 44;
         l.contactInfo = self.contactInfo;
-        CLLocationCoordinate2D coordinate = [[DAOManager sharedManager] getLocation];
+        CLLocationCoordinate2D coordinate = [[SBDaoV1 sharedManager] getLocation];
         l.longitude = coordinate.longitude;
         l.latitude = coordinate.latitude;
         l.stateQuestionsResponses = self.stateQuestions;
@@ -366,7 +366,7 @@ enum {
         [self presentViewController:self.loadingModal animated:NO completion:nil];
     }
     self.license.photo = self.finishedPhoto.filename;
-    [[DAOManager sharedManager] putLicense:self.license forDelegate:self];
+    [[SBDaoV1 sharedManager] putLicense:self.license forDelegate:self];
 }
 
 -(void)finishedPhoto:(FinishedPhoto *)finishedPhoto{
@@ -411,7 +411,7 @@ enum {
     //https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html#//apple_ref/c/tdef/NSDataBase64EncodingOptions
     NSData *data = [UIImageJPEGRepresentation(self.licenseImage, 1.0) base64EncodedDataWithOptions:NSDataBase64Encoding76CharacterLineLength];
     NSLog(@"first part: %lu", (unsigned long)data.length);
-    [[DAOManager sharedManager] putImage:data forStateId:44 forDelegate:self];
+    [[SBDaoV1 sharedManager] putImage:data forStateId:44 forDelegate:self];
     // set it to nil here?
     
     //image = [ImageHelpers imageWithImage:image scaledToSize:CGSizeMake(480, 640)];

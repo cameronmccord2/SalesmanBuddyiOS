@@ -8,18 +8,9 @@
 
 #import "License.h"
 #import "StateQuestions.h"
+#import "QuestionAndAnswer.h"
 
 @implementation License
-
-//@property(nonatomic)NSInteger id;
-//@property(nonatomic)NSInteger showInUserList;
-//@property(nonatomic, strong)NSString *photo;
-//@property(nonatomic)NSInteger bucketId;
-//@property(nonatomic, strong)NSDate *created;
-//@property(nonatomic)float longitude;
-//@property(nonatomic)float latitude;
-//@property(nonatomic)NSInteger userId;
-//@property(nonatomic, strong)ContactInfo *contactInfo;
 
 +(NSMutableArray *)parseJsonArray:(NSArray *)json{
     NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -33,7 +24,6 @@
     self = [super init];
     if (self) {
         self.id = [dictionary[@"id"] integerValue];
-        self.photo = dictionary[@"photo"];
 //        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 //        [dateFormat setDateFormat:@"yyyy-MM-dd"];
 //        self.created = [dateFormat dateFromString:dictionary[@"created"]];
@@ -41,8 +31,24 @@
 //        NSLog(@"from dictionary: %@", dictionary[@"created"]);
 //        NSLog(@"from formatter: %@", [dateFormat dateFromString:dictionary[@"created"]]);
         self.created = dictionary[@"created"];
-        self.contactInfo = [[ContactInfo alloc] initWithDictionary:dictionary[@"contactInfo"]];
-        self.stateQuestionsResponses = [StateQuestions parseJsonArray:dictionary[@"stateQuestions"]];
+        self.stateId = [dictionary[@"stateId"] integerValue];
+        self.qaas = [[QuestionAndAnswer arrayFromDictionaryList:dictionary[@"qaas"]] mutableCopy];
+    }
+    return self;
+}
+
+-(id)initWithQuestions:(NSArray *)questions{
+    self = [super init];
+    if (self) {
+        self.id = 0;
+        self.created = [NSDate date];
+        self.qaas = [[NSMutableArray alloc] initWithCapacity:[questions count]];
+        for (Question *q in questions) {
+            QuestionAndAnswer *qaa = [[QuestionAndAnswer alloc] init];
+            qaa.question = q;
+            qaa.answer = [[Answer alloc] initWithQuestion:q];
+            [self.qaas addObject:qaa];
+        }
     }
     return self;
 }
@@ -50,17 +56,39 @@
 +(NSDictionary *)dictionaryFromLicense:(License *)license{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
     [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
-    [d setValue:license.photo forKey:@"photo"];
     [d setValue:@(license.stateId) forKey:@"stateId"];
-    [d setValue:@(license.longitude) forKey:@"longitude"];// not for update
-    [d setValue:@(license.latitude) forKey:@"latitude"];// not for update
-    [d setObject:[ContactInfo dictionaryFromContactInfo:license.contactInfo] forKey:@"contactInfo"];
-    NSMutableArray *stateQuestionsResponses = [[NSMutableArray alloc] initWithCapacity:license.stateQuestionsResponses.count];
-    for (StateQuestions *sq in license.stateQuestionsResponses) {
-        [stateQuestionsResponses addObject:[StateQuestions dictionaryFromStateQuestions:sq]];
+    NSMutableArray *qaas = [[NSMutableArray alloc] initWithCapacity:license.qaas.count];
+    for (QuestionAndAnswer *qaa in license.qaas) {
+        [qaas addObject:[QuestionAndAnswer dictionaryFromQuestionAndAnswer:qaa]];
     }
-    [d setObject:stateQuestionsResponses forKey:@"stateQuestionsResponses"];
+    [d setObject:qaas forKey:@"qaas"];
     return d;
 }
 
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
