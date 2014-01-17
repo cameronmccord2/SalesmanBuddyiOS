@@ -11,12 +11,18 @@
 
 @interface NewLicenseListViewController : UITableViewController <SBDaoV1DelegateProtocol>
 
-//@property(nonatomic, strong)NSMutableArray *qaas;
+@property(nonatomic, strong)NSManagedObjectContext *managedObjectContext;
 @property(nonatomic, strong)License *license;
+@property(nonatomic, strong)id<SBDaoV1DelegateProtocol> delegate;
+@property(nonatomic, weak)NSURLConnectionWithExtras *imageConnection;
 
--(instancetype)initWithLicense:(License *)license;
+- (instancetype)initWithContext:(NSManagedObjectContext *)managedObjectContext license:(License *)license delegate:(id)delegate;
+
 -(void)questions:(NSArray *)questions;
 
 -(void)dismissAuthModal:(UIViewController *)viewController;
 -(void)showAuthModal:(UIViewController *)viewController;
+
+-(void)setTabBarSelectedIndex:(NSInteger)index;
+
 @end

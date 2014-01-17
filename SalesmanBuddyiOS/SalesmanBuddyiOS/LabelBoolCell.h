@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuestionAndAnswer.h"
 
 @interface LabelBoolCell : UITableViewCell
 
 @property(nonatomic, strong)NSString *reuseId;
 @property(nonatomic, strong)UILabel *label;
 @property(nonatomic, strong)UISwitch *cellSwitch;
+@property(nonatomic, strong)QuestionAndAnswer *qaa;
 
-+(NSInteger)getCellHeightForLabelText:(NSString *)labelText;
++(NSInteger)getCellHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa;
++(NSInteger)getEstimatedHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa;
 
--(void)setUpWithLabelText:(NSString *)labelText boolSetTo:(BOOL)boolIs;
+-(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa;
 
 @end

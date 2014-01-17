@@ -105,6 +105,7 @@
 -(void (^)(NSData *, void(^cleanUp)()))successTemplateForDelegate:(id)delegate selectorOnSuccess:(SEL)successSelector parseClass:(Class)parseClass resultIsArray:(BOOL)resultIsArray{
     
     SEL parseJsonArraySelector = @selector(arrayFromDictionaryList:);
+    SEL initObjectWithDictionary = @selector(initWithDictionary:);
     
     void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
         NSError *e = nil;
@@ -124,7 +125,7 @@
                     [delegate performSelector:successSelector withObject:array];
 #pragma clang diagnostic pop
                 }else
-                    NSLog(@"parseClass cannot respond to parseJsonArray:, class: %@", parseClass);
+                    NSLog(@"parseClass cannot respond to %@, class: %@", NSStringFromSelector(parseJsonArraySelector), parseClass);
             }else
                 NSLog(@"cannot send list to delegate, doesnt repond to the specified successSelector: %@", NSStringFromSelector(successSelector));
         }else{
@@ -134,7 +135,7 @@
                 [self doJsonError:data error:e];
             }else if ([delegate respondsToSelector:successSelector]) {
                 NSLog(@"responds to success selector");
-                if ([parseClass respondsToSelector:@selector(initWithDictionary:)]) {
+                if ([parseClass respondsToSelector:initObjectWithDictionary]) {
                     NSLog(@"parse classresponds to initWithDictionary:");
                     NSLog(@"parsed contact info");
 #pragma clang diagnostic push
@@ -142,7 +143,7 @@
                     [delegate performSelector:successSelector withObject:[[parseClass alloc] initWithDictionary:d]];
 #pragma clang diagnostic pop
                 }else
-                    NSLog(@"delegate: %@, cant respond to selector: initWithDictionary:", delegate);
+                    NSLog(@"delegate: %@, cant respond to %@", delegate, NSStringFromSelector(initObjectWithDictionary));
             }else
                 NSLog(@"cannot send contactInfo to delegate");
         }
@@ -155,21 +156,30 @@
 
 #pragma mark - Generic Functions
 
--(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url body:(NSDictionary *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
     NSLog(@"making post request, %@", bodyData);
     NSError *e = nil;
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [req setHTTPMethod:verb];
-    if(bodyData){
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:bodyData options:0 error:&e];
-        [req setValue:[NSString stringWithFormat:@"%d", [postData length]] forHTTPHeaderField:@"Content-Length"];
-        [req setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        [req setHTTPBody:postData];
+    
+    if(bodyDictionary){
+        bodyData = [NSJSONSerialization dataWithJSONObject:bodyDictionary options:0 error:&e];
     }
+    
+    if(bodyData){
+        [req setValue:[NSString stringWithFormat:@"%d", [bodyData length]] forHTTPHeaderField:@"Content-Length"];
+        if (contentType == nil) {
+            NSLog(@"content type was nil, setting to default of application/json");
+            contentType = @"applicaiton/json";
+        }
+        [req setValue:contentType forHTTPHeaderField:@"Content-Type"];
+        [req setHTTPBody:bodyData];
+    }
+    
     if (e != nil) {
         NSLog(@"make post reuqest error: %@", e.localizedDescription);
     }else{
-        [callQueue addObject:[CallQueue initWithRequest:req body:bodyData authDelegate:delegate success:success error:error then:then]];
+        [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate success:success error:error then:then]];
         [self makeAuthViableAndExecuteCallQueue:delegate];
     }
 }
@@ -177,7 +187,7 @@
 -(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", urlString]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    [callQueue addObject:[CallQueue initWithRequest:req body:nil authDelegate:delegate success:success error:error then:then]];
+    [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate success:success error:error then:then]];
     [self makeAuthViableAndExecuteCallQueue:delegate];
 }
 
@@ -208,6 +218,11 @@
     }
 }
 
+-(void)fetchQueueTimerFinish{
+    blockingRequestRunning = false;
+    [self runRequestQueue];
+}
+
 // Initialize Connection
 -(void)doRequest:(CallQueue *)cq{
     NSLog(@"doing request");
@@ -219,6 +234,7 @@
         
         [self.auth authorizeRequest:cq.request completionHandler:^(NSError *error) {
             if (error == nil) {// success
+                NSLog(@"%@", [cq.request allHTTPHeaderFields]);
                 NSLog(@"auth authorized");
                 tryingToAuthenticate = false;
                 [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
@@ -232,13 +248,26 @@
                 [self doFetchQueue];
             }else{
                 NSLog(@"failed to authorize request, %@", error.localizedDescription);
+                NSLog(@"errorCode: %ld", (long)error.code);
                 cq.alreadySent = false;
-                if (![self.auth canAuthorize]) {
-                    NSLog(@"auth cannot authorize");
-                    [self showGoogleLogin:cq.delegate];
-                }else{
-                    NSLog(@"trying again imediately");
-                    [self doRequest:cq];
+                switch (error.code) {
+                    case -1009:
+                        NSLog(@"Cant connect to the internet");
+                        blockingRequestRunning = true;
+                        [self.timers addObject:[NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(fetchQueueTimerFinish) userInfo:nil repeats:NO]];
+                        break;
+                        
+                    case -1000:
+                        NSLog(@"User closed the login modal before logging in");
+                    default:
+                        if (![self.auth canAuthorize]) {
+                            NSLog(@"auth cannot authorize");
+                            [self showGoogleLogin:cq.delegate];
+                        }else{
+                            NSLog(@"trying again imediately");
+                            [self doRequest:cq];
+                        }
+                        break;
                 }
             }
         }];

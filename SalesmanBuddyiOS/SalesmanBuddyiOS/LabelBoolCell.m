@@ -35,27 +35,33 @@ int lbcCellBottomPad = 10;
     return self;
 }
 
--(void)setUpWithLabelText:(NSString *)labelText boolSetTo:(BOOL)boolIs{
+-(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa{
+    self.qaa = qaa;
+    
     CGSize labelSize = CGSizeMake(lbcLabelMaxWidth, 9999);
-    CGRect textRect = [labelText boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
+    CGRect textRect = [self.qaa.question.questionTextEnglish boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
     CGRect labelRect = CGRectMake(lbcLabelLeftPad, lbcLabelTopPad, textRect.size.width, textRect.size.height);
     
     [self.label setFrame:labelRect];
-    [self.label setText:labelText];
+    [self.label setText:self.qaa.question.questionTextEnglish];
     
     int leftStuffWidth = lbcLabelLeftPad + labelRect.size.width;
     int remainingWidth = 320 - leftStuffWidth;
     int switchPad = remainingWidth / 2 - self.cellSwitch.frame.size.width / 2;
-    int switchY = [LabelBoolCell getCellHeightForLabelText:labelText] / 2 - self.cellSwitch.frame.size.height / 2;
+    int switchY = [LabelBoolCell getCellHeightForQuestionAndAnswer:self.qaa] / 2 - self.cellSwitch.frame.size.height / 2;
     CGRect cellRect = CGRectMake(leftStuffWidth + switchPad, switchY, self.cellSwitch.frame.size.width, self.cellSwitch.frame.size.height);
     [self.cellSwitch setFrame:cellRect];
-    [self.cellSwitch setOn:boolIs];
+    [self.cellSwitch setOn:self.qaa.answer.answerBool];
 }
 
-+(NSInteger)getCellHeightForLabelText:(NSString *)labelText{
++(NSInteger)getCellHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa{
     CGSize labelSize = CGSizeMake(lbcLabelMaxWidth, 9999);
-    CGRect textRect = [labelText boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
+    CGRect textRect = [qaa.question.questionTextEnglish boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
     return lbcLabelTopPad + textRect.size.height + lbcCellBottomPad;
+}
+
++(NSInteger)getEstimatedHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa{
+    return 100;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated{

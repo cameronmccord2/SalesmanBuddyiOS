@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuestionAndAnswer.h"
 
 @interface LabelTextFieldCell : UITableViewCell
 
@@ -14,9 +15,11 @@
 @property(nonatomic, strong)UILabel *label;
 @property(nonatomic, strong)UITextField *textField;
 @property(nonatomic, strong)UILabel *requiredLabel;
+@property(nonatomic, strong)QuestionAndAnswer *qaa;
 
-+(NSInteger)getCellHeightForLabelText:(NSString *)labelText;
++(NSInteger)getCellHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa;
++(NSInteger)getEstimatedHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa;
 
--(void)setUpWithLabelText:(NSString *)labelText textFieldText:(NSString *)textFieldText;
+-(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa;
 
 @end

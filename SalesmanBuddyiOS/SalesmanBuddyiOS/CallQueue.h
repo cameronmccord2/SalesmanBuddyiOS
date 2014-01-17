@@ -16,11 +16,11 @@
 @property(nonatomic)BOOL alreadySent;
 @property(nonatomic, strong)id<DAOManagerDelegateProtocal> delegate;
 @property(nonatomic, strong)NSMutableURLRequest *request;
-@property(nonatomic, strong)NSDictionary *body;
+//@property(nonatomic, strong)NSData *body;
 @property(nonatomic, copy)void (^success)(NSData *, void(^)());
 @property(nonatomic, copy)void (^error)(NSData *, NSError *, void(^)());
 @property(nonatomic, copy)void (^then)(NSData *, NSURLConnectionWithExtras *, NSProgress *);
 
-+(instancetype)initWithRequest:(NSMutableURLRequest *)request body:(NSDictionary *)body authDelegate:(id<DAOManagerDelegateProtocal>)authDelegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
++(instancetype)initWithRequest:(NSMutableURLRequest *)request authDelegate:(id<DAOManagerDelegateProtocal>)authDelegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 @end

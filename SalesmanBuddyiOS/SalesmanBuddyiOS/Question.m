@@ -20,8 +20,17 @@
     [d setValue:question.questionTextSpanish forKey:@"questionTextSpanish"];
     [d setValue:@(question.questionType) forKey:@"questionType"];
     [d setValue:@(question.required) forKey:@"required"];
+    [d setValue:@(question.tag) forKey:@"tag"];
 //    [d setValue:[DropdownOption dictionaryArrayFromList:question.dropdownOptions] forKey:@"dropdownOptions"];
     return d;
+}
+
++(NSMutableArray *)arrayFromDictionaryList:(NSArray *)json{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for (NSDictionary *dictionary in json) {
+        [array addObject:[[Question alloc] initWithDictionary:dictionary]];
+    }
+    return array;
 }
 
 -(id)initWithDictionary:(NSDictionary *)dictionary{
@@ -38,6 +47,7 @@
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"yyyy-MM-dd"];
         self.created = [dateFormat dateFromString:dictionary[@"created"]];
+        self.tag = [dictionary[@"tag"] integerValue];
     }
     return self;
 }

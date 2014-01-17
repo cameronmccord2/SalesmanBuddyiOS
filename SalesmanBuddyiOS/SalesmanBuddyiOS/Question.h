@@ -30,8 +30,10 @@
 @property(nonatomic, strong)NSString *questionTextSpanish;
 @property(nonatomic)NSInteger questionType;
 @property(nonatomic)NSInteger required;
+@property(nonatomic)NSInteger tag;
 
 +(NSDictionary *)dictionaryFromQuestion:(Question *)question;
++(NSMutableArray *)arrayFromDictionaryList:(NSArray *)json;
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

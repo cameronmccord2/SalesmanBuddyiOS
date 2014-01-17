@@ -48,6 +48,7 @@
 @property(nonatomic, strong)NSString *scope;
 @property(nonatomic, strong)NSString *error;
 @property(nonatomic, strong)NSXMLParser *parser;
+@property(nonatomic, strong)NSMutableArray *timers;
 @property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
 
 /// Gets the shared manager of the DAO, There is only ever one instance of this.
@@ -64,12 +65,14 @@
 /// Make an NSURLRequest with any verb. All connection handling is behind the scenes.
 /// @param verb Rest verb for the request: GET, PUT, POST, DELETE, etc.
 /// @param url The full url for the request including the http or https in NSString format.
-/// @param bodyData The data to be sent in the body already in a NSDictionary. This is for STRUCTURED data only such as JSON. NSData can only be sent with a new CallQueue request. Can be nil.
+/// @param bodyDictionary The dictionary to be sent. Will be converted into NSData. This is for STRUCTURED data only such as JSON. Can be nil.
+/// @param bodyData The data to be sent in the body. Can be nil.
 /// @param authDelegate The delegate must conform to DAOManagerDelegateProtocol. This is so the delegate can show the login modal.
+/// @param contentType The content type of the body. 'application/json' or 'image/jpeg' or something else.
 /// @param success A block function that is called when the connection successfully completes. Can be nil.
 /// @param error A block function that is called when the connection errors. This function is called when connection:didFailWithError: is called by ios. Can be nil.
 /// @param then A block function that is called when the connection is created(data will be nil), when any response is recieved(status code gets set) or when didSendBodyData:, and when the connection closes in a non-error state. Can be nil.
--(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url body:(NSDictionary *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 /// Template error block function.
 /// @param delegate The delegate to send the specified selector to.

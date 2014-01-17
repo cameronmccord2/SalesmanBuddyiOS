@@ -8,11 +8,11 @@
 
 #import "LicenseListViewController.h"
 #import "License.h"
-#import "EditLicenseDetailsViewController.h"
 #import "LicenseTableViewCell.h"
 #import "LabelBoolCell.h"
 #import "LabelTextFieldCell.h"
 #import "QuestionAndAnswer.h"
+#import "NewLicenseListViewController.h"
 
 @interface LicenseListViewController ()
 
@@ -28,11 +28,11 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 -(id)initWithContext:(NSManagedObjectContext *)managedObjectContext{
     self = [super initWithStyle:UITableViewStylePlain];
     if(self){
-        self.context = managedObjectContext;
+        self.managedObjectContext = managedObjectContext;
         self.title = NSLocalizedString(@"Licenses", @"Licenses");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
         self.licenses = [[NSMutableArray alloc] init];
-//        self.dateFormatter = [NSDateFormatter dateFormatFromTemplate:<#(NSString *)#> options:<#(NSUInteger)#> locale:<#(NSLocale *)#>
+//        self.dateFormatter = [NSDateFormatter datreFormatFromTemplate:<#(NSString *)#> options:<#(NSUInteger)#> locale:<#(NSLocale *)#>
 //        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
 //        [self.tableView registerNib:(UINib *)[nib firstObject] forCellReuseIdentifier:CellIdentifier];
 //        [self.tableView registerClass:[LicenseTableViewCell class] forCellReuseIdentifier:CellIdentifier];
@@ -74,7 +74,7 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 #pragma mark - DAOManagerDelegateProtocal functions
 
 -(void)licenses:(NSMutableArray *)licenses{
-    NSLog(@"recieved licenses");
+    NSLog(@"recieved licenses, count: %ld", (long)[licenses count]);
     self.licenses = licenses;
     [self.tableView reloadData];
 }
@@ -96,7 +96,22 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 
 
 
+-(Answer *)getFirstNameAnswer:(NSArray *)qaas{
+    return [self getQaaWithQuestionText:@"First Name" fromList:qaas].answer;
+}
 
+-(Answer *)getLastNameAnswer:(NSArray *)qaas{
+    return [self getQaaWithQuestionText:@"Last Name" fromList:qaas].answer;
+}
+
+-(QuestionAndAnswer *)getQaaWithQuestionText:(NSString *)questionText fromList:(NSArray *)qaas{
+    for (QuestionAndAnswer *qaa in qaas) {
+        if ([qaa.question.questionTextEnglish isEqualToString:questionText]) {
+            return qaa;
+        }
+    }
+    return nil;
+}
 
 
 
@@ -121,24 +136,6 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.licenses count];
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    int height = 0;
-    switch ([indexPath row] % 2) {
-        case 0:
-            height = [LabelTextFieldCell getCellHeightForLabelText:text];
-            break;
-            
-        case 1:
-            height = [LabelBoolCell getCellHeightForLabelText:[NSString stringWithFormat:@"bool, index: %ld, %@", (long)[indexPath row], text]];
-            
-        default:
-            
-            break;
-    }
-    NSLog(@"height: %ld", (long)height);
-    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -168,7 +165,7 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
     // Fix the flag thing on all cells
     int index = [indexPath row];
     License *l = [self.licenses objectAtIndex:index];
-    [cell.name setText:[NSString stringWithFormat:@"%@, %@", l.contactInfo.lastName, l.contactInfo.firstName]];
+    [cell.name setText:[NSString stringWithFormat:@"%@, %@", [self getLastNameAnswer:l.qaas].answerText, [self getFirstNameAnswer:l.qaas].answerText]];
     [cell.details setText:[NSString stringWithFormat:@"%@,  ID: %@", l.created, @"12345"]];
     BOOL isFlagged = true;
     if (isFlagged)
@@ -208,8 +205,8 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    EditLicenseDetailsViewController *eldvc = [[EditLicenseDetailsViewController alloc] initWithLicense:[self.licenses objectAtIndex:indexPath.row] delegate:self];
-    [self presentViewController:eldvc animated:YES completion:nil];
+    NewLicenseListViewController *nllvc = [[NewLicenseListViewController alloc] initWithContext:self.managedObjectContext license:[self.licenses objectAtIndex:indexPath.row] delegate:self];
+    [self presentViewController:nllvc animated:YES completion:nil];
 }
 
 /*

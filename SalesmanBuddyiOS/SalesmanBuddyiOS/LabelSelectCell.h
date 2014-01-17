@@ -22,7 +22,7 @@
 @property(nonatomic, strong)UILabel *answerLabel;
 @property(nonatomic, strong)NSString *reuseId;
 @property(nonatomic, strong)NSArray *options;
-@property(nonatomic, strong)DropdownOption *selectedOption;
+//@property(nonatomic, strong)DropdownOption *selectedOption;
 @property(nonatomic)id<LabelSelectCellProtocol> labelSelectCellDelegate;
 
 +(NSInteger)getCellHeightForLabelText:(NSString *)labelText selectedOptionText:(NSString *)selectedOptionText;

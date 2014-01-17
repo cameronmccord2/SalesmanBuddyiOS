@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SBDaoV1.h"
 
-@interface LicenseListViewController : UITableViewController <DAOManagerDelegateProtocal>
-@property(nonatomic, strong)NSManagedObjectContext *context;
+@interface LicenseListViewController : UITableViewController <SBDaoV1DelegateProtocol>
+@property(nonatomic, strong)NSManagedObjectContext *managedObjectContext;
 @property(nonatomic, strong)NSMutableArray *licenses;
 @property(nonatomic, strong)NSDateFormatter *dateFormatter;
 

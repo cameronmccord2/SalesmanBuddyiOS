@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DAOManager.h"
+#import "SBDaoV1.h"
 
-@interface SettingsViewController : UIViewController<DAOManagerDelegateProtocal, UITextFieldDelegate>{
+@interface SettingsViewController : UIViewController<SBDaoV1DelegateProtocol, UITextFieldDelegate>{
     UITextField *activeField;
 }
 

@@ -7,12 +7,11 @@
 //
 
 #import "License.h"
-#import "StateQuestions.h"
 #import "QuestionAndAnswer.h"
 
 @implementation License
 
-+(NSMutableArray *)parseJsonArray:(NSArray *)json{
++(NSMutableArray *)arrayFromDictionaryList:(NSArray *)json{
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSDictionary *dictionary in json) {
         [array addObject:[[License alloc] initWithDictionary:dictionary]];

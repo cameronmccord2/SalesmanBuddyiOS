@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DAOManager.h"
-@interface LoadingModalViewController : UIViewController<DAOManagerDelegateProtocal>
+@interface LoadingModalViewController : UIViewController<DAOManagerDelegateProtocol>
 
 @property(nonatomic, strong)NSString *title;
 @property(nonatomic, strong)NSString *message;

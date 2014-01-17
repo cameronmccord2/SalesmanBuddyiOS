@@ -21,6 +21,8 @@ int lscBottomPad = 10;
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier delegate:(id<LabelSelectCellProtocol>)delegate{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         NSLog(@"in self");
         self.reuseId = reuseIdentifier;
         self.options = [[NSArray alloc] init];
@@ -53,7 +55,7 @@ int lscBottomPad = 10;
 
 -(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa{
     NSLog(@"set up with question and answer");
-    [self setUpWithLabelText:qaa.question.questionTextEnglish selectedOptionText:qaa.answer.answerText options:qaa.question.dropdownOptions];
+//    [self setUpWithLabelText:qaa.question.questionTextEnglish selectedOptionText:qaa.answer.answerText options:qaa.question.dropdownOptions];
 }
 
 -(void)setUpWithLabelText:(NSString *)labelText selectedOptionText:(NSString *)selectedOptionText options:(NSArray *)options{

@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface License : NSObject
+@protocol DAOManagerParseObjectProtocol;
+
+@interface License : NSObject<DAOManagerParseObjectProtocol>
 
 /*
  protected Integer id;
@@ -23,7 +25,7 @@
 @property(nonatomic, strong)NSDate *created;
 @property(nonatomic, strong)NSMutableArray *qaas;
 
-+(NSMutableArray *)parseJsonArray:(NSArray *)json;
++(NSMutableArray *)arrayFromDictionaryList:(NSArray *)json;
 +(NSDictionary *)dictionaryFromLicense:(License *)license;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;

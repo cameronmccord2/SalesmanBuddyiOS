@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		21A251131819BBFD00C28188 /* LoadingModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A251121819BBFD00C28188 /* LoadingModalViewController.m */; };
-		21A251161819BF8600C28188 /* EditLicenseDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A251151819BF8600C28188 /* EditLicenseDetailsViewController.m */; };
 		21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A251181819E14B00C28188 /* DeleteLicenseResponse.m */; };
 		21CABB2E180C443F000BB826 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB2D180C443F000BB826 /* Foundation.framework */; };
 		21CABB30180C443F000BB826 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21CABB2F180C443F000BB826 /* CoreGraphics.framework */; };
@@ -26,20 +25,14 @@
 		21CABB57180C4440000BB826 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21CABB55180C4440000BB826 /* InfoPlist.strings */; };
 		21CABB59180C4440000BB826 /* SalesmanBuddyiOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */; };
 		21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB64180C46D6000BB826 /* LicenseListViewController.m */; };
-		21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB67180C4799000BB826 /* NewLicenseViewController.m */; };
 		21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB9E180F04AE000BB826 /* CallQueue.m */; };
 		21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */; };
-		21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA4180F0540000BB826 /* UploadFileManager.m */; };
 		21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */; };
-		21D2D66B181723D5006E6063 /* FLKAutoLayoutPredicateList.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D666181723D5006E6063 /* FLKAutoLayoutPredicateList.m */; };
-		21D2D66C181723D5006E6063 /* UIView+FLKAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D668181723D5006E6063 /* UIView+FLKAutoLayout.m */; };
-		21D2D66D181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D2D66A181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m */; };
 		21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D353E0181AE04D0082C06E /* SettingsViewController.m */; };
 		21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B7180F0D4C00C9FB5B /* Security.framework */; };
 		21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */; };
 		21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */; };
-		21FDA90A180F107200C9FB5B /* UserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA909180F107200C9FB5B /* UserManager.m */; };
 		21FDA90F180F153500C9FB5B /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9111810BB5A00C9FB5B /* DAOManager.m */; };
 		21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FDA9141810C19000C9FB5B /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -61,6 +54,7 @@
 		E49C5DD6187CBCCB00038440 /* LicenseImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DD5187CBCCB00038440 /* LicenseImageCell.m */; };
 		E49C5DD9187CBD0200038440 /* NewLicenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DD8187CBD0200038440 /* NewLicenseListViewController.m */; };
 		E49C5DDC187E423300038440 /* ImageDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DDB187E423300038440 /* ImageDetails.m */; };
+		E49C5DE0187EFD7C00038440 /* SubmitCancelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DDF187EFD7C00038440 /* SubmitCancelCell.m */; };
 		E49D69E518512F6800B32EA1 /* SBDaoV1.m in Sources */ = {isa = PBXBuildFile; fileRef = E49D69E418512F6800B32EA1 /* SBDaoV1.m */; };
 		E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC941842E42500766997 /* blueArrow.png */; };
 		E4A8CC9D1842E42500766997 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4A8CC951842E42500766997 /* blueArrow@2x.png */; };
@@ -90,8 +84,6 @@
 /* Begin PBXFileReference section */
 		21A251111819BBFD00C28188 /* LoadingModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingModalViewController.h; sourceTree = "<group>"; };
 		21A251121819BBFD00C28188 /* LoadingModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingModalViewController.m; sourceTree = "<group>"; };
-		21A251141819BF8600C28188 /* EditLicenseDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLicenseDetailsViewController.h; sourceTree = "<group>"; };
-		21A251151819BF8600C28188 /* EditLicenseDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLicenseDetailsViewController.m; sourceTree = "<group>"; };
 		21A251171819E14B00C28188 /* DeleteLicenseResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteLicenseResponse.h; sourceTree = "<group>"; };
 		21A251181819E14B00C28188 /* DeleteLicenseResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteLicenseResponse.m; sourceTree = "<group>"; };
 		21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesmanBuddyiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,31 +106,19 @@
 		21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SalesmanBuddyiOSTests.m; sourceTree = "<group>"; };
 		21CABB63180C46D6000BB826 /* LicenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseListViewController.h; sourceTree = "<group>"; };
 		21CABB64180C46D6000BB826 /* LicenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LicenseListViewController.m; sourceTree = "<group>"; };
-		21CABB66180C4799000BB826 /* NewLicenseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLicenseViewController.h; sourceTree = "<group>"; };
-		21CABB67180C4799000BB826 /* NewLicenseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLicenseViewController.m; sourceTree = "<group>"; };
 		21CABB9D180F04AE000BB826 /* CallQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallQueue.h; sourceTree = "<group>"; };
 		21CABB9E180F04AE000BB826 /* CallQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallQueue.m; sourceTree = "<group>"; };
 		21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionWithTag.h; sourceTree = "<group>"; };
 		21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionWithTag.m; sourceTree = "<group>"; };
-		21CABBA3180F0540000BB826 /* UploadFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadFileManager.h; sourceTree = "<group>"; };
-		21CABBA4180F0540000BB826 /* UploadFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadFileManager.m; sourceTree = "<group>"; };
 		21CABBA6180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2ViewControllerTouch.h; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.h"; sourceTree = "<group>"; };
 		21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2ViewControllerTouch.m; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.m"; sourceTree = "<group>"; };
 		21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewTouch.xib"; sourceTree = "<group>"; };
-		21D2D665181723D5006E6063 /* FLKAutoLayoutPredicateList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FLKAutoLayoutPredicateList.h; sourceTree = "<group>"; };
-		21D2D666181723D5006E6063 /* FLKAutoLayoutPredicateList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FLKAutoLayoutPredicateList.m; sourceTree = "<group>"; };
-		21D2D667181723D5006E6063 /* UIView+FLKAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FLKAutoLayout.h"; sourceTree = "<group>"; };
-		21D2D668181723D5006E6063 /* UIView+FLKAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FLKAutoLayout.m"; sourceTree = "<group>"; };
-		21D2D669181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FLKAutoLayoutPredicate.h"; sourceTree = "<group>"; };
-		21D2D66A181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FLKAutoLayoutPredicate.m"; sourceTree = "<group>"; };
 		21D353DF181AE04D0082C06E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		21D353E0181AE04D0082C06E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		21FDA8B7180F0D4C00C9FB5B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		21FDA905180F105800C9FB5B /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
 		21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
-		21FDA908180F107200C9FB5B /* UserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserManager.h; sourceTree = "<group>"; };
-		21FDA909180F107200C9FB5B /* UserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserManager.m; sourceTree = "<group>"; };
 		21FDA90D180F153500C9FB5B /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2Authentication.h; sourceTree = "<group>"; };
 		21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2Authentication.m; sourceTree = "<group>"; };
 		21FDA9101810BB5A00C9FB5B /* DAOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAOManager.h; sourceTree = "<group>"; };
@@ -180,6 +160,8 @@
 		E49C5DD8187CBD0200038440 /* NewLicenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLicenseListViewController.m; sourceTree = "<group>"; };
 		E49C5DDA187E423300038440 /* ImageDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDetails.h; sourceTree = "<group>"; };
 		E49C5DDB187E423300038440 /* ImageDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDetails.m; sourceTree = "<group>"; };
+		E49C5DDE187EFD7C00038440 /* SubmitCancelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubmitCancelCell.h; sourceTree = "<group>"; };
+		E49C5DDF187EFD7C00038440 /* SubmitCancelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubmitCancelCell.m; sourceTree = "<group>"; };
 		E49D69E318512F6800B32EA1 /* SBDaoV1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBDaoV1.h; sourceTree = "<group>"; };
 		E49D69E418512F6800B32EA1 /* SBDaoV1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBDaoV1.m; sourceTree = "<group>"; };
 		E4A8CC941842E42500766997 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
@@ -282,14 +264,10 @@
 				21CABB64180C46D6000BB826 /* LicenseListViewController.m */,
 				E49C5DD7187CBD0200038440 /* NewLicenseListViewController.h */,
 				E49C5DD8187CBD0200038440 /* NewLicenseListViewController.m */,
-				21CABB66180C4799000BB826 /* NewLicenseViewController.h */,
-				21CABB67180C4799000BB826 /* NewLicenseViewController.m */,
 				DC6F065718167E3300EBE962 /* NewUserModalViewController.h */,
 				DC6F065818167E3300EBE962 /* NewUserModalViewController.m */,
 				21A251111819BBFD00C28188 /* LoadingModalViewController.h */,
 				21A251121819BBFD00C28188 /* LoadingModalViewController.m */,
-				21A251141819BF8600C28188 /* EditLicenseDetailsViewController.h */,
-				21A251151819BF8600C28188 /* EditLicenseDetailsViewController.m */,
 				21D353DF181AE04D0082C06E /* SettingsViewController.h */,
 				21D353E0181AE04D0082C06E /* SettingsViewController.m */,
 				E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */,
@@ -328,26 +306,9 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		21D2D664181723D5006E6063 /* FLKAutoLayout */ = {
-			isa = PBXGroup;
-			children = (
-				21D2D665181723D5006E6063 /* FLKAutoLayoutPredicateList.h */,
-				21D2D666181723D5006E6063 /* FLKAutoLayoutPredicateList.m */,
-				21D2D667181723D5006E6063 /* UIView+FLKAutoLayout.h */,
-				21D2D668181723D5006E6063 /* UIView+FLKAutoLayout.m */,
-				21D2D669181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.h */,
-				21D2D66A181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m */,
-			);
-			path = FLKAutoLayout;
-			sourceTree = "<group>";
-		};
 		21FDA90B180F108100C9FB5B /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				21FDA908180F107200C9FB5B /* UserManager.h */,
-				21FDA909180F107200C9FB5B /* UserManager.m */,
-				21CABBA3180F0540000BB826 /* UploadFileManager.h */,
-				21CABBA4180F0540000BB826 /* UploadFileManager.m */,
 				21FDA9101810BB5A00C9FB5B /* DAOManager.h */,
 				21FDA9111810BB5A00C9FB5B /* DAOManager.m */,
 				E49D69E318512F6800B32EA1 /* SBDaoV1.h */,
@@ -360,7 +321,6 @@
 			isa = PBXGroup;
 			children = (
 				E4A9C80418455D810095294D /* Additions */,
-				21D2D664181723D5006E6063 /* FLKAutoLayout */,
 				21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */,
 				21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */,
 				21FDA9131810C19000C9FB5B /* GTMOAuth2SignIn.h */,
@@ -414,6 +374,8 @@
 				E49C5DC6186F56B400038440 /* LabelTextFieldCell.m */,
 				E49C5DD4187CBCCB00038440 /* LicenseImageCell.h */,
 				E49C5DD5187CBCCB00038440 /* LicenseImageCell.m */,
+				E49C5DDE187EFD7C00038440 /* SubmitCancelCell.h */,
+				E49C5DDF187EFD7C00038440 /* SubmitCancelCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";
@@ -567,24 +529,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21D2D66B181723D5006E6063 /* FLKAutoLayoutPredicateList.m in Sources */,
 				E49C5DD1187CBBB200038440 /* Answer.m in Sources */,
 				E49D69E518512F6800B32EA1 /* SBDaoV1.m in Sources */,
 				DC6F065C181682FD00EBE962 /* User.m in Sources */,
-				21A251161819BF8600C28188 /* EditLicenseDetailsViewController.m in Sources */,
 				E49C5DD2187CBBB200038440 /* Question.m in Sources */,
 				E49C5DC8186F56B400038440 /* LabelSelectCell.m in Sources */,
 				21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */,
 				DC6F066218168ACB00EBE962 /* State.m in Sources */,
 				E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */,
 				21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */,
-				21CABB68180C4799000BB826 /* NewLicenseViewController.m in Sources */,
-				21D2D66C181723D5006E6063 /* UIView+FLKAutoLayout.m in Sources */,
 				21FDA90F180F153500C9FB5B /* GTMOAuth2Authentication.m in Sources */,
 				21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */,
-				21FDA90A180F107200C9FB5B /* UserManager.m in Sources */,
 				21CABB40180C443F000BB826 /* AppDelegate.m in Sources */,
-				21D2D66D181723D5006E6063 /* UIView+FLKAutoLayoutPredicate.m in Sources */,
+				E49C5DE0187EFD7C00038440 /* SubmitCancelCell.m in Sources */,
 				DC6F065918167E3300EBE962 /* NewUserModalViewController.m in Sources */,
 				DC6F065F1816896300EBE962 /* Dealership.m in Sources */,
 				E49C5DC9186F56B400038440 /* LabelTextFieldCell.m in Sources */,
@@ -605,7 +562,6 @@
 				21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */,
 				21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */,
 				E4A9C7E8184513EB0095294D /* LicenseTableViewCell.m in Sources */,
-				21CABBA5180F0540000BB826 /* UploadFileManager.m in Sources */,
 				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,
 				E49C5DD9187CBD0200038440 /* NewLicenseListViewController.m in Sources */,
 				21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */,

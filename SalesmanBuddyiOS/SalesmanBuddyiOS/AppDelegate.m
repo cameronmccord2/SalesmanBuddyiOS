@@ -8,7 +8,8 @@
 
 #import "AppDelegate.h"
 #import "LicenseListViewController.h"
-#import "NewLicenseViewController.h"
+//#import "NewLicenseViewController.h"
+#import "NewLicenseListViewController.h"
 //#import "UserManager.h"
 #import "SettingsViewController.h"
 
@@ -28,9 +29,9 @@
     
     self.tabBarController = [[UITabBarController alloc] init];
     LicenseListViewController *llvc = [[LicenseListViewController alloc] initWithContext:[self managedObjectContext]];
-    NewLicenseViewController *nlvc = [[NewLicenseViewController alloc] initWithContext:[self managedObjectContext]];
+    NewLicenseListViewController *nllvc = [[NewLicenseListViewController alloc] initWithContext:[self managedObjectContext] license:nil delegate:nil];
     SettingsViewController *svc = [[SettingsViewController alloc] initWithNibName:nil bundle:nil];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:llvc, nlvc, svc, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:llvc, nllvc, svc, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     return YES;

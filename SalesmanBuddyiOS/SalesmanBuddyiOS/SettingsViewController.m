@@ -7,7 +7,6 @@
 //
 
 #import "SettingsViewController.h"
-#import "MTCAuthManager.h"
 
 @interface SettingsViewController ()
 
@@ -59,7 +58,7 @@
 
 -(void)logoutUser:(id)sender{
     NSLog(@"logging out user");
-    [[MTCAuthManager sharedManager] signOut];
+    [[SBDaoV1 sharedManager] signOut];
     [self.tabBarController setSelectedIndex:0];
 }
 

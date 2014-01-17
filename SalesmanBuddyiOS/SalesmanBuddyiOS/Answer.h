@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "Question.h"
 #import "ImageDetails.h"
+#import "DAOManager.h"
 
-@class DAOManager;
+//@class DAOManager;
 
 @interface Answer : NSObject<DAOManagerParseObjectProtocol>
 

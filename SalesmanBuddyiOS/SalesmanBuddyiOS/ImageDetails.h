@@ -15,6 +15,7 @@
 @property(nonatomic)NSInteger bucketId;
 @property(nonatomic, strong)NSDate *created;
 @property(nonatomic)NSInteger answerId;
+@property(nonatomic, strong)UIImage *image;
 
 +(NSDictionary *)dictionaryFromImageDetails:(ImageDetails *)imageDetails;
 -(instancetype)initWithDictionary:(NSDictionary *)d;
