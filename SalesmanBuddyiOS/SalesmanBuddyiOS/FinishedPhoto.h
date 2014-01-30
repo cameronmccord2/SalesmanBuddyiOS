@@ -8,11 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface FinishedPhoto : NSObject
+@protocol DAOManagerParseObjectProtocol;
+
+@interface FinishedPhoto : NSObject <DAOManagerParseObjectProtocol>
 
 @property(nonatomic, strong)NSString *filename;
 @property(nonatomic)NSInteger bucketId;
 
--(id)initWithDictionary:(NSDictionary *)dictionary;
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary;
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary;
 
 @end

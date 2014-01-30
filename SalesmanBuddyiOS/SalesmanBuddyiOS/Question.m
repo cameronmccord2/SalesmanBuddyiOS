@@ -14,7 +14,7 @@
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
     [d setValue:@(question.id) forKey:@"id"];
     [d setValue:@(question.version) forKey:@"version"];
-    [d setValue:question.created forKey:@"created"];
+//    [d setValue:question.created forKey:@"created"];
     [d setValue:@(question.questionOrder) forKey:@"questionOrder"];
     [d setValue:question.questionTextEnglish forKey:@"questionTextEnglish"];
     [d setValue:question.questionTextSpanish forKey:@"questionTextSpanish"];

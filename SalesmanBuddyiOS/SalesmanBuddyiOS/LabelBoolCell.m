@@ -30,6 +30,7 @@ int lbcCellBottomPad = 10;
         
         self.cellSwitch = [[UISwitch alloc] init];
         [self.cellSwitch setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.cellSwitch addTarget:self action:@selector(setState:) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview:self.cellSwitch];
     }
     return self;
@@ -69,5 +70,12 @@ int lbcCellBottomPad = 10;
     
     // Configure the view for the selected state
 }
+
+- (void)setState:(id)sender{
+    NSLog(@"Button finished with: %hhd", [sender isOn]);
+    self.qaa.answer.answerBool = [sender isOn];
+}
+
+
 
 @end

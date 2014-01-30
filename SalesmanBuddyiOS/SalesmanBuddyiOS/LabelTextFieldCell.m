@@ -45,6 +45,12 @@ NSString *ltfcRequiredLabelText = @"Required";
         [self.textField setFont:[UIFont systemFontOfSize:15.0f]];
 //        [self.textField setBackgroundColor:[UIColor purpleColor]];
         [self.textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.textField setReturnKeyType:UIReturnKeyDone];
+        [self.textField setDelegate:self];
+        [self.textField addTarget:self
+                           action:@selector(textFieldFinished:)
+                 forControlEvents:UIControlEventEditingDidEndOnExit];
+        [self.textField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:self.textField];
         
         self.requiredLabel = [[UILabel alloc] init];
@@ -58,19 +64,29 @@ NSString *ltfcRequiredLabelText = @"Required";
     return self;
 }
 
+- (IBAction)textFieldFinished:(id)sender{
+    [sender resignFirstResponder];
+}
+
 -(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa{
     self.qaa = qaa;
     // make text label
     CGSize labelSize = CGSizeMake(ltfcLabelMaxWidth, 9999);
     CGRect textRect = [self.qaa.question.questionTextEnglish boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
     CGRect labelRect = CGRectMake(ltfcLabelLeftPad, ltfcLabelTopPad, textRect.size.width, textRect.size.height);
-    NSLog(@"The text is: %@", self.qaa.question.questionTextEnglish);
-    NSLog(@"text: %@, width: %ld", self.qaa.question.questionTextEnglish, (long)textRect.size.width);
     
-    // make required label rect
-    CGSize requiredSize = CGSizeMake(ltfcRequiredLabelWidth, 9999);
-    CGRect requiredRect = [ltfcRequiredLabelText boundingRectWithSize:requiredSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f]} context:nil];
-    CGRect requiredLabelRect = CGRectMake(ltfcRequiredLabelLeftPad, ltfcRequiredLabelTopPad, ltfcRequiredLabelWidth, requiredRect.size.height);
+    CGRect requiredLabelRect = CGRectMake(0, 0, 0, 0);
+    if (qaa.question.required) {
+        
+        // make required label rect
+        CGSize requiredSize = CGSizeMake(ltfcRequiredLabelWidth, 9999);
+        CGRect requiredRect = [ltfcRequiredLabelText boundingRectWithSize:requiredSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f]} context:nil];
+        requiredLabelRect = CGRectMake(ltfcRequiredLabelLeftPad, ltfcRequiredLabelTopPad, ltfcRequiredLabelWidth, requiredRect.size.height);
+        
+        [self.requiredLabel setFrame:requiredLabelRect];
+        [self.requiredLabel setText:ltfcRequiredLabelText];
+    }
+    
     
     // make text field rect
     CGRect textFieldRect = CGRectMake(ltfcTextFieldLeftPad, ltfcLabelTopPad + labelRect.size.height + ltfcTextFieldTopPad, ltfcTextFieldMaxWidth, ltfcTextFieldHeight);
@@ -78,8 +94,6 @@ NSString *ltfcRequiredLabelText = @"Required";
     // set up labels
     [self.label setFrame:labelRect];
     [self.label setText:self.qaa.question.questionTextEnglish];
-    [self.requiredLabel setFrame:requiredLabelRect];
-    [self.requiredLabel setText:ltfcRequiredLabelText];
     [self.textField setFrame:textFieldRect];
     [self.textField setText:self.qaa.answer.answerText];
     self.textField.layer.borderWidth = 0.5f;
@@ -89,7 +103,6 @@ NSString *ltfcRequiredLabelText = @"Required";
 +(NSInteger)getCellHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa{
     CGSize labelSize = CGSizeMake(ltfcLabelMaxWidth, 9999);
     CGRect textRect = [qaa.question.questionTextEnglish boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
-    NSLog(@"%ld", (long)(ltfcLabelTopPad + textRect.size.height + ltfcTextFieldTopPad + ltfcTextFieldHeight + ltfcBottomPad));
     return ltfcLabelTopPad + textRect.size.height + ltfcTextFieldTopPad + ltfcTextFieldHeight + ltfcBottomPad;
 }
 
@@ -101,6 +114,17 @@ NSString *ltfcRequiredLabelText = @"Required";
 //    [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+
+- (void)textFieldDidEndEditing:(UITextField *)textFieldFinished{
+    NSLog(@"Text field finished editing: %@", textFieldFinished.text);
+    self.qaa.answer.answerText = textFieldFinished.text;
+}
+
+- (void)textFieldDidChange:(UITextField *)textFieldFinished{
+    NSLog(@"Text field changed: %@", textFieldFinished.text);
+    self.qaa.answer.answerText = textFieldFinished.text;
 }
 
 @end

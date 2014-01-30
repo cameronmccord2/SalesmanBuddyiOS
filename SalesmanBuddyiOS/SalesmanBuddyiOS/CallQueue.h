@@ -9,18 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "NSURLConnectionWithExtras.h"
 
-@protocol DAOManagerDelegateProtocal;
+@protocol DAOManagerDelegateProtocol;
 
 @interface CallQueue : NSObject
 
 @property(nonatomic)BOOL alreadySent;
-@property(nonatomic, strong)id<DAOManagerDelegateProtocal> delegate;
+@property(nonatomic, strong)id<DAOManagerDelegateProtocol> delegate;
 @property(nonatomic, strong)NSMutableURLRequest *request;
 //@property(nonatomic, strong)NSData *body;
 @property(nonatomic, copy)void (^success)(NSData *, void(^)());
 @property(nonatomic, copy)void (^error)(NSData *, NSError *, void(^)());
 @property(nonatomic, copy)void (^then)(NSData *, NSURLConnectionWithExtras *, NSProgress *);
+@property(nonatomic)NSInteger type;
 
-+(instancetype)initWithRequest:(NSMutableURLRequest *)request authDelegate:(id<DAOManagerDelegateProtocal>)authDelegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
++(instancetype)initWithRequest:(NSMutableURLRequest *)request authDelegate:(id<DAOManagerDelegateProtocol>)authDelegate requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 @end

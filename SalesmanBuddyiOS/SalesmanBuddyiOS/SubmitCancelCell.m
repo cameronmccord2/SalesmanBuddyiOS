@@ -44,7 +44,7 @@
     return [SubmitCancelCell getCellHeightForQuestionAndAnswer:qaa];
 }
 
--(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa tableDelegate:(id)tableDelegate{
+-(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa tableDelegate:(id<SubmitCancelProtocol>)tableDelegate{
     NSLog(@"here");
     self.delegate = tableDelegate;
     [self.contentView addSubview:self.submitButton];
@@ -53,10 +53,13 @@
 
 -(void)submit:(id)sender{
     NSLog(@"submitting");
+    [self.delegate submit];
+    
 }
 
 -(void)cancel:(id)sender{
     NSLog(@"cancelling");
+    [self.delegate cancel];
 }
 
 @end

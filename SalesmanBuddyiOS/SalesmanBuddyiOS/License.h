@@ -13,20 +13,30 @@
 @interface License : NSObject<DAOManagerParseObjectProtocol>
 
 /*
+ // Licenses
  protected Integer id;
- protected Date created;
+ protected Integer showInUserList;
  protected Integer stateId;
- //custom here
+ protected Date created;
+ protected float longitude;
+ protected float latitude;
+ protected Integer userId;
+ 
+ // custom here
  protected ArrayList<QuestionsAndAnswers> qaas;
  */
 
 @property(nonatomic)NSInteger id;
 @property(nonatomic)NSInteger stateId;
+@property(nonatomic)NSInteger showInUserList;
 @property(nonatomic, strong)NSDate *created;
+@property(nonatomic)float longitude;
+@property(nonatomic)float latitude;
 @property(nonatomic, strong)NSMutableArray *qaas;
 
 +(NSMutableArray *)arrayFromDictionaryList:(NSArray *)json;
 +(NSDictionary *)dictionaryFromLicense:(License *)license;
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 -(id)initWithQuestions:(NSArray *)questions;

@@ -19,6 +19,10 @@
     return array;
 }
 
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary{
+    return [[License alloc] initWithDictionary:dictionary];
+}
+
 -(id)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
@@ -26,12 +30,13 @@
 //        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
 //        [dateFormat setDateFormat:@"yyyy-MM-dd"];
 //        self.created = [dateFormat dateFromString:dictionary[@"created"]];
-//        NSLog(@"from object: %@", self.created);
-//        NSLog(@"from dictionary: %@", dictionary[@"created"]);
 //        NSLog(@"from formatter: %@", [dateFormat dateFromString:dictionary[@"created"]]);
         self.created = dictionary[@"created"];
         self.stateId = [dictionary[@"stateId"] integerValue];
         self.qaas = [[QuestionAndAnswer arrayFromDictionaryList:dictionary[@"qaas"]] mutableCopy];
+        self.longitude = [dictionary[@"longitude"] floatValue];
+        self.latitude = [dictionary[@"latitude"] floatValue];
+        self.showInUserList = [dictionary[@"showInUserList"] integerValue];
     }
     return self;
 }
@@ -41,6 +46,9 @@
     if (self) {
         self.id = 0;
         self.created = [NSDate date];
+        self.stateId = 44;
+        self.showInUserList = 1;
+
         self.qaas = [[NSMutableArray alloc] initWithCapacity:[questions count]];
         for (Question *q in questions) {
             QuestionAndAnswer *qaa = [[QuestionAndAnswer alloc] init];
@@ -48,14 +56,19 @@
             qaa.answer = [[Answer alloc] initWithQuestion:q];
             [self.qaas addObject:qaa];
         }
+        
     }
     return self;
 }
 
 +(NSDictionary *)dictionaryFromLicense:(License *)license{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-    [d setValue:[NSNumber numberWithInt:license.id] forKey:@"id"];
+    [d setValue:@(license.id) forKey:@"id"];
     [d setValue:@(license.stateId) forKey:@"stateId"];
+    [d setValue:@(license.showInUserList) forKey:@"showInUserList"];
+    [d setValue:@(license.longitude) forKey:@"longitude"];
+    [d setValue:@(license.latitude) forKey:@"latitude"];
+    
     NSMutableArray *qaas = [[NSMutableArray alloc] initWithCapacity:license.qaas.count];
     for (QuestionAndAnswer *qaa in license.qaas) {
         [qaas addObject:[QuestionAndAnswer dictionaryFromQuestionAndAnswer:qaa]];

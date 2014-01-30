@@ -26,8 +26,8 @@
 
 @optional
 
-+(void)arrayFromDictionaryList:(NSArray *)array;
--(instancetype)initWithDictionary:(NSDictionary *)d;
++(NSArray *)arrayFromDictionaryList:(NSArray *)array;
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
@@ -50,6 +50,7 @@
 @property(nonatomic, strong)NSXMLParser *parser;
 @property(nonatomic, strong)NSMutableArray *timers;
 @property(nonatomic, strong)UIViewController *conrollerResponsibleForGoogleLogin;
+@property(nonatomic)BOOL userConfirmed;
 
 /// Gets the shared manager of the DAO, There is only ever one instance of this.
 /// @return DAOManager's shared manager
@@ -60,7 +61,7 @@
 /// @param destId Destination timeline entity ID
 /// @param name Message name
 /// @return A newly created message instance
--(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+-(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 /// Make an NSURLRequest with any verb. All connection handling is behind the scenes.
 /// @param verb Rest verb for the request: GET, PUT, POST, DELETE, etc.
@@ -72,7 +73,7 @@
 /// @param success A block function that is called when the connection successfully completes. Can be nil.
 /// @param error A block function that is called when the connection errors. This function is called when connection:didFailWithError: is called by ios. Can be nil.
 /// @param then A block function that is called when the connection is created(data will be nil), when any response is recieved(status code gets set) or when didSendBodyData:, and when the connection closes in a non-error state. Can be nil.
--(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 /// Template error block function.
 /// @param delegate The delegate to send the specified selector to.
@@ -99,8 +100,8 @@
 
 
 
--(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass;
--(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass;
+-(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass requestType:(NSInteger)type;
+-(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass requestType:(NSInteger)type;
 -(void (^)(NSData *, void(^cleanUp)()))successTemplateForDelegate:(id)delegate selectorOnSuccess:(SEL)successSelector parseClass:(Class)parseClass resultIsArray:(BOOL)resultIsArray;
 
 

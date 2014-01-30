@@ -28,9 +28,10 @@ int licRequiredLabelTopPad = 0;
 
 +(NSInteger)getCellHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa{
     if (qaa.answer.imageDetails.image != nil)
-        return 300;
+        return 260;
     else
-        return 100;
+        return 260;// 210 if image divided by 16
+#warning This needs to be fixed for changing row height when there is an image and when there isnt
 }
 
 +(NSInteger)getEstimatedHeightForQuestionAndAnswer:(QuestionAndAnswer *)qaa{
@@ -43,18 +44,17 @@ int licRequiredLabelTopPad = 0;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         // Initialization code
-        self.imageV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 400, 200)];
-        
-        
         self.retakeButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 200, 100)];
         [self.retakeButton setTitle:@"Retake Image" forState:UIControlStateNormal];
         [self.retakeButton setBackgroundColor:[UIColor greenColor]];
         [self.requiredLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.takeButton addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchUpInside];
         
         self.takeButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 100, 50)];
         [self.takeButton setTitle:@"Take Image" forState:UIControlStateNormal];
         [self.takeButton setBackgroundColor:[UIColor greenColor]];
         [self.takeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.takeButton addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchUpInside];
         
         
         self.requiredLabel = [[UILabel alloc] init];
@@ -83,11 +83,21 @@ int licRequiredLabelTopPad = 0;
 }
 
 -(void)putImageInView{
+    int scaleImageBy = 10;
+    NSLog(@"Putting image in view, length: %@", self.qaa.answer.imageDetails.image);
+    int width = self.qaa.answer.imageDetails.image.size.width / scaleImageBy;
+    int height = self.qaa.answer.imageDetails.image.size.height / scaleImageBy;
+    self.imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, width, height)];// w:153  h:16 204
     [self.imageV setImage:self.qaa.answer.imageDetails.image];
     [self.contentView addSubview:self.imageV];
 }
 
 -(void)setUpViewNeedToTakeImage{
+    if (self.imageV != nil) {
+        NSLog(@"removed from view");
+        [self.imageV removeFromSuperview];
+    }
+    self.imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 10, 0, 0)];// w:153  h:16 204
     [self.contentView addSubview:self.takeButton];
 }
 
@@ -114,6 +124,7 @@ int licRequiredLabelTopPad = 0;
 }
 
 -(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa tableDelegate:(id)tableDelegate{
+    NSLog(@"setting up image cell, %@", [QuestionAndAnswer dictionaryFromQuestionAndAnswer:qaa]);
     self.qaa = qaa;
     self.delegate = tableDelegate;
     self.imageSavingStarted = false;
@@ -130,37 +141,13 @@ int licRequiredLabelTopPad = 0;
     if ([self needsToTakeImage])
         [self setUpViewNeedToTakeImage];
     else {
+        NSLog(@"doesnt need to take image");
         if ([self hasImage]) // put image on screen
             [self putImageInView];
         else
             [[SBDaoV1 sharedManager] getImageForAnswerId:self.qaa.answer.imageDetails.answerId forDelegate:self];// go get image
     }
 }
-
-/*
- -(void)setUpWithLabelText:(NSString *)labelText textFieldText:(NSString *)textFieldText{
- // make text label
- CGSize labelSize = CGSizeMake(licLabelMaxWidth, 9999);
- CGRect textRect = [labelText boundingRectWithSize:labelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont  systemFontOfSize:15.0f]} context:nil];
- CGRect labelRect = CGRectMake(licLabelLeftPad, licLabelTopPad, textRect.size.width, textRect.size.height);
- 
- // make required label rect
- CGSize requiredSize = CGSizeMake(licRequiredLabelWidth, 9999);
- CGRect requiredRect = [licRequiredLabelText boundingRectWithSize:requiredSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:12.0f]} context:nil];
- CGRect requiredLabelRect = CGRectMake(licRequiredLabelLeftPad, licLabelTopPad + labelRect.size.height + licRequiredLabelTopPad, licRequiredLabelWidth, requiredRect.size.height);
- 
- // make text field rect
- CGRect textFieldRect = CGRectMake(licTextFieldLeftPad, licLabelTopPad + labelRect.size.height + licRequiredLabelTopPad + requiredRect.size.height + licTextFieldTopPad, licTextFieldMaxWidth, licTextFieldHeight);
- 
- // set up labels
- [self.label setFrame:labelRect];
- [self.label setText:labelText];
- [self.requiredLabel setFrame:requiredLabelRect];
- [self.requiredLabel setText:licRequiredLabelText];
- [self.textField setFrame:textFieldRect];
- [self.textField setText:textFieldText];
- }
- */
 
 -(UIButton *)makeTakeImageButton{
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(20, 10, 200, 100)];
@@ -176,6 +163,13 @@ int licRequiredLabelTopPad = 0;
 
 -(void)imageThen:(NSURLConnectionWithExtras *)connection progress:(NSProgress *)progress{
     self.imageConnection = connection;
+}
+
+-(void)imageFinished:(FinishedPhoto *)finishedPhoto{
+    NSLog(@"image finished");
+    self.qaa.answer.imageDetails.photoName = finishedPhoto.filename;
+    self.qaa.answer.imageDetails.bucketId = finishedPhoto.bucketId;
+    NSLog(@"imageDetails: %@", [QuestionAndAnswer dictionaryFromQuestionAndAnswer:self.qaa]);
 }
 
 enum {
@@ -203,13 +197,16 @@ enum {
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     self.finishedPhoto = nil;// clear photo so everything waits until it comes back from saving to server
     [self.delegate dismissViewControllerAnimated:YES completion:nil]; //Do this first!
-    self.image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [self.imageV setImage:self.image];
+    NSLog(@"%@", self.qaa.answer.imageDetails);
+    self.qaa.answer.imageDetails.image = [info objectForKey:UIImagePickerControllerOriginalImage];
+//    [self.imageV setImage:self.qaa.answer.imageDetails.image];
+    NSLog(@"Image size h: %ld, w: %ld", (long)self.qaa.answer.imageDetails.image.size.height, (long)self.qaa.answer.imageDetails.image.size.width);
     self.imageSavingStarted = true;
     //https://developer.apple.com/library/ios/documentation/Cocoa/Reference/Foundation/Classes/NSData_Class/Reference/Reference.html#//apple_ref/c/tdef/NSDataBase64EncodingOptions
-    NSData *data = [UIImageJPEGRepresentation(self.image, ImageCompression) base64EncodedDataWithOptions:NSDataBase64Encoding76CharacterLineLength];
-    NSLog(@"first part: %lu", (unsigned long)data.length);
-    [[SBDaoV1 sharedManager] putImage:data forStateId:44 forDelegate:self];
+    NSData *data = [UIImageJPEGRepresentation(self.qaa.answer.imageDetails.image, ImageCompression) base64EncodedDataWithOptions:NSDataBase64Encoding76CharacterLineLength];
+    NSLog(@"body data length: %lu", (unsigned long)data.length);
+    [[SBDaoV1 sharedManager] putImage:data forStateId:44 forDelegate:self];// hard coded for utah
+    [self putImageInView];
     // set it to nil here?
     
     //image = [ImageHelpers imageWithImage:image scaledToSize:CGSizeMake(480, 640)];
@@ -220,7 +217,7 @@ enum {
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (alertView.tag == CantGetLocationTag) {
         if ([self.delegate respondsToSelector:@selector(setTabBarSelectedIndex:)]) {
-            [self.delegate performSelector:@selector(setTabBarSelectedIndex:)];
+            [self.delegate performSelector:@selector(setTabBarSelectedIndex:) withObject:0];
         }
     }
 }

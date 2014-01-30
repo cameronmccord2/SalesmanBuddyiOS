@@ -7,6 +7,7 @@
 //
 
 #import "DAOManager.h"
+#import "User.h"
 
 
 @implementation DAOManager
@@ -35,9 +36,14 @@
         dataFromConnectionByTag = [[NSMutableDictionary alloc] init];
         connections = [[NSMutableDictionary alloc] init];
         connectionNumber = [NSDecimalNumber zero];
+        self.userConfirmed = false;
     }
     return self;
 }
+
+enum {
+    Junk = 0, ConfirmUserTag, StoreTag
+};
 
 -(NSInteger)getAUniqueTag{
     currentUniqueTag++;
@@ -105,7 +111,7 @@
 -(void (^)(NSData *, void(^cleanUp)()))successTemplateForDelegate:(id)delegate selectorOnSuccess:(SEL)successSelector parseClass:(Class)parseClass resultIsArray:(BOOL)resultIsArray{
     
     SEL parseJsonArraySelector = @selector(arrayFromDictionaryList:);
-    SEL initObjectWithDictionary = @selector(initWithDictionary:);
+    SEL initObjectWithDictionary = @selector(objectFromDictionary:);
     
     void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
         NSError *e = nil;
@@ -136,14 +142,14 @@
             }else if ([delegate respondsToSelector:successSelector]) {
                 NSLog(@"responds to success selector");
                 if ([parseClass respondsToSelector:initObjectWithDictionary]) {
-                    NSLog(@"parse classresponds to initWithDictionary:");
-                    NSLog(@"parsed contact info");
+                    NSLog(@"parseClass responds to selector: %@", NSStringFromSelector(initObjectWithDictionary));
+                    NSLog(@"%@", d);
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                    [delegate performSelector:successSelector withObject:[[parseClass alloc] initWithDictionary:d]];
+                    [delegate performSelector:successSelector withObject:[parseClass performSelector:initObjectWithDictionary withObject:d]];
 #pragma clang diagnostic pop
                 }else
-                    NSLog(@"delegate: %@, cant respond to %@", delegate, NSStringFromSelector(initObjectWithDictionary));
+                    NSLog(@"parseClass: %@, cant respond to selector: %@", parseClass, NSStringFromSelector(initObjectWithDictionary));
             }else
                 NSLog(@"cannot send contactInfo to delegate");
         }
@@ -156,8 +162,8 @@
 
 #pragma mark - Generic Functions
 
--(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
-    NSLog(@"making post request, %@", bodyData);
+-(void)makeRequestWithVerb:(NSString *)verb forUrl:(NSString *)url bodyDictionary:(NSDictionary *)bodyDictionary bodyData:(NSData *)bodyData authDelegate:(id<DAOManagerDelegateProtocol>)delegate contentType:(NSString *)contentType requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
+    NSLog(@"making post request, dictionary: %@", bodyDictionary);
     NSError *e = nil;
     NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [req setHTTPMethod:verb];
@@ -167,7 +173,7 @@
     }
     
     if(bodyData){
-        [req setValue:[NSString stringWithFormat:@"%d", [bodyData length]] forHTTPHeaderField:@"Content-Length"];
+        [req setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[bodyData length]] forHTTPHeaderField:@"Content-Length"];
         if (contentType == nil) {
             NSLog(@"content type was nil, setting to default of application/json");
             contentType = @"applicaiton/json";
@@ -179,24 +185,24 @@
     if (e != nil) {
         NSLog(@"make post reuqest error: %@", e.localizedDescription);
     }else{
-        [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate success:success error:error then:then]];
+        [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate requestType:type success:success error:error then:then]];
         [self makeAuthViableAndExecuteCallQueue:delegate];
     }
 }
 
--(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
+-(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@", urlString]];
     NSMutableURLRequest *req = [[NSMutableURLRequest alloc] initWithURL:url];
-    [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate success:success error:error then:then]];
+    [callQueue addObject:[CallQueue initWithRequest:req authDelegate:delegate requestType:(NSInteger)type success:success error:error then:then]];
     [self makeAuthViableAndExecuteCallQueue:delegate];
 }
 
--(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass{
-    [self genericGetFunctionForDelegate:delegate forUrlString:url success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:YES] error:nil then:nil];
+-(void)genericListGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass requestType:(NSInteger)type{
+    [self genericGetFunctionForDelegate:delegate forUrlString:url requestType:type success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:YES] error:nil then:nil];
 }
 
--(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass{
-    [self genericGetFunctionForDelegate:delegate forUrlString:url success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:NO] error:nil then:nil];
+-(void)genericObjectGetForDelegate:(id)delegate url:(NSString *)url selector:(SEL)selector parseClass:(Class)parseClass requestType:(NSInteger)type{
+    [self genericGetFunctionForDelegate:delegate forUrlString:url requestType:type success:[self successTemplateForDelegate:delegate selectorOnSuccess:selector parseClass:parseClass resultIsArray:NO] error:nil then:nil];
 }
 
 
@@ -208,12 +214,17 @@
 
 -(void)doFetchQueue{
     NSLog(@"doing fetch queue");
-    if (!tryingToAuthenticate && !blockingRequestRunning && callQueue.count != 0) {
+    for (int i = 0; i < 10; i++) {// loop through all the priorities
         for (CallQueue *cq in callQueue) {
-            if (!cq.alreadySent) {
-                [self doRequest:cq];
-                break;
-            }
+            if(!tryingToAuthenticate && !blockingRequestRunning){
+                if (!cq.alreadySent && cq.type == i) {
+                    if(i < 6)// everything under 6 is a blocking request priority
+                        blockingRequestRunning = YES;
+                    [self doRequest:cq];
+                    return;
+                }
+            }else
+                return;
         }
     }
 }
@@ -230,6 +241,7 @@
         NSLog(@"auth is nil");
         [self showGoogleLogin:cq.delegate];
     }else{
+        NSLog(@"trying to authorize");
         cq.alreadySent = true;
         
         [self.auth authorizeRequest:cq.request completionHandler:^(NSError *error) {
@@ -237,6 +249,7 @@
                 NSLog(@"%@", [cq.request allHTTPHeaderFields]);
                 NSLog(@"auth authorized");
                 tryingToAuthenticate = false;
+                
                 [cq.request setValue:@"google" forHTTPHeaderField:@"Authprovider"];
                 
                 NSURLConnectionWithExtras *connectionObject = [NSURLConnectionWithExtras connectionWithRequest:cq.request delegate:self startImmediately:YES uniqueTag:[self getConnectionNumber] finalDelegate:cq.delegate success:cq.success error:cq.error then:cq.then];
@@ -377,7 +390,7 @@
     
     // DO A GLOBAL ERROR HANDLER FOR NOW FOR MY DAO
     
-    NSString *errorString = [NSString stringWithFormat:@"Fetch  failed for url: %@, error: %@", conn.originalRequest.URL.absoluteString, [error localizedDescription]];
+    NSString *errorString = [NSString stringWithFormat:@"Fetch failed for url: %@, error: %@", conn.originalRequest.URL.absoluteString, [error localizedDescription]];
     UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"Error" message:errorString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
     [av show];
 }

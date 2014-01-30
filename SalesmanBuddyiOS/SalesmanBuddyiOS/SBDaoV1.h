@@ -23,12 +23,12 @@
 -(void)answers:(NSArray *)answers;
 -(void)questionsAndAnswers:(NSArray *)questionsAndAnswers;
 -(void)user:(User *)user;
--(void)finishedPhoto:(FinishedPhoto *)finishedPhoto;
 -(void)finishedSubmitLicense:(License *)license;
 -(void)deletedLicenseWithId:(DeleteLicenseResponse *)deleteLicenseResponse;
 -(void)updatedLicense:(License *)updatedLicense;
 -(void)imageData:(NSData *)data;
 -(void)imageThen:(NSURLConnectionWithExtras *)connection progress:(NSProgress *)progress;
+-(void)imageFinished:(FinishedPhoto *)finishedPhoto;
 
 @end
 
@@ -45,12 +45,13 @@
 -(void)getLicensesForDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getStates:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getDealerships:(id<SBDaoV1DelegateProtocol>)delegate;
--(void)getUserExists:(id<SBDaoV1DelegateProtocol>)delegate;
+//-(void)getUserExists:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getImageForAnswerId:(NSInteger)answerId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)confirmUser;
 -(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)putLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)updateLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)deleteLicenseById:(NSInteger)licenseId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
+-(void)gotUser:(User *)user;
 
 @end

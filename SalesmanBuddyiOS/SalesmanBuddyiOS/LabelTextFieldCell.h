@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "QuestionAndAnswer.h"
 
-@interface LabelTextFieldCell : UITableViewCell
+@interface LabelTextFieldCell : UITableViewCell <UITextFieldDelegate>
 
 @property(nonatomic, strong)NSString *reuseId;
 @property(nonatomic, strong)UILabel *label;

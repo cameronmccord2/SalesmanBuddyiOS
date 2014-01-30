@@ -163,7 +163,7 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
     }
     
     // Fix the flag thing on all cells
-    int index = [indexPath row];
+    int index = (int)[indexPath row];
     License *l = [self.licenses objectAtIndex:index];
     [cell.name setText:[NSString stringWithFormat:@"%@, %@", [self getLastNameAnswer:l.qaas].answerText, [self getFirstNameAnswer:l.qaas].answerText]];
     [cell.details setText:[NSString stringWithFormat:@"%@,  ID: %@", l.created, @"12345"]];

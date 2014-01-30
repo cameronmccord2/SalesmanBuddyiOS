@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface User : NSObject<NSCoding>
+@interface User : NSObject
 
 @property(nonatomic)NSInteger id;
 @property(nonatomic)NSInteger dealershipId;
@@ -18,6 +18,7 @@
 @property(nonatomic, strong)NSString *googleUserId;
 
 +(NSDictionary *)dictionaryFromUser:(User *)user;
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary;
 
 -(id)initWithDictionary:(NSDictionary *)dictionary;
 

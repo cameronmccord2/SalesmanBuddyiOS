@@ -34,21 +34,28 @@ static const NSInteger isSaveCancel = 5;
 - (instancetype)initWithContext:(NSManagedObjectContext *)managedObjectContext license:(License *)license delegate:(id<SBDaoV1DelegateProtocol>)delegate{
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
+        [self registerForKeyboardNotifications];
+        self.managedObjectContext = managedObjectContext;
+        self.delegate = delegate;
         self.title = NSLocalizedString(@"New License", @"New License");
         self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
         self.license = license;
+        self.isTabInstance = false;
+        
         if (self.license == nil) {
+            NSLog(@"license is null");
+            self.isTabInstance = true;
             [[SBDaoV1 sharedManager] getQuestionsForDelegate:self];
+        }else{
+            NSLog(@"license isnt null");
         }
-        self.managedObjectContext = managedObjectContext;
-        self.delegate = delegate;
     }
     return self;
 }
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 52, 0);
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 50, 0);
     self.tableView.contentInset = inset;
     
     // custom cells
@@ -56,6 +63,19 @@ static const NSInteger isSaveCancel = 5;
     [[self tableView] registerClass:[LabelBoolCell class] forCellReuseIdentifier:kLabelBoolCell];
     [[self tableView] registerClass:[LicenseImageCell class] forCellReuseIdentifier:kLicenceImageCell];
     [[self tableView] registerClass:[SubmitCancelCell class] forCellReuseIdentifier:kSubmitCancelCell];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        self.alert = [[UIAlertView alloc] initWithTitle:@"Camera Error" message:@"We are unable to access your camera. Please try this on a device with a camera." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        self.alert.tag = CantUseCameraTag;
+        [self.alert show];
+    }else if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+        self.alert = [[UIAlertView alloc] initWithTitle:@"Location services NOT enabled" message:@"Scanning new licenses requires saving your current location for security purposes. Please go to Settings-Privacy-Location Services and enable this app's location privileges." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        self.alert.tag = CantGetLocationTag;
+        [self.alert show];
+    }
 }
 
 - (void)didReceiveMemoryWarning{
@@ -69,6 +89,7 @@ static const NSInteger isSaveCancel = 5;
     NSLog(@"recieved questions, count: %ld", (long)[questions count]);
     self.license = [[License alloc] initWithQuestions:questions];
     [self.tableView reloadData];
+    [self.tableView setContentOffset:CGPointZero animated:YES];
 }
 
 
@@ -182,7 +203,47 @@ static const NSInteger isSaveCancel = 5;
         default:
             break;
     }
+    [cell setTag:[indexPath row]];
     return cell;
+}
+
+-(void)finishedSubmitLicense:(License *)license{
+    if(self.isTabInstance){
+        [[SBDaoV1 sharedManager] getQuestionsForDelegate:self];
+    }
+}
+
+
+#pragma mark - SubmitCancelProtocol functions
+
+-(void)submit{
+    NSLog(@"submit recieved");
+    for (QuestionAndAnswer *qaa in self.license.qaas) {
+        NSLog(@"Q: %@, A: %@", qaa.question.questionTextEnglish, qaa.answer.answerText);
+    }
+    CLLocationCoordinate2D coordinate = [[SBDaoV1 sharedManager] getLocation];
+    self.license.longitude = coordinate.longitude;
+    self.license.latitude = coordinate.latitude;
+    [[SBDaoV1 sharedManager] putLicense:self.license forDelegate:self];
+}
+
+-(void)cancel{
+    NSLog(@"cancel recieved");
+    if (self.isTabInstance) {
+        NSLog(@"tab instance");
+        // reset questions
+        for (QuestionAndAnswer *qaa in self.license.qaas) {
+            qaa.answer.answerText = @"";
+            qaa.answer.answerBool = NO;
+            if(qaa.answer.answerType == isImage){
+                qaa.answer.imageDetails = [[ImageDetails alloc] init];
+            }
+        }
+        [self.tableView reloadData];
+        [self.tableView setContentOffset:CGPointZero animated:YES];
+    }else{      // unload view
+        [self.delegate dismissAuthModal:self];
+    }
 }
 
 
@@ -218,6 +279,68 @@ static const NSInteger isSaveCancel = 5;
 
 -(void)setTabBarSelectedIndex:(NSInteger)index{
     [self.tabBarController setSelectedIndex:index];
+}
+
+
+
+
+#pragma mark - Keyboard stuff
+
+- (void)registerForKeyboardNotifications{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification{
+    NSLog(@"will scroll");
+    [self setKeyboardInsets];
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification{
+    [self setNoKeyboardInsets];
+}
+
+//-(NSInteger)viewAfterTag:(NSInteger)tag inArray:(NSArray *)array{
+//    BOOL takeNextOne = false;
+//    for (UIView *v in array) {
+//        if (v.tag == tag) {
+//            takeNextOne = true;
+//            NSLog(@"take next one");
+//        }else if(takeNextOne){
+//            return v.tag;
+//        }
+//    }
+//    return -1;
+//}
+
+-(void)setKeyboardInsets{
+    NSLog(@"%f", self.tableView.contentInset.bottom);
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, self.tableView.contentInset.bottom - 50.0f, 0);
+    self.tableView.contentInset = inset;
+    NSLog(@"%f", self.tableView.contentInset.bottom);
+}
+
+-(void)setNoKeyboardInsets{
+    UIEdgeInsets inset = UIEdgeInsetsMake(20, 0, 266, 0);// i dont know why this has to be so large 266, shouldnt it be more like 50?
+    self.tableView.contentInset = inset;
+}
+
+enum {
+    Junk = 0, CantUseCameraTag, CantGetLocationTag
+};
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+#warning change this to allow for modal and for tab types
+    if (alertView.tag == CantUseCameraTag) {
+        [self setTabBarSelectedIndex:0];
+    }else if (alertView.tag == CantGetLocationTag) {
+        [self.tabBarController setSelectedIndex:0];
+    }
 }
 
 @end

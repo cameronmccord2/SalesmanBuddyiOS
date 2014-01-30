@@ -17,13 +17,14 @@
     [d setValue:@(answer.answerType) forKey:@"answerType"];
     [d setValue:answer.answerText forKey:@"answerText"];
     [d setValue:@(answer.licenseId) forKey:@"licenseId"];
-    [d setValue:answer.created forKey:@"created"];
+//    [d setValue:answer.created forKey:@"created"];
     [d setValue:@(answer.questionId) forKey:@"questionId"];
     [d setValue:[ImageDetails dictionaryFromImageDetails:answer.imageDetails] forKey:@"imageDetails"];
     return d;
 }
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
+    NSLog(@"initing with dictionary, answer: %@", dictionary);
     self = [super init];
     if (self) {
         self.id = [dictionary[@"id"] integerValue];
@@ -50,6 +51,7 @@
         self.licenseId = 0;
         self.questionId = question.id;
         self.created = [NSDate date];
+        self.imageDetails = [[ImageDetails alloc] init];
     }
     return self;
 }

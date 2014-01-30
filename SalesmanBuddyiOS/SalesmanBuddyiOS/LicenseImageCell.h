@@ -11,6 +11,12 @@
 #import "ImageDetails.h"
 #import "QuestionAndAnswer.h"
 
+@protocol LicenseImageCellProtocol <NSObject>
+
+-(void)setTabBarSelectedIndex:(NSInteger)index;
+
+@end
+
 @interface LicenseImageCell : UITableViewCell <SBDaoV1DelegateProtocol, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property(nonatomic, strong)UIImageView *imageV;

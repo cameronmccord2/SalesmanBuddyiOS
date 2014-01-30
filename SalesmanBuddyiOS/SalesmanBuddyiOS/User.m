@@ -25,30 +25,35 @@
     return self;
 }
 
--(id)initWithCoder:(NSCoder *)aDecoder{
-    self = [super init];
-    if(self){
-        self.id = [aDecoder decodeIntegerForKey:@"id"];
-        self.dealershipId = [aDecoder decodeIntegerForKey:@"dealershipId"];
-        self.deviceType = [aDecoder decodeIntegerForKey:@"deviceType"];
-        self.type = [aDecoder decodeIntegerForKey:@"type"];
-        self.googleUserId = [aDecoder decodeObjectForKey:@"googleUserId"];
-    }
-    return self;
-}
-
--(void)encodeWithCoder:(NSCoder *)encoder{
-    [encoder encodeInteger:self.deviceType forKey:@"deviceType"];
-    [encoder encodeObject:self.googleUserId forKey:@"googleUserId"];
-}
+//-(id)initWithCoder:(NSCoder *)aDecoder{
+//    self = [super init];
+//    if(self){
+//        self.id = [aDecoder decodeIntegerForKey:@"id"];
+//        self.dealershipId = [aDecoder decodeIntegerForKey:@"dealershipId"];
+//        self.deviceType = [aDecoder decodeIntegerForKey:@"deviceType"];
+//        self.type = [aDecoder decodeIntegerForKey:@"type"];
+//        self.googleUserId = [aDecoder decodeObjectForKey:@"googleUserId"];
+//    }
+//    return self;
+//}
+//
+//-(void)encodeWithCoder:(NSCoder *)encoder{
+//    [encoder encodeInteger:self.deviceType forKey:@"deviceType"];
+//    [encoder encodeObject:self.googleUserId forKey:@"googleUserId"];
+//}
 
 +(NSDictionary *)dictionaryFromUser:(User *)user{
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
-    [d setValue:[NSNumber numberWithInt:user.id] forKey:@"id"];
-    [d setValue:[NSNumber numberWithInt:user.dealershipId] forKey:@"dealershipId"];
-    [d setValue:[NSNumber numberWithInt:user.deviceType] forKey:@"deviceType"];
-    [d setValue:[NSNumber numberWithInt:user.type] forKey:@"type"];
+    [d setValue:@(user.id) forKey:@"id"];
+    [d setValue:@(user.dealershipId) forKey:@"dealershipId"];
+    [d setValue:@(user.deviceType) forKey:@"deviceType"];
+    [d setValue:@(user.type) forKey:@"type"];
     [d setValue:user.googleUserId forKey:@"googleUserId"];
     return d;
 }
+
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary{
+    return [[User alloc] initWithDictionary:dictionary];
+}
+
 @end

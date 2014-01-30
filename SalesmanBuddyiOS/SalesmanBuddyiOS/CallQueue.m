@@ -11,7 +11,7 @@
 
 @implementation CallQueue
 
-+(instancetype)initWithRequest:(NSMutableURLRequest *)request authDelegate:(id<DAOManagerDelegateProtocal>)authDelegate success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
++(instancetype)initWithRequest:(NSMutableURLRequest *)request authDelegate:(id<DAOManagerDelegateProtocol>)authDelegate requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then{
     CallQueue *item = [[CallQueue alloc] init];
     item.request = request;
     item.delegate = authDelegate;
@@ -19,6 +19,7 @@
     item.error = error;
     item.then = then;
     item.alreadySent = NO;
+    item.type = type;
     return item;
 }
 @end

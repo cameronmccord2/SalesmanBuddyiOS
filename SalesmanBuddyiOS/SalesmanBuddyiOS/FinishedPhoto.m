@@ -10,7 +10,11 @@
 
 @implementation FinishedPhoto
 
--(id)initWithDictionary:(NSDictionary *)dictionary{
++(instancetype)objectFromDictionary:(NSDictionary *)dictionary{
+    return [[FinishedPhoto alloc] initWithDictionary:dictionary];
+}
+
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary{
     self = [super init];
     if (self) {
         self.filename = dictionary[@"filename"];

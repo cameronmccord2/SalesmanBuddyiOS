@@ -29,6 +29,7 @@
 }
 
 -(id)initWithDictionary:(NSDictionary *)dictionary{
+    NSLog(@"initing with dictionary, imageDetails: %@", dictionary);
     self = [super init];
     if (self) {
         self.id = [dictionary[@"id"] integerValue];
