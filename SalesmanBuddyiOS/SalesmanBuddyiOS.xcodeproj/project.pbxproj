@@ -27,8 +27,6 @@
 		21CABB65180C46D6000BB826 /* LicenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB64180C46D6000BB826 /* LicenseListViewController.m */; };
 		21CABBA1180F04AE000BB826 /* CallQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABB9E180F04AE000BB826 /* CallQueue.m */; };
 		21CABBA2180F04AE000BB826 /* NSURLConnectionWithTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */; };
-		21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */; };
 		21D353E1181AE04D0082C06E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D353E0181AE04D0082C06E /* SettingsViewController.m */; };
 		21FDA8B8180F0D4C00C9FB5B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B7180F0D4C00C9FB5B /* Security.framework */; };
 		21FDA8BA180F0D6800C9FB5B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FDA8B9180F0D6800C9FB5B /* SystemConfiguration.framework */; };
@@ -44,6 +42,8 @@
 		DC6F066218168ACB00EBE962 /* State.m in Sources */ = {isa = PBXBuildFile; fileRef = DC6F066118168ACB00EBE962 /* State.m */; };
 		DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */; };
 		DCEB3B721818F97800052ADA /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEB3B711818F97800052ADA /* CoreLocation.framework */; };
+		E448D69918A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = E448D69718A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E448D69A18A3EFFF0025861D /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = E448D69818A3EFFF0025861D /* GTMOAuth2ViewTouch.xib */; };
 		E46859D518497B2F004C5C82 /* NSURLConnectionWithExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = E46859D418497B2F004C5C82 /* NSURLConnectionWithExtras.m */; };
 		E49C5DC7186F56B400038440 /* LabelBoolCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DC2186F56B400038440 /* LabelBoolCell.m */; };
 		E49C5DC8186F56B400038440 /* LabelSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C5DC4186F56B400038440 /* LabelSelectCell.m */; };
@@ -110,9 +110,6 @@
 		21CABB9E180F04AE000BB826 /* CallQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallQueue.m; sourceTree = "<group>"; };
 		21CABB9F180F04AE000BB826 /* NSURLConnectionWithTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionWithTag.h; sourceTree = "<group>"; };
 		21CABBA0180F04AE000BB826 /* NSURLConnectionWithTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionWithTag.m; sourceTree = "<group>"; };
-		21CABBA6180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2ViewControllerTouch.h; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.h"; sourceTree = "<group>"; };
-		21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2ViewControllerTouch.m; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewControllerTouch.m"; sourceTree = "<group>"; };
-		21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2ViewTouch.xib; path = "../../../../gtm-oauth2-read-only/Source/Touch/GTMOAuth2ViewTouch.xib"; sourceTree = "<group>"; };
 		21D353DF181AE04D0082C06E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		21D353E0181AE04D0082C06E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		21FDA8B7180F0D4C00C9FB5B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -140,6 +137,9 @@
 		DCEB3B6E1818F4B600052ADA /* FinishedPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinishedPhoto.h; sourceTree = "<group>"; };
 		DCEB3B6F1818F4B600052ADA /* FinishedPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinishedPhoto.m; sourceTree = "<group>"; };
 		DCEB3B711818F97800052ADA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		E448D69618A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMOAuth2ViewControllerTouch.h; sourceTree = "<group>"; };
+		E448D69718A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMOAuth2ViewControllerTouch.m; sourceTree = "<group>"; };
+		E448D69818A3EFFF0025861D /* GTMOAuth2ViewTouch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GTMOAuth2ViewTouch.xib; sourceTree = "<group>"; };
 		E46859D318497B2F004C5C82 /* NSURLConnectionWithExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionWithExtras.h; sourceTree = "<group>"; };
 		E46859D418497B2F004C5C82 /* NSURLConnectionWithExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionWithExtras.m; sourceTree = "<group>"; };
 		E49C5DC1186F56B400038440 /* LabelBoolCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelBoolCell.h; sourceTree = "<group>"; };
@@ -320,6 +320,9 @@
 		21FDA90C180F109100C9FB5B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E448D69618A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.h */,
+				E448D69718A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.m */,
+				E448D69818A3EFFF0025861D /* GTMOAuth2ViewTouch.xib */,
 				E4A9C80418455D810095294D /* Additions */,
 				21FDA9161810C1A800C9FB5B /* GTMHTTPFetcher.h */,
 				21FDA9171810C1A800C9FB5B /* GTMHTTPFetcher.m */,
@@ -329,9 +332,6 @@
 				21FDA90E180F153500C9FB5B /* GTMOAuth2Authentication.m */,
 				21FDA905180F105800C9FB5B /* SFHFKeychainUtils.h */,
 				21FDA906180F105800C9FB5B /* SFHFKeychainUtils.m */,
-				21CABBA6180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.h */,
-				21CABBA7180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m */,
-				21CABBA8180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -499,9 +499,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E448D69A18A3EFFF0025861D /* GTMOAuth2ViewTouch.xib in Resources */,
 				E4A8CC9F1842E42500766997 /* flagGrey.png in Resources */,
 				E4A8CC9D1842E42500766997 /* blueArrow@2x.png in Resources */,
-				21CABBAA180F0CD0000BB826 /* GTMOAuth2ViewTouch.xib in Resources */,
 				E4A8CCA31842E42500766997 /* flagRedOriginal.png in Resources */,
 				E4A8CCA21842E42500766997 /* flagRed@2x.png in Resources */,
 				E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */,
@@ -547,6 +547,7 @@
 				E49C5DC9186F56B400038440 /* LabelTextFieldCell.m in Sources */,
 				E46859D518497B2F004C5C82 /* NSURLConnectionWithExtras.m in Sources */,
 				E49C5DD3187CBBB200038440 /* QuestionAndAnswer.m in Sources */,
+				E448D69918A3EFFF0025861D /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				21FDA9151810C19000C9FB5B /* GTMOAuth2SignIn.m in Sources */,
 				21A251131819BBFD00C28188 /* LoadingModalViewController.m in Sources */,
 				E49C5DD6187CBCCB00038440 /* LicenseImageCell.m in Sources */,
@@ -554,7 +555,6 @@
 				E4A9C80318455D7B0095294D /* Random.m in Sources */,
 				E49C5DC7186F56B400038440 /* LabelBoolCell.m in Sources */,
 				21FDA9181810C1A800C9FB5B /* GTMHTTPFetcher.m in Sources */,
-				21CABBA9180F0CD0000BB826 /* GTMOAuth2ViewControllerTouch.m in Sources */,
 				E49C5DDC187E423300038440 /* ImageDetails.m in Sources */,
 				DCEB3B701818F4B600052ADA /* FinishedPhoto.m in Sources */,
 				E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */,
