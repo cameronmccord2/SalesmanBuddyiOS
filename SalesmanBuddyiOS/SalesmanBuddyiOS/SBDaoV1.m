@@ -91,8 +91,8 @@ enum{
     return self;
 }
 
+
 -(CLLocationCoordinate2D)getLocation{
-    
     CLLocationManager *locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;

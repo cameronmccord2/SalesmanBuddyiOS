@@ -270,9 +270,6 @@
 				21A251121819BBFD00C28188 /* LoadingModalViewController.m */,
 				21D353DF181AE04D0082C06E /* SettingsViewController.h */,
 				21D353E0181AE04D0082C06E /* SettingsViewController.m */,
-				E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */,
-				E4A9C7E6184513EB0095294D /* LicenseTableViewCell.h */,
-				E4A9C7E7184513EB0095294D /* LicenseTableViewCell.m */,
 			);
 			path = SalesmanBuddyiOS;
 			sourceTree = "<group>";
@@ -376,6 +373,9 @@
 				E49C5DD5187CBCCB00038440 /* LicenseImageCell.m */,
 				E49C5DDE187EFD7C00038440 /* SubmitCancelCell.h */,
 				E49C5DDF187EFD7C00038440 /* SubmitCancelCell.m */,
+				E4A9C7E4184513C80095294D /* LicenseTableViewCellGUI.xib */,
+				E4A9C7E6184513EB0095294D /* LicenseTableViewCell.h */,
+				E4A9C7E7184513EB0095294D /* LicenseTableViewCell.m */,
 			);
 			name = "Custom Cells";
 			sourceTree = "<group>";

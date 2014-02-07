@@ -154,12 +154,12 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
         [cell.details setFont:[UIFont systemFontOfSize:14.0]];
         [cell.contentView addSubview:cell.details];
         
-        cell.flag = [[UIImageView alloc] initWithFrame:CGRectMake(221, 0, 49, 43)];
-        [cell.contentView addSubview:cell.flag];
+//        cell.flag = [[UIImageView alloc] initWithFrame:CGRectMake(221, 0, 49, 43)];
+//        [cell.contentView addSubview:cell.flag];
         
-        UIImageView *accesoryView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 0, 47, 43)];
-        [accesoryView setImage:[UIImage imageNamed:@"blueArrow.png"]];
-        [cell.contentView addSubview:accesoryView];
+//        UIImageView *accesoryView = [[UIImageView alloc] initWithFrame:CGRectMake(273, 0, 47, 43)];
+//        [accesoryView setImage:[UIImage imageNamed:@"blueArrow.png"]];
+//        [cell.contentView addSubview:accesoryView];
     }
     
     // Fix the flag thing on all cells
