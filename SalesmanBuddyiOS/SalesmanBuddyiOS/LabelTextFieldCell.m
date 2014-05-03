@@ -118,12 +118,12 @@ NSString *ltfcRequiredLabelText = @"Required";
 
 
 - (void)textFieldDidEndEditing:(UITextField *)textFieldFinished{
-    NSLog(@"Text field finished editing: %@", textFieldFinished.text);
+//    NSLog(@"Text field finished editing: %@", textFieldFinished.text);
     self.qaa.answer.answerText = textFieldFinished.text;
 }
 
 - (void)textFieldDidChange:(UITextField *)textFieldFinished{
-    NSLog(@"Text field changed: %@", textFieldFinished.text);
+//    NSLog(@"Text field changed: %@", textFieldFinished.text);
     self.qaa.answer.answerText = textFieldFinished.text;
 }
 

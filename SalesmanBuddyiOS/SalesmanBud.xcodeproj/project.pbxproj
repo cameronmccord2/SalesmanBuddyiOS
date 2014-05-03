@@ -69,6 +69,10 @@
 		E4A9C80118455D7B0095294D /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FC18455D7B0095294D /* NSStringAdditions.m */; };
 		E4A9C80218455D7B0095294D /* NSURLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */; };
 		E4A9C80318455D7B0095294D /* Random.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A9C80018455D7B0095294D /* Random.m */; };
+		E4EBC55D1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EBC55C1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.m */; };
+		E4EBC55F191458A700BF14DF /* listIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EBC55E191458A700BF14DF /* listIcon.png */; };
+		E4EBC562191458CA00BF14DF /* new.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EBC560191458CA00BF14DF /* new.png */; };
+		E4EBC563191458CA00BF14DF /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = E4EBC561191458CA00BF14DF /* settings.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,22 +90,22 @@
 		21A251121819BBFD00C28188 /* LoadingModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingModalViewController.m; sourceTree = "<group>"; };
 		21A251171819E14B00C28188 /* DeleteLicenseResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteLicenseResponse.h; sourceTree = "<group>"; };
 		21A251181819E14B00C28188 /* DeleteLicenseResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteLicenseResponse.m; sourceTree = "<group>"; };
-		21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesmanBuddyiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CABB2A180C443F000BB826 /* SalesmanBud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SalesmanBud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21CABB2D180C443F000BB826 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		21CABB2F180C443F000BB826 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		21CABB31180C443F000BB826 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		21CABB33180C443F000BB826 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		21CABB37180C443F000BB826 /* SalesmanBuddyiOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBuddyiOS-Info.plist"; sourceTree = "<group>"; };
+		21CABB37180C443F000BB826 /* SalesmanBud-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBud-Info.plist"; sourceTree = "<group>"; };
 		21CABB39180C443F000BB826 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		21CABB3B180C443F000BB826 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		21CABB3D180C443F000BB826 /* SalesmanBuddyiOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SalesmanBuddyiOS-Prefix.pch"; sourceTree = "<group>"; };
+		21CABB3D180C443F000BB826 /* SalesmanBud-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SalesmanBud-Prefix.pch"; sourceTree = "<group>"; };
 		21CABB3E180C443F000BB826 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		21CABB3F180C443F000BB826 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		21CABB42180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SalesmanBuddyiOS.xcdatamodel; sourceTree = "<group>"; };
 		21CABB44180C443F000BB826 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesmanBuddyiOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CABB4A180C4440000BB826 /* SalesmanBudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SalesmanBudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21CABB4B180C4440000BB826 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		21CABB54180C4440000BB826 /* SalesmanBuddyiOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBuddyiOSTests-Info.plist"; sourceTree = "<group>"; };
+		21CABB54180C4440000BB826 /* SalesmanBudTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SalesmanBudTests-Info.plist"; sourceTree = "<group>"; };
 		21CABB56180C4440000BB826 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		21CABB58180C4440000BB826 /* SalesmanBuddyiOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SalesmanBuddyiOSTests.m; sourceTree = "<group>"; };
 		21CABB63180C46D6000BB826 /* LicenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LicenseListViewController.h; sourceTree = "<group>"; };
@@ -181,6 +185,11 @@
 		E4A9C7FE18455D7B0095294D /* NSURLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLAdditions.m; sourceTree = "<group>"; };
 		E4A9C7FF18455D7B0095294D /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Random.h; sourceTree = "<group>"; };
 		E4A9C80018455D7B0095294D /* Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Random.m; sourceTree = "<group>"; };
+		E4EBC55B1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIImagePickerLandscapeControllerViewController.h; path = SalesmanBuddyiOS/UIImagePickerLandscapeControllerViewController.h; sourceTree = "<group>"; };
+		E4EBC55C1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIImagePickerLandscapeControllerViewController.m; path = SalesmanBuddyiOS/UIImagePickerLandscapeControllerViewController.m; sourceTree = "<group>"; };
+		E4EBC55E191458A700BF14DF /* listIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = listIcon.png; sourceTree = "<group>"; };
+		E4EBC560191458CA00BF14DF /* new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = new.png; sourceTree = "<group>"; };
+		E4EBC561191458CA00BF14DF /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +224,11 @@
 		21CABB21180C443F000BB826 = {
 			isa = PBXGroup;
 			children = (
+				E4EBC560191458CA00BF14DF /* new.png */,
+				E4EBC561191458CA00BF14DF /* settings.png */,
+				E4EBC55E191458A700BF14DF /* listIcon.png */,
+				E4EBC55B1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.h */,
+				E4EBC55C1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.m */,
 				21CABB35180C443F000BB826 /* SalesmanBuddyiOS */,
 				21CABB52180C4440000BB826 /* SalesmanBuddyiOSTests */,
 				21CABB2C180C443F000BB826 /* Frameworks */,
@@ -225,8 +239,8 @@
 		21CABB2B180C443F000BB826 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */,
-				21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */,
+				21CABB2A180C443F000BB826 /* SalesmanBud.app */,
+				21CABB4A180C4440000BB826 /* SalesmanBudTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -277,10 +291,10 @@
 		21CABB36180C443F000BB826 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				21CABB37180C443F000BB826 /* SalesmanBuddyiOS-Info.plist */,
+				21CABB37180C443F000BB826 /* SalesmanBud-Info.plist */,
 				21CABB38180C443F000BB826 /* InfoPlist.strings */,
 				21CABB3B180C443F000BB826 /* main.m */,
-				21CABB3D180C443F000BB826 /* SalesmanBuddyiOS-Prefix.pch */,
+				21CABB3D180C443F000BB826 /* SalesmanBud-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -297,7 +311,7 @@
 		21CABB53180C4440000BB826 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				21CABB54180C4440000BB826 /* SalesmanBuddyiOSTests-Info.plist */,
+				21CABB54180C4440000BB826 /* SalesmanBudTests-Info.plist */,
 				21CABB55180C4440000BB826 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -424,9 +438,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		21CABB29180C443F000BB826 /* SalesmanBuddyiOS */ = {
+		21CABB29180C443F000BB826 /* SalesmanBud */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOS" */;
+			buildConfigurationList = 21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBud" */;
 			buildPhases = (
 				21CABB26180C443F000BB826 /* Sources */,
 				21CABB27180C443F000BB826 /* Frameworks */,
@@ -436,14 +450,14 @@
 			);
 			dependencies = (
 			);
-			name = SalesmanBuddyiOS;
+			name = SalesmanBud;
 			productName = SalesmanBuddyiOS;
-			productReference = 21CABB2A180C443F000BB826 /* SalesmanBuddyiOS.app */;
+			productReference = 21CABB2A180C443F000BB826 /* SalesmanBud.app */;
 			productType = "com.apple.product-type.application";
 		};
-		21CABB49180C4440000BB826 /* SalesmanBuddyiOSTests */ = {
+		21CABB49180C4440000BB826 /* SalesmanBudTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOSTests" */;
+			buildConfigurationList = 21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBudTests" */;
 			buildPhases = (
 				21CABB46180C4440000BB826 /* Sources */,
 				21CABB47180C4440000BB826 /* Frameworks */,
@@ -454,9 +468,9 @@
 			dependencies = (
 				21CABB51180C4440000BB826 /* PBXTargetDependency */,
 			);
-			name = SalesmanBuddyiOSTests;
+			name = SalesmanBudTests;
 			productName = SalesmanBuddyiOSTests;
-			productReference = 21CABB4A180C4440000BB826 /* SalesmanBuddyiOSTests.xctest */;
+			productReference = 21CABB4A180C4440000BB826 /* SalesmanBudTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -465,7 +479,7 @@
 		21CABB22180C443F000BB826 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "McCord Inc";
 				TargetAttributes = {
 					21CABB29180C443F000BB826 = {
@@ -476,7 +490,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBuddyiOS" */;
+			buildConfigurationList = 21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBud" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -488,8 +502,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				21CABB29180C443F000BB826 /* SalesmanBuddyiOS */,
-				21CABB49180C4440000BB826 /* SalesmanBuddyiOSTests */,
+				21CABB29180C443F000BB826 /* SalesmanBud */,
+				21CABB49180C4440000BB826 /* SalesmanBudTests */,
 			);
 		};
 /* End PBXProject section */
@@ -505,10 +519,13 @@
 				E4A8CCA31842E42500766997 /* flagRedOriginal.png in Resources */,
 				E4A8CCA21842E42500766997 /* flagRed@2x.png in Resources */,
 				E4A8CC9C1842E42500766997 /* blueArrow.png in Resources */,
+				E4EBC563191458CA00BF14DF /* settings.png in Resources */,
 				21CABB3A180C443F000BB826 /* InfoPlist.strings in Resources */,
 				E4A8CC9E1842E42500766997 /* blueArrowOriginal.png in Resources */,
+				E4EBC562191458CA00BF14DF /* new.png in Resources */,
 				E4A9C7E5184513C80095294D /* LicenseTableViewCellGUI.xib in Resources */,
 				E4A8CCA11842E42500766997 /* flagRed.png in Resources */,
+				E4EBC55F191458A700BF14DF /* listIcon.png in Resources */,
 				E4A8CCA01842E42500766997 /* flagGrey@2x.png in Resources */,
 				21CABB45180C443F000BB826 /* Images.xcassets in Resources */,
 			);
@@ -563,6 +580,7 @@
 				21A251191819E14B00C28188 /* DeleteLicenseResponse.m in Sources */,
 				E4A9C7E8184513EB0095294D /* LicenseTableViewCell.m in Sources */,
 				21FDA907180F105800C9FB5B /* SFHFKeychainUtils.m in Sources */,
+				E4EBC55D1913134200BF14DF /* UIImagePickerLandscapeControllerViewController.m in Sources */,
 				E49C5DD9187CBD0200038440 /* NewLicenseListViewController.m in Sources */,
 				21CABB43180C443F000BB826 /* SalesmanBuddyiOS.xcdatamodeld in Sources */,
 				21FDA9121810BB5A00C9FB5B /* DAOManager.m in Sources */,
@@ -582,7 +600,7 @@
 /* Begin PBXTargetDependency section */
 		21CABB51180C4440000BB826 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 21CABB29180C443F000BB826 /* SalesmanBuddyiOS */;
+			target = 21CABB29180C443F000BB826 /* SalesmanBud */;
 			targetProxy = 21CABB50180C4440000BB826 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -611,7 +629,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -651,7 +668,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -689,9 +705,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
-				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBud-Prefix.pch";
+				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBud-Info.plist";
+				PRODUCT_NAME = SalesmanBud;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -705,9 +721,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
-				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBuddyiOS-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBud-Prefix.pch";
+				INFOPLIST_FILE = "SalesmanBuddyiOS/SalesmanBud-Info.plist";
+				PRODUCT_NAME = SalesmanBud;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -716,7 +732,6 @@
 		21CABB60180C4440000BB826 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SalesmanBuddyiOS.app/SalesmanBuddyiOS";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -729,8 +744,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBuddyiOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBudTests-Info.plist";
+				PRODUCT_NAME = SalesmanBudTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -739,7 +754,6 @@
 		21CABB61180C4440000BB826 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/SalesmanBuddyiOS.app/SalesmanBuddyiOS";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -748,8 +762,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SalesmanBuddyiOS/SalesmanBuddyiOS-Prefix.pch";
-				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBuddyiOSTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "SalesmanBuddyiOSTests/SalesmanBudTests-Info.plist";
+				PRODUCT_NAME = SalesmanBudTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -758,7 +772,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBuddyiOS" */ = {
+		21CABB25180C443F000BB826 /* Build configuration list for PBXProject "SalesmanBud" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				21CABB5A180C4440000BB826 /* Debug */,
@@ -767,7 +781,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOS" */ = {
+		21CABB5C180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBud" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				21CABB5D180C4440000BB826 /* Debug */,
@@ -776,7 +790,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBuddyiOSTests" */ = {
+		21CABB5F180C4440000BB826 /* Build configuration list for PBXNativeTarget "SalesmanBudTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				21CABB60180C4440000BB826 /* Debug */,

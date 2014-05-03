@@ -22,14 +22,14 @@
     NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
     [d setValue:@(imageDetails.id) forKey:@"id"];
     [d setValue:imageDetails.photoName forKey:@"photoName"];
-    [d setValue:imageDetails.created forKey:@"created"];
+//    [d setValue:imageDetails.created forKey:@"created"];
     [d setValue:@(imageDetails.bucketId) forKey:@"bucketId"];
     [d setValue:@(imageDetails.answerId) forKey:@"answerId"];
     return d;
 }
 
 -(id)initWithDictionary:(NSDictionary *)dictionary{
-    NSLog(@"initing with dictionary, imageDetails: %@", dictionary);
+//    NSLog(@"initing with dictionary, imageDetails: %@", dictionary);
     self = [super init];
     if (self) {
         self.id = [dictionary[@"id"] integerValue];

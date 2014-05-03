@@ -17,5 +17,6 @@
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 +(instancetype)objectFromDictionary:(NSDictionary *)dictionary;
++(NSDictionary *)dictionaryFromFinishedPhoto:(FinishedPhoto *)finishedPhoto;
 
 @end

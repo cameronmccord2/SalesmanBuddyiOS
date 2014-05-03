@@ -21,7 +21,7 @@
         [self.submitButton setTitle:@"Submit" forState:UIControlStateNormal];
         [self.submitButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
         
-        self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(40 + 100 + 30, 10, 100, 50)];
+        self.cancelButton = [[UIButton alloc] initWithFrame:CGRectMake(170, 10, 100, 50)];// 40+100+30
         [self.cancelButton setBackgroundColor:[UIColor redColor]];
         [self.cancelButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
@@ -45,20 +45,19 @@
 }
 
 -(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa tableDelegate:(id<SubmitCancelProtocol>)tableDelegate{
-    NSLog(@"here");
     self.delegate = tableDelegate;
     [self.contentView addSubview:self.submitButton];
     [self.contentView addSubview:self.cancelButton];
 }
 
 -(void)submit:(id)sender{
-    NSLog(@"submitting");
+//    NSLog(@"submitting");
     [self.delegate submit];
     
 }
 
 -(void)cancel:(id)sender{
-    NSLog(@"cancelling");
+//    NSLog(@"cancelling");
     [self.delegate cancel];
 }
 

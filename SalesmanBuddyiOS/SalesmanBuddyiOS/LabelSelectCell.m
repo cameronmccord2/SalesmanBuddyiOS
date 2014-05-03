@@ -23,7 +23,6 @@ int lscBottomPad = 10;
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        NSLog(@"in self");
         self.reuseId = reuseIdentifier;
         self.options = [[NSArray alloc] init];
         self.label = [[UILabel alloc] init];
@@ -45,16 +44,16 @@ int lscBottomPad = 10;
 //        UILabel *l = [[UILabel alloc] init];
 //        [l setText:@"Temp Text"];
 //        [self.contentView addSubview:l];
-        NSLog(@"delegate: %@", delegate);
         self.labelSelectCellDelegate = delegate;
         self.pickerView = [UIPickerView new];
-    }else
-        NSLog(@"self error");
+    }
+//    else
+//        NSLog(@"self error");
     return self;
 }
 
 -(void)setUpWithQuestionAndAnswer:(QuestionAndAnswer *)qaa{
-    NSLog(@"set up with question and answer");
+//    NSLog(@"set up with question and answer");
 //    [self setUpWithLabelText:qaa.question.questionTextEnglish selectedOptionText:qaa.answer.answerText options:qaa.question.dropdownOptions];
 }
 

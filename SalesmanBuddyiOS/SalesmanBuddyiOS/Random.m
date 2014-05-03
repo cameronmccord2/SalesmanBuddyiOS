@@ -13,7 +13,7 @@
 -(id)randomObject {
     NSUInteger myCount = [self count];
     if (myCount)
-        return [self objectAtIndex:arc4random_uniform(myCount)];
+        return [self objectAtIndex:arc4random_uniform((uint)myCount)];
     else
         return nil;
 }

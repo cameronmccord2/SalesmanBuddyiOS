@@ -15,6 +15,9 @@
 @property(nonatomic, strong)NSProgress *progress;
 @property(nonatomic, strong)UILabel *lastLabel;
 @property(nonatomic)BOOL useUploadProgress;
+@property(nonatomic)NSInteger numberToWaitOn;
+@property(nonatomic, strong)NSString *notificationName;
+@property(nonatomic, strong)NSString *progressNotificationName;
 
 - (id)initWithTitle:(NSString *)title message:(NSString *)message useUploadProgress:(BOOL)useUploadProgress;
 -(void)dismiss;

@@ -16,7 +16,7 @@
 #import "User.h"
 #import "License.h"
 
-NSString *baseUrl = @"http://salesmanbuddytest1.elasticbeanstalk.com/v1/salesmanbuddy/";
+NSString *baseUrl = @"http://salesmanbuddyserver.elasticbeanstalk.com/v1/salesmanbuddy/";
 NSString *licensesUrl = @"licenses";
 NSString *statesUrl = @"states";
 NSString *dealershipsUrl = @"dealerships";
@@ -46,7 +46,7 @@ enum{
 -(instancetype)init{
     self = [super init];
     if (self != nil) {
-        self.kKeychainItemName = @"SalesmanCompanionKeyV02";// set to nil to have the user login every time the app loads
+        self.kKeychainItemName = @"SalesmanCompanionKeyV06";// set to nil to have the user login every time the app loads
         self.kMyClientID = @"38235450166-dgbh1m7aaab7kopia2upsdj314odp8fc.apps.googleusercontent.com";     // pre-assigned by service
         self.kMyClientSecret = @"zC738ZbMHopT2C1cyKiKDBQ6"; // pre-assigned by service
         [self addAuthScope:@"https://www.googleapis.com/auth/plus.me"];// scope for Google+ API
@@ -85,26 +85,27 @@ enum{
 //        
 //        self.confirmUserFunction = confirmUserFunction;
 //        
-        NSLog(@"going to get the current location");
-        [self getLocation];
+//        NSLog(@"going to get the current location");
+//        [self getLocationForDelegate:self];
     }
     return self;
 }
 
 
--(CLLocationCoordinate2D)getLocation{
-    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = kCLDistanceFilterNone;
-    [locationManager startUpdatingLocation];
-    CLLocation *location = [locationManager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    [locationManager stopUpdatingLocation];
-    return coordinate;
-}
+//-(CLLocationCoordinate2D)getLocationForDelegate:(id)delegate{
+//    CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+//    locationManager.delegate = self;
+//    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+//    locationManager.distanceFilter = kCLDistanceFilterNone;
+//    [locationManager startUpdatingLocation];
+//    CLLocation *location = [locationManager location];
+//    CLLocationCoordinate2D coordinate = [location coordinate];
+//    [locationManager stopUpdatingLocation];
+//    return coordinate;
+//}
 
 -(void)getQuestionsForDelegate:(id<SBDaoV1DelegateProtocol>)delegate{
+    NSLog(@"getting questions for delegate");
     [self confirmUserWithAuthDelegateIfNeeded:delegate];
     [self genericListGetForDelegate:delegate url:[NSString stringWithFormat:@"%@%@", baseUrl, @"questions"] selector:@selector(questions:) parseClass:[Question class] requestType:NormalType];
 }
@@ -135,14 +136,14 @@ enum{
     [self confirmUserWithAuthDelegateIfNeeded:delegate];
     void(^success)(NSData *, void(^)()) = ^void(NSData *data, void(^cleanUp)()){
         if ([delegate respondsToSelector:@selector(imageData:)]) {
-            NSLog(@"responds to selector, imageData");
+            NSLog(@"responds to selector, %@", NSStringFromSelector(@selector(imageData:)));
             [delegate performSelector:@selector(imageData:) withObject:data];
         }else
-            NSLog(@"cannot send delegate selector: imageData");
+            NSLog(@"cannot send delegate %@ selector: %@", NSStringFromClass([delegate class]), NSStringFromSelector(@selector(imageData:)));
         cleanUp();
     };
     
-    [self genericGetFunctionForDelegate:delegate forUrlString:[NSString stringWithFormat:@"%@%@?answerid=%ld", baseUrl, licenseImageUrl, (long)answerId] requestType:NormalType success:success error:[self errorTemplateForDelegate:delegate selectorOnError:nil] then:[self thenTemplateForDelegate:self selectorOnThen:@selector(imageThen:progress:)]];
+    [self genericGetFunctionForDelegate:delegate forUrl:[NSString stringWithFormat:@"%@%@?answerid=%ld", baseUrl, licenseImageUrl, (long)answerId] requestType:NormalType success:success error:[self errorTemplateForDelegate:delegate selectorOnError:nil] then:[self thenTemplateForDelegate:delegate selectorOnThen:@selector(imageThen:progress:)]];
 }
 
 -(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate{
@@ -156,7 +157,7 @@ enum{
 
 -(void)putLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate{
     [self confirmUserWithAuthDelegateIfNeeded:delegate];
-    NSLog(@"posting license: %@", [License dictionaryFromLicense:license]);
+//    NSLog(@"posting license: %@", [License dictionaryFromLicense:license]);
     [self makeRequestWithVerb:@"PUT" forUrl:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl] bodyDictionary:[License dictionaryFromLicense:license] bodyData:nil authDelegate:delegate contentType:@"application/json" requestType:NormalType success:[self successTemplateForDelegate:delegate selectorOnSuccess:@selector(finishedSubmitLicense:) parseClass:[License class] resultIsArray:NO] error:nil then:nil];
 }
 
@@ -165,6 +166,7 @@ enum{
 
 -(void)updateLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate{
     [self confirmUserWithAuthDelegateIfNeeded:delegate];
+    NSLog(@"%@", [License dictionaryFromLicense:license]);
     [self makeRequestWithVerb:@"POST" forUrl:[NSString stringWithFormat:@"%@%@", baseUrl, licensesUrl] bodyDictionary:[License dictionaryFromLicense:license] bodyData:nil authDelegate:delegate contentType:@"application/json" requestType:NormalType success:[self successTemplateForDelegate:delegate selectorOnSuccess:@selector(updatedLicense:) parseClass:[License class] resultIsArray:NO] error:nil then:nil];
 }
 
@@ -178,17 +180,23 @@ enum{
 
 -(void)confirmUserWithAuthDelegateIfNeeded:(id<DAOManagerDelegateProtocol>)authDelegate{
     if (!self.userConfirmed) {
-        User *user = [[User alloc] init];
-        user.deviceType = 1;
+//        User *user = [[User alloc] init];
+//        user.deviceType = 1;
+        // need to add a refresh token here
         
-        [self makeRequestWithVerb:@"PUT" forUrl:[NSString stringWithFormat:@"%@%@", baseUrl, confirmUserUrl] bodyDictionary:[User dictionaryFromUser:user] bodyData:nil authDelegate:authDelegate contentType:@"application/json" requestType:ConfirmUserType success:[self successTemplateForDelegate:self selectorOnSuccess:@selector(gotUser:) parseClass:[User class] resultIsArray:NO] error:nil then:nil];
+        [self makeRequestWithVerb:@"PUT" forUrl:[NSString stringWithFormat:@"%@%@", baseUrl, confirmUserUrl] bodyDictionary:nil bodyData:nil authDelegate:authDelegate contentType:@"application/json" requestType:ConfirmUserType success:[self successTemplateForDelegate:self selectorOnSuccess:@selector(gotUser:) parseClass:[User class] resultIsArray:NO] error:nil then:nil];
     }
 }
 
 -(void)gotUser:(User *)user{
-    NSLog(@"confirmed user, %@", [User dictionaryFromUser:user]);
+//    NSLog(@"confirmed user, %@", [User dictionaryFromUser:user]);
     blockingRequestRunning = NO;
     self.userConfirmed = YES;
+}
+
+-(void)signOut{
+    [super signOut];
+    self.userConfirmed = NO;
 }
 
 @end

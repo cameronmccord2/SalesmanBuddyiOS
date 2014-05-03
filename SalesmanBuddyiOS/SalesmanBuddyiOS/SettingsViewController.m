@@ -18,7 +18,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Settings", @"Settings");
-        self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
+        self.tabBarItem.image = [UIImage imageNamed:@"settings"];
     }
     return self;
 }
@@ -146,7 +146,9 @@ enum {
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(x, y + topPad, width, height)];
     [textField setPlaceholder:placeholder];
     [textField setText:initalText];
-    [textField setBackgroundColor:color];
+//    [textField setBackgroundColor:color];
+    textField.layer.borderWidth = 0.5f;
+    textField.layer.borderColor = [[UIColor grayColor] CGColor];
     [textField setTag:uniqueTag];
     [textField setDelegate:self];
     if (!lastTextField)

@@ -9,7 +9,7 @@
 #import "LoadingModalViewController.h"
 
 @interface LoadingModalViewController ()
-
+//SBImageUploadingProgress
 @end
 
 @implementation LoadingModalViewController
@@ -20,13 +20,28 @@
         self.title = title;
         self.message = message;
         self.useUploadProgress = useUploadProgress;
-        self.progress = nil;
+        self.progress = nil;// trash?
     }
     return self;
 }
 
+//- (id)initWithTitle:(NSString *)title message:(NSString *)message useUploadProgress:(BOOL)useUploadProgress numberToWaitOn:(NSInteger)numberToWaitOn notificationName:(NSString *)notificationName progressName:(NSString *)progressNotificationName{
+//    self = [self initWithTitle:title message:message useUploadProgress:useUploadProgress];
+//    if (self) {
+//        self.numberToWaitOn = numberToWaitOn;
+//        self.notificationName = notificationName;
+//        [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                 selector:@selector(finishedAnother:)
+//                                                     name:notificationName object:nil];
+//        self.progressNotificationName = progressNotificationName;
+//    }
+//    return self;
+//}
+
+
+
 -(void)dismiss{
-    NSLog(@"recieved dismiss");
+    NSLog(@"recieved dismiss, LoadingModalViewController");
     [self removeFromParentViewController];
 }
 
@@ -35,6 +50,7 @@
     [view addSubview:title];
     [title setBackgroundColor:color];
     [title setText:text];
+    title.numberOfLines = 0;
     if (alignToCenter) {
         [title setTextAlignment:NSTextAlignmentCenter];
         //        [title alignCenterXWithView:view predicate:nil];

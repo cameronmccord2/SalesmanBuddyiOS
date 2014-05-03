@@ -24,7 +24,7 @@
 }
 
 -(instancetype)initWithDictionary:(NSDictionary *)dictionary{
-    NSLog(@"initing with dictionary, answer: %@", dictionary);
+//    NSLog(@"initing with dictionary, answer: %@", dictionary);
     self = [super init];
     if (self) {
         self.id = [dictionary[@"id"] integerValue];

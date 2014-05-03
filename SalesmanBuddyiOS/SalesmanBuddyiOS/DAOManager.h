@@ -2,7 +2,7 @@
 //  DAOManager.h
 //  SalesmanBuddyiOS
 //
-//  Created by Taylor McCord on 10/17/13.
+//  Created by Cameron McCord on 10/17/13.
 //  Copyright (c) 2013 McCord Inc. All rights reserved.
 //
 
@@ -38,7 +38,6 @@
     NSMutableDictionary *connections;
     BOOL tryingToAuthenticate;
     BOOL blockingRequestRunning;
-    NSInteger currentUniqueTag;
 }
 
 @property(nonatomic, strong)GTMOAuth2Authentication* auth;
@@ -61,7 +60,7 @@
 /// @param destId Destination timeline entity ID
 /// @param name Message name
 /// @return A newly created message instance
--(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrlString:(NSString *)urlString requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
+-(void)genericGetFunctionForDelegate:(id<DAOManagerDelegateProtocol>)delegate forUrl:(NSString *)url requestType:(NSInteger)type success:(void (^)(NSData *, void(^)()))success error:(void (^)(NSData *, NSError *, void(^)()))error then:(void (^)(NSData *, NSURLConnectionWithExtras *, NSProgress *))then;
 
 /// Make an NSURLRequest with any verb. All connection handling is behind the scenes.
 /// @param verb Rest verb for the request: GET, PUT, POST, DELETE, etc.

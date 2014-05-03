@@ -267,6 +267,7 @@ finishedWithFetcher:(GTMHTTPFetcher *)fetcher
                                      @"code", @"response_type",
                                      clientID, @"client_id",
                                      scope, @"scope", // scope may be nil
+                                     @"offline", @"access_type",// edited to have offline access
                                      nil];
   if (redirectURI) {
     [paramsDict setObject:redirectURI forKey:@"redirect_uri"];
@@ -285,6 +286,7 @@ finishedWithFetcher:(GTMHTTPFetcher *)fetcher
   NSString *paramStr = [GTMOAuth2Authentication encodedQueryParametersForDictionary:paramsDict];
 
   NSURL *authorizationURL = self.authorizationURL;
+    NSLog(@"url: %@, params:%@", authorizationURL, paramStr);
   NSMutableURLRequest *request;
   request = [[self class] mutableURLRequestWithURL:authorizationURL
                                        paramString:paramStr];

@@ -29,8 +29,8 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
     self = [super initWithStyle:UITableViewStylePlain];
     if(self){
         self.managedObjectContext = managedObjectContext;
-        self.title = NSLocalizedString(@"Licenses", @"Licenses");
-        self.tabBarItem.image = [UIImage imageNamed:@"licenseList"];
+        self.title = NSLocalizedString(@"Test Drives", @"Test Drives");
+        self.tabBarItem.image = [UIImage imageNamed:@"listIcon"];
         self.licenses = [[NSMutableArray alloc] init];
 //        self.dateFormatter = [NSDateFormatter datreFormatFromTemplate:<#(NSString *)#> options:<#(NSUInteger)#> locale:<#(NSLocale *)#>
 //        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
@@ -97,11 +97,22 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 
 
 -(Answer *)getFirstNameAnswer:(NSArray *)qaas{
-    return [self getQaaWithQuestionText:@"First Name" fromList:qaas].answer;
+//    return [self getQaaWithQuestionText:@"First Name" fromList:qaas].answer;
+    return [self getQaaWithTag:3 fromList:qaas].answer;
 }
 
 -(Answer *)getLastNameAnswer:(NSArray *)qaas{
-    return [self getQaaWithQuestionText:@"Last Name" fromList:qaas].answer;
+//    return [self getQaaWithQuestionText:@"Last Name" fromList:qaas].answer;
+    return [self getQaaWithTag:4 fromList:qaas].answer;
+}
+
+-(QuestionAndAnswer *)getQaaWithTag:(NSInteger)tag fromList:(NSArray *)qaas{
+    for (QuestionAndAnswer *qaa in qaas) {
+        if (qaa.question.tag == tag) {
+            return qaa;
+        }
+    }
+    return nil;
 }
 
 -(QuestionAndAnswer *)getQaaWithQuestionText:(NSString *)questionText fromList:(NSArray *)qaas{
@@ -140,17 +151,17 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"LicenseTableViewCellGUI" owner:self options:nil];
-    NSLog(@"count: %ld", (long)nib.count);
-    NSLog(@"setting up cell");
+//    NSLog(@"count: %ld", (long)nib.count);
+//    NSLog(@"setting up cell");
     LicenseTableViewCell *cell = (LicenseTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSLog(@"made new cell, this actually got hit!!!!!!!!!!!!!!!!!!!!");
+//        NSLog(@"made new cell, this actually got hit!!!!!!!!!!!!!!!!!!!!");
         cell = [[LicenseTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         
         cell.name = [[UILabel alloc] initWithFrame:CGRectMake(7, 2, 206, 21)];
         [cell.contentView addSubview:cell.name];
         
-        cell.details = [[UILabel alloc] initWithFrame:CGRectMake(7, 20, 206, 21)];
+        cell.details = [[UILabel alloc] initWithFrame:CGRectMake(7, 20, 260, 21)];
         [cell.details setFont:[UIFont systemFontOfSize:14.0]];
         [cell.contentView addSubview:cell.details];
         
@@ -166,7 +177,7 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
     int index = (int)[indexPath row];
     License *l = [self.licenses objectAtIndex:index];
     [cell.name setText:[NSString stringWithFormat:@"%@, %@", [self getLastNameAnswer:l.qaas].answerText, [self getFirstNameAnswer:l.qaas].answerText]];
-    [cell.details setText:[NSString stringWithFormat:@"%@,  ID: %@", l.created, @"12345"]];
+    [cell.details setText:[NSString stringWithFormat:@"%@,  Stock Number: %@", l.created, [self getQaaWithTag:2 fromList:l.qaas].answer.answerText]];
     BOOL isFlagged = true;
     if (isFlagged)
         [cell.flag setImage:[UIImage imageNamed:@"flagRed.png"]];
@@ -186,7 +197,7 @@ NSString *text = @"asf asdf ;lkjasdf asdf;lkjasdf qpoiu poiuqwerpoiuqwer qwpoeir
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         License *l = [self.licenses objectAtIndex:indexPath.row];
-        NSLog(@"deleting license with id: %ld", (long)l.id);
+//        NSLog(@"deleting license with id: %ld", (long)l.id);
         [self.licenses removeObjectAtIndex:indexPath.row];
         [[SBDaoV1 sharedManager] deleteLicenseById:l.id forDelegate:self];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

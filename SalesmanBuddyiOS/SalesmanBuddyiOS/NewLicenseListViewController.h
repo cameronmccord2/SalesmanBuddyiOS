@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SBDaoV1.h"
+#import "LoadingModalViewController.h"
 
 @protocol SubmitCancelProtocol;
 @protocol LicenseImageCellProtocol;
@@ -20,6 +21,10 @@
 @property(nonatomic, weak)NSURLConnectionWithExtras *imageConnection;
 @property(nonatomic)BOOL isTabInstance;
 @property(nonatomic, strong)UIAlertView *alert;
+@property(nonatomic, strong)LoadingModalViewController *lmvc;
+@property(nonatomic)NSInteger finishedImages;
+@property(nonatomic)BOOL waitingForImagesToFinishUploading;
+
 
 - (instancetype)initWithContext:(NSManagedObjectContext *)managedObjectContext license:(License *)license delegate:(id)delegate;
 
@@ -29,5 +34,7 @@
 -(void)showAuthModal:(UIViewController *)viewController;
 
 -(void)setTabBarSelectedIndex:(NSInteger)index;
+
+-(void)didFinishUploadingImageData;
 
 @end

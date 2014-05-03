@@ -23,4 +23,11 @@
     return self;
 }
 
++(NSDictionary *)dictionaryFromFinishedPhoto:(FinishedPhoto *)finishedPhoto{
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] init];
+    [d setValue:@(finishedPhoto.bucketId) forKey:@"bucketId"];
+    [d setValue:finishedPhoto.filename forKey:@"filename"];
+    return d;
+}
+
 @end

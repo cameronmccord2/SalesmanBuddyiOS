@@ -41,13 +41,13 @@
 
 +(instancetype)sharedManager;
 -(void)getQuestionsForDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
--(CLLocationCoordinate2D)getLocation;
+//-(CLLocationCoordinate2D)getLocationForDelegate:(id)delegate;
 -(void)getLicensesForDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getStates:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getDealerships:(id<SBDaoV1DelegateProtocol>)delegate;
 //-(void)getUserExists:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)getImageForAnswerId:(NSInteger)answerId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
--(void)confirmUser;
+//-(void)confirmUser;
 -(void)putImage:(NSData *)bodyData forStateId:(NSInteger)stateId forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)putLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
 -(void)updateLicense:(License *)license forDelegate:(id<SBDaoV1DelegateProtocol>)delegate;
